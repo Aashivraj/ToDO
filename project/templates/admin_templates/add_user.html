@@ -44,7 +44,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <form> 
+                                                <form method="post"> 
                                                     {% csrf_token %}
                                                     {{form.as_p}}
                                                     <button class="btn btn-primary shadow-2">Submit</button>
