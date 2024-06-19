@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django import views 
-from .forms import TodoForm
+from .forms import TodoForm, AddUserForm
 # Create your views here.
 class login(views.View):
     def get(self,request,*args, **kwargs):
@@ -35,3 +35,16 @@ class ErrorView(views.View):
       return render(request,'admin_templates/error.html')
 
 
+class AddUserView(views.View):
+   def get(self,request,*args, **kwargs):
+       form=AddUserForm()
+       return render(request, 'admin_templates/add_user.html',{'form':form})
+    
+   
+   def post(self,request,*args, **kwargs):
+         form=AddUserForm(request.POST)
+         if form.is_valid():
+            form.save()
+            return render(request, 'admin_templates/home.html')
+         else:
+            return render(request, 'admin_templates/add_user.html',{'form':form})

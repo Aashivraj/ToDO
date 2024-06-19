@@ -23,6 +23,7 @@ urlpatterns = [
     path('register/',register.as_view(),name="register"),
     path('home/',home.as_view(),name="home"),
     path('add_todo/',add_todo.as_view(),name="add_todo"),
+    path('add_user/',AddUserView.as_view(),name="add_user"),
     
     path('error/',ErrorView.as_view(),name="error"),
     

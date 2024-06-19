@@ -77,3 +77,55 @@ class TodoForm(forms.ModelForm):
     class Meta:
         model=Todo
         fields=('user', 'title','description','status','date_created','note')
+        
+class AddUserForm(forms.ModelForm):
+    user_name = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'User Name',
+                'id': 'customuser_username',
+            }
+        )
+    )
+    email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Email Address',
+                'id': 'customuser_email',
+            }
+        )
+    )
+    mobile_number = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Mobile Number',
+                'id': 'customuser_mobile_number',
+            }
+        )
+    )
+    team = forms.ModelChoiceField(
+        queryset=Team.objects.all(),
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+                'id': 'customuser_team',
+            }
+        ),
+        required=False  # Assuming team is optional (null=True, blank=True)
+    )
+    role = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Role',
+                'id': 'customuser_role',
+            }
+        )
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ('user_name', 'email', 'mobile_number', 'team', 'role')
