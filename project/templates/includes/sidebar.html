@@ -1,0 +1,35 @@
+<nav class="pcoded-navbar">
+  <div class="navbar-wrapper">
+    <div class="navbar-brand header-logo">
+      <a href="{% url 'home' %}" class="b-brand">
+        <div class="b-bg">
+          <i class="feather icon-trending-up"></i>
+        </div>
+        <span class="b-title">Home</span>
+      </a>
+      <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span
+      ></a>
+    </div>
+    <div class="navbar-content scroll-div">
+      <ul class="nav pcoded-inner-navbar">
+        <li class="nav-item pcoded-menu-caption">
+          <label>Navigation</label>
+        </li>
+
+        <li class="nav-item">
+          <a href="{% url 'home' %}" class="nav-link">
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-house text-c-green"></i></span><span class="pcoded-mtext">Home</span></a>
+        </li>
+       
+        <li class="nav-item">
+          <a href="{% url 'home' %}" class="nav-link">
+            <span class="pcoded-micon"> <i class="fa-regular fa-user text-c-green"></i>
+              </span>
+              <span class="pcoded-mtext">User-Profile</span></a>
+        </li>
+       
+      </ul>
+    </div>
+  </div>
+</nav>

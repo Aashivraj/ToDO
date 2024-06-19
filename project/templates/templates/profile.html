@@ -1,0 +1,173 @@
+
+{% extends "layouts/base_auth.html" %}
+{% load static %}
+{% block content %}
+{% include "includes/sidebar.html" %}
+{% include "includes/navigation.html" %}
+
+
+<section class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- [ Main Content ] start -->
+          
+            <div class="row">
+              <div class="col-sm-8">
+                  <div class="card">
+                      <div class="card-header">
+                          <h5>Edit Info</h5>
+                      </div>
+                      <div class="card-block">
+                          <div class="row">
+
+                              <div class="col-sm-6 mb-4">
+                                  <div class="form-group">
+                                    {% if user.is_authenticated %}
+                                      <label for="exampleInputEmail1">Username</label>
+                                      <input class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" readonly="" value="{{user.username}}">
+                                      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                                  </div>
+                              </div>                                                
+                              <div class="col-sm-6 mb-4">
+                                  <div class="form-group">
+                                   
+
+                                    
+
+                                      <label for="exampleInputEmail1">Email address</label>
+                                      <input type="email" readonly="" class="form-control" value="{{user.email}}" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+                                      {%endif%}
+                                  </div>
+                              </div>
+                              <div class="col-sm-6 mb-4">
+                                <div class="form-group">
+                                    <form action="" method="post">
+                                      {% csrf_token %}
+                                      <label for="fn">FirstName</label>
+                                      {{form.firstname}}
+                                  </div>
+                              </div>
+                              <div class="col-sm-6 mb-4">
+                                  <div class="form-group">
+                                      <label for="ln">LastName</label>
+                                     {{form.lastname}}
+                                  </div>
+                              </div>
+                              <div class="col-sm-12 mb-4">
+                                  <div class="form-group">
+                                      <label for="add">Address</label>
+                                      {{form.Address}}
+                                      <small id="addd" class="form-text text-muted">This is your shipments address</small>
+                                  </div>
+                              </div>
+                              
+                              <div class="col-sm-12 mb-4">
+                                <div class="form-group">
+                                  <label for="exampleFormControlTextarea1">About Info</label>
+                                  {{form.About_info}}
+                                </div>
+
+                              </div>
+
+                              <div class="col-sm-12 mb-2">
+                                  <div class="form-group">
+                                      <button type="submit" class="btn btn-primary">Submit</button>
+                                  </div>
+                              </div>   
+                            </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-sm-4">
+                  <div class="card">
+                      <div class="card-block">
+                          <div class="d-flex align-items-center justify-content-center flex-column">
+                              <div class="w-50 p-3">
+                                <img id="profile-pic" src="https://appsrv1-147a1.kxcdn.com/data-able-v100-enh1/images/user/profile.jpg" alt="profile image" class="img-fluid rounded-circle"  >
+                                <input type="file" accept="image/*"  name="" id="file-input" style="display: none;">
+                                
+                                </div>
+                              <div class="text-center">
+                                {% if user.is_authenticated %}
+                                  <h4 class="font-weight-bold h6">
+                                    <span><b>{{user.username}}</b></span>
+                                     
+                                  </h4>
+                                  <p class="font-italic text-muted">
+                                    <span>{{user.email}}</span>
+
+                                       
+                                  </p>
+
+                                {%endif%}
+                              </div>
+                          </div>
+
+                          <div class="small font-weight-light mt-4 text-center text-muted">
+                              <p>
+                                  This page is your private space.
+                                  <br>
+                              </p>
+                          </div>
+                          <div class="d-flex justify-content-center align-items-center">
+                              <a href="https://www.facebook.com/" class="h6 text-muted d-block m-1"><i class="icon feather icon-facebook"></i></a>&nbsp;&nbsp;
+                              <a href="https://x.com/?lang=en" class="h6 text-muted d-block m-1"><i class="icon feather icon-twitter"></i></a>&nbsp;&nbsp;
+                              <a href=" https://www.instagram.com/" class="h6 text-muted d-block m-1"><i class="icon feather icon-instagram"></i></a>&nbsp;&nbsp;
+                              
+                              <a href="https://www.youtube.com/channel/UCvHjriUkje7tUl3qZI9A1_A" class="h6 text-muted d-block m-1"> <i class="fa-brands fa-youtube"></i></a>
+                             
+                              
+
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+</section>
+
+<label class="d-none">
+  <i class="icon feather icon-moon" id="theme-indicator"></i>
+  <input type="checkbox" id="theme-switch" class="d-none" />
+</label>
+
+<script>
+ 
+  // Function to load the profile picture from local storage -->
+function loadProfilePic() {
+    const storedImage = localStorage.getItem('profile-pic');
+    if (storedImage) {
+        document.getElementById('profile-pic').src = storedImage;
+    }
+}
+
+// Event listener for profile picture click
+document.getElementById('profile-pic').addEventListener('click', function() {
+    document.getElementById('file-input').click();
+});
+
+// Event listener for file input change
+document.getElementById('file-input').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imageDataUrl = e.target.result;
+            document.getElementById('profile-pic').src = imageDataUrl;
+            localStorage.setItem('profile-pic', imageDataUrl); // Save image to local storage
+        }
+        reader.readAsDataURL(file);
+    }
+});
+
+// Load the profile picture when the page is loaded
+document.addEventListener('DOMContentLoaded', loadProfilePic);
+ 
+</script>
+
+<!-- [ Main Content ] end -->
+
+{% endblock content %}
