@@ -12,7 +12,7 @@
                         <div class="row align-items-center">
                             <div class="col-md-12">
                                 <div class="page-header-title">
-                                    <h5 class="m-b-10">Form Elements</h5>
+                                    <h5 class="m-b-10">Add Todo</h5>
                                 </div>
                                 <ul class="breadcrumb">
                                     <li class="breadcrumb-item">
@@ -49,7 +49,7 @@
                                                     <div class="form-group mb-3">
                                                         <label for="id_username">Username</label>
                                                         <div class="input-group mb-3">
-                                                            {{ form.username }}
+                                                            <input type="text" id="id_username" name="username" class="form-control" value="{{ request.CustomUser.username }}" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="form-group mb-3">
@@ -73,7 +73,7 @@
                                                     <div class="form-group mb-3">
                                                         <label for="id_date_created">Date Created</label>
                                                         <div class="input-group mb-3">
-                                                            {{ form.date_created }}
+                                                            <input type="datetime-local" id="id_date_created" name="date_created" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="form-group mb-3">
@@ -99,4 +99,20 @@
         </div>
     </div>
 </section> 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the current date and time in UTC
+        var now = new Date();
+        
+        // Convert to Indian Standard Time (IST), which is UTC+5:30
+        var istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+        var istDate = new Date(now.getTime() + istOffset);
+        
+        // Format the date to 'YYYY-MM-DDTHH:MM'
+        var date = istDate.toISOString().slice(0, 16);
+        
+        // Set the value of the input field
+        document.getElementById('id_date_created').value = date;
+    });
+</script>
 {% endblock content %}
