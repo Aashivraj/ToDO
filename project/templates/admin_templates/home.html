@@ -1,0 +1,138 @@
+{% extends "layouts/base_auth.html" %}
+{% block content %}
+{% include "includes/sidebar.html" %}
+{% include "includes/home_nav.html" %}
+
+<br /><br />
+
+<section class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- [ Main Content ] start -->
+            <div class="row">
+              <!-- [ Hover-table ] start -->
+              <div class="col-xl-12">
+                <div class="card" style="border-radius: 60px">
+                  <div class="card-header" style="border-radius: 60px">
+                    <h5>Table</h5>
+                    <i class="fa-solid fa-table"></i>
+                  </div>
+                  <div
+                    class="card-block table-border-style"
+                    style="border-radius: 60px"
+                  >
+                    <div class="table-responsive">
+                      <table class="table table-hover">
+                        <thead>
+                          <tr>
+                            <th>id</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for i in data %}
+                          <tr>
+                            <th scope="row">{{i.id}}</th>
+                            <td>{{i.name}}</td>
+                            <td>{{i.email}}</td>
+                            <td>{{i.phone}}</td>
+                            <td>
+                              <a href="{% url 'update' i.id %}">
+                                <i class="fa-solid fa-user-pen text-c-green"></i>
+                              </a>
+                              &nbsp;&nbsp;
+                              <a href="{% url 'delete' i.id %}">
+                                <i class="fa-solid fa-user-xmark text-c-green"></i>
+                              </a>
+                            </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- [ Hover-table ] end -->
+            </div>
+            <!-- [ Main Content ] end -->
+            <!-- </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section> -->
+
+            <label class="d-none">
+              <i class="icon feather icon-moon" id="theme-indicator"></i>
+              <input type="checkbox" id="theme-switch" class="d-none" />
+            </label>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-center">
+                {% if data.has_previous %}
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="?page={{ data.previous_page_number }}"
+                    >Previous</a
+                  >
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                  <a
+                    class="page-link"
+                    href="#"
+                    tabindex="-1"
+                    aria-disabled="True"
+                    >Previous</a
+                  >
+                </li>
+                {% endif %} {% for i in data.paginator.page_range %} {% if data.number == i %}
+                <li class="page-item active" aria-current="page">
+                  <span class="page-link">
+                    {{ i }}
+                    <!--<span class="sr-only">(current)</span>-->
+                  </span>
+                </li>
+                {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                </li>
+                {% endif %} {% endfor %} {% if data.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ data.next_page_number }}"
+                    >Next</a
+                  >
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                  <a
+                    class="page-link"
+                    href="#"
+                    tabindex="-1"
+                    aria-disabled="True"
+                    >Next</a
+                  >
+                </li>
+                {% endif %}
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<label class="d-none">
+  <i class="icon feather icon-moon" id="theme-indicator"></i>
+  <input type="checkbox" id="theme-switch" class="d-none" />
+</label>
+
+{% endblock content %}
