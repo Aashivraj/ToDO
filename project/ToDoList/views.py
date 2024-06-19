@@ -17,9 +17,17 @@ class home(views.View):
 
 
 class add_todo(views.View):
-    def get(self,request,*args, **kwargs):
+   def get(self,request,*args, **kwargs):
        form=TodoForm()
        return render(request, 'admin_templates/add_todo.html',{'form':form})
+    
+   def post(self,request,*args, **kwargs):
+         form=TodoForm(request.POST)
+         if form.is_valid():
+            form.save()
+            return render(request, 'admin_templates/home.html')
+         else:
+            return render(request, 'admin_templates/add_todo.html',{'form':form})
 
 
 class ErrorView(views.View):   
