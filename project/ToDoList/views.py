@@ -16,10 +16,10 @@ class home(views.View):
        return render(request, 'admin_templates/home.html')
 
 
-class add_user(views.View):
+class add_todo(views.View):
     def get(self,request,*args, **kwargs):
        form=TodoForm()
-       return render(request, 'admin_templates/add_user.html',{'form':form})
+       return render(request, 'admin_templates/add_todo.html',{'form':form})
 
 
 class ErrorView(views.View):   
