@@ -1,4 +1,7 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.conf import settings
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import PermissionsMixin
+from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -81,3 +84,15 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+
+
+class Todo(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    status = models.IntegerField(default=0)
+    date_created = models.DateTimeField(default=timezone.now)
+    note = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.title
