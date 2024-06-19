@@ -1,0 +1,102 @@
+{% extends "layouts/base_auth.html" %} 
+{% block content %} 
+{% include "includes/sidebar.html" %}
+{% include "includes/navigation.html" %} 
+<section class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10">Form Elements</h5>
+                                </div>
+                                <ul class="breadcrumb">
+                                    <li class="breadcrumb-item">
+                                        <a href="/">
+                                            <i class="feather icon-home"></i>
+                                        </a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="javascript:">Form Components</a>
+                                    </li>
+                                    <li class="breadcrumb-item">
+                                        <a href="javascript:">Form Elements</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Basic Component</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <form> 
+                                                    {% csrf_token %}
+                                                    <div class="form-group mb-3">
+                                                        <label for="id_username">Username</label>
+                                                        <div class="input-group mb-3">
+                                                            {{ form.username }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mb-3">
+                                                        <label for="id_title">Title</label>
+                                                        <div class="input-group mb-3">
+                                                            {{ form.title }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mb-3">
+                                                        <label for="id_description">Description</label>
+                                                        <div class="input-group mb-3">
+                                                            {{ form.description }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mb-3">
+                                                      <label for="id_status">Status</label>
+                                                      <div class="input-group mb-3">
+                                                          <input type="text" id="id_status" name="status" value="Pending" class="form-control" readonly>
+                                                      </div>
+                                                    </div>
+                                                    <div class="form-group mb-3">
+                                                        <label for="id_date_created">Date Created</label>
+                                                        <div class="input-group mb-3">
+                                                            {{ form.date_created }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group mb-3">
+                                                        <label for="id_note">Note</label>
+                                                        <div class="input-group mb-3">
+                                                            {{ form.note }}
+                                                        </div>
+                                                    </div>
+                                                    <button class="btn btn-primary shadow-2">Submit</button>
+                                                </form>
+                                            </div>
+                                            <div class="col-md-6"></div>
+                                        </div>
+                                        <!-- [ Main Content ] end -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> 
+{% endblock content %}
