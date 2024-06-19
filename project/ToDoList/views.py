@@ -27,6 +27,8 @@ class add_todo(views.View):
             form.save()
             return render(request, 'admin_templates/home.html')
          else:
+            print(form.errors)
+            
             return render(request, 'admin_templates/add_todo.html',{'form':form})
 
 
@@ -47,4 +49,6 @@ class AddUserView(views.View):
             form.save()
             return render(request, 'admin_templates/home.html')
          else:
+            print(form.errors)
+            
             return render(request, 'admin_templates/add_user.html',{'form':form})
