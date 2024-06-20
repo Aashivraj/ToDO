@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django import views
 
-from .models import CustomUser 
+from .models import *
 from .forms import TodoForm, AddUserForm,LoginForm
 from django.contrib import messages
 
@@ -155,7 +155,7 @@ class UpdateUserForm(views.View):
         if form.is_valid():
             form.save()
             return redirect('userlist')
-        return render(request,'templates/update_user.html',{'form':form})
+        return render(request,'admin_templates/update_user.html',{'form':form})
         
         
        
@@ -165,5 +165,11 @@ class DeleteUserView(views.View) :
         delete_user.delete()
         return redirect('userlist')
 
-
-
+class ToDoListView(views.View):
+    def get(self, request, *args, **kwargs):
+        todos = Todo.objects.select_related('user__team').all()
+        context = {
+            'todos':todos
+            
+        }
+        return render(request, 'admin_templates/todo_list.html', context)
