@@ -94,6 +94,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
 class Todo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE ,null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField()
     status = models.IntegerField(default=0)
