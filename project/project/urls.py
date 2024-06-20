@@ -19,8 +19,8 @@ from django.urls import path
 from ToDoList.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',login.as_view(),name="login"),
-    path('register/',register.as_view(),name="register"),
+    path('login/',LoginFormView.as_view(),name="login"),
+   
     path('home/',home.as_view(),name="home"),
     path('add_todo/',add_todo.as_view(),name="add_todo"),
     path('add_user/',AddUserView.as_view(),name="add_user"),

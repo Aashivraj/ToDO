@@ -13,7 +13,7 @@
                     <i class="feather icon-unlock auth-icon"></i>
                 </div>
                 <h3 class="mb-4">Login</h3>
-                <form method="post" action="{% url 'login' %}">
+                <form method="post" >
                     {% csrf_token %}
                     <div class="input-group mb-3">
                         <input type="text" name="username" class="form-control" placeholder="Username">
