@@ -117,6 +117,20 @@ class AddUserForm(forms.ModelForm):
         required=False  # Assuming team is optional (null=True, blank=True)
     )
 
+    role = forms.ChoiceField(
+        choices=[
+            ('1', 'Admin'),
+            ('2', 'TeamLeader'),
+            ('3', 'Developer'),
+        ],
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+                'id': 'customuser_role',
+            }
+        )
+    )
+
     class Meta:
         model = CustomUser
         fields = ('user_name', 'email', 'mobile_number', 'team', 'role')
