@@ -22,19 +22,24 @@ class home(LoginRequiredMixin, views.View):
 
 
 class add_todo(LoginRequiredMixin,views.View):
-   def get(self,request,*args, **kwargs):
-       form=TodoForm()
-       return render(request, 'admin_templates/add_todo.html',{'form':form})
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return HttpResponse("User not authenticated", status=401)
+        user = request.user
+        form = TodoForm()
+        return render(request, 'admin_templates/add_todo.html', {'form': form, 'user': user})
     
-   def post(self,request,*args, **kwargs):
-         form=TodoForm(request.POST)
-         if form.is_valid():
-            form.save()
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        form = TodoForm(request.POST)
+        if form.is_valid():
+            todo = form.save(commit=False)
+            todo.user = user
+            todo.save()
             return render(request, 'admin_templates/home.html')
-         else:
+        else:
             print(form.errors)
-            
-            return render(request, 'admin_templates/add_todo.html',{'form':form})
+            return render(request, 'admin_templates/add_todo.html', {'form': form, 'user': user})
 
 
 class ErrorView(LoginRequiredMixin,views.View):   
