@@ -1,6 +1,10 @@
 from django.shortcuts import render,redirect
-from django import views 
+from django import views
+
+from .models import CustomUser 
 from .forms import TodoForm, AddUserForm,LoginForm
+from django.contrib import messages
+
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
 
@@ -37,22 +41,47 @@ class ErrorView(LoginRequiredMixin,views.View):
 
 
 class AddUserView(LoginRequiredMixin,views.View):
-   def get(self,request,*args, **kwargs):
-       form=AddUserForm()
-       return render(request, 'admin_templates/add_user.html',{'form':form})
-    
-   
-   def post(self,request,*args, **kwargs):
-         form=AddUserForm(request.POST)
-         if form.is_valid():
-            form.save()
-            return render(request, 'admin_templates/home.html')
-         else:
-            print(form.errors)
+    def get(self, request):
+        form = AddUserForm()
+        return render(request, 'admin_templates/add_user.html', {'form': form})
+
+    def post(self, request):
+        form = AddUserForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            user_name = form.cleaned_data['user_name']
+            email = form.cleaned_data['email']
+            mobile_number = form.cleaned_data['mobile_number']
+            team = form.cleaned_data['team']
+            role = form.cleaned_data['role']
             
-            return render(request, 'admin_templates/add_user.html',{'form':form})
          
-         
+
+            if CustomUser.objects.filter(email=email).exists():
+                messages.warning(request, 'Email already taken')
+                return redirect('add_user')
+            if CustomUser.objects.filter(user_name=user_name).exists():
+                messages.warning(request, 'Username already taken')
+                return redirect('add_user')
+
+            user = CustomUser(
+                user_name=user_name,
+                email=email,
+                mobile_number=mobile_number,
+                team=team,
+                role=role,
+                
+            )
+            user.set_password(request.POST.get('user_name'))
+            user.save()
+
+            messages.success(request, 'User successfully added')
+            return redirect('add_user')
+        else:
+            messages.error(request, 'Invalid form data')
+
+        return render(request, 'admin_templates/add_user.html', {'form': form})
+
          
          
 class LoginFormView(views.View):
