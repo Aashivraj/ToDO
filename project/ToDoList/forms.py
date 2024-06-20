@@ -44,6 +44,8 @@ class TodoForm(forms.ModelForm):
             self.fields['team'].initial = user.team if user.team else None
         
 class AddUserForm(forms.ModelForm):
+   
+
     user_name = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -84,9 +86,7 @@ class AddUserForm(forms.ModelForm):
 
     role = forms.ChoiceField(
         choices=[
-            ('1', 'Admin'),
-            ('2', 'TeamLeader'),
-            ('3', 'Developer'),
+            ('3', 'Developer'),  # Default choices
         ],
         widget=forms.Select(
             attrs={
@@ -99,8 +99,19 @@ class AddUserForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('user_name', 'email', 'mobile_number', 'team', 'role')
-        
-        
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            if user.role == '1':  # Admin
+                self.fields['role'].choices = [
+                    ('2', 'TeamLeader')
+                ]
+            elif user.role == '2':  # TeamLeader
+                self.fields['role'].choices = [
+                    ('3', 'Developer')
+                ]
 
 class LoginForm(forms.Form):
     username = forms.CharField(

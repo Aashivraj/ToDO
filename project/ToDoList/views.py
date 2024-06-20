@@ -48,12 +48,12 @@ class ErrorView(LoginRequiredMixin,views.View):
 
 
 class AddUserView(LoginRequiredMixin,views.View):
-    def get(self, request):
-        form = AddUserForm()
+    def get(self, request, *args, **kwargs):
+        form = AddUserForm(user=request.user)
         return render(request, 'admin_templates/add_user.html', {'form': form})
 
-    def post(self, request):
-        form = AddUserForm(request.POST, request.FILES)
+    def post(self, request, *args, **kwargs):
+        form = AddUserForm(request.POST, user=request.user)
         
         if form.is_valid():
             user_name = form.cleaned_data['user_name']
@@ -62,8 +62,6 @@ class AddUserView(LoginRequiredMixin,views.View):
             team = form.cleaned_data['team']
             role = form.cleaned_data['role']
             
-         
-
             if CustomUser.objects.filter(email=email).exists():
                 messages.warning(request, 'Email already taken')
                 return redirect('add_user')
@@ -77,7 +75,6 @@ class AddUserView(LoginRequiredMixin,views.View):
                 mobile_number=mobile_number,
                 team=team,
                 role=role,
-                
             )
             user.set_password(request.POST.get('user_name'))
             user.save()
