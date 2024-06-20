@@ -13,10 +13,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
    
   
-class home(LoginRequiredMixin,views.View):
-    def get(self,request,*args, **kwargs):
-   
-       return render(request, 'admin_templates/home.html')
+class home(LoginRequiredMixin, views.View):
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        todos = Todo.objects.filter(user=user)  # Fetch todos for the authenticated user
+        form = TodoForm()
+        return render(request, 'admin_templates/home.html', {'form': form, 'todos': todos})
 
 
 class add_todo(LoginRequiredMixin,views.View):
