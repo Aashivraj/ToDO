@@ -12,62 +12,36 @@ class CustomUserForm(forms.ModelForm):
         fields='__all__'
         
 class TodoForm(forms.ModelForm):
-    title = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder": "title",
-                "class": "form-control",
-                "id":"todo_title" ,
-               
-                
-            }
-        ))
-    status = forms.IntegerField(
-        widget=forms.NumberInput(
-            attrs={
-                "placeholder": "status",
-                "class": "form-control",
-                "id":"todo_status" ,
-               
-                
-            }
-        ))
-    date_created = forms.DateTimeField(
-        widget=forms.DateTimeInput(
-            attrs={
-                "placeholder": "date_created",
-                "class": "form-control",
-                "id":"todo_created" ,
-               
-                
-            }
-        ))
-     
-    note = forms.CharField(
-        widget=forms.Textarea(
-            attrs={
-                "placeholder": "note",
-                "class": "form-control",
-                "id":"desc" ,
-                "aria-describedby":"emailHelp" ,
-                "rows":2
-                
-            }
-        ))
-    description = forms.CharField(
-        widget=forms.Textarea(
-            attrs={
-                "placeholder": "description",
-                "class": "form-control",
-                "id":"desc" ,
-                "aria-describedby":"emailHelp" ,
-                "rows":2
-                
-            }
-        ))
     class Meta:
-        model=Todo
-        fields=('user', 'title','description','status','date_created','note')
+        model = Todo
+        fields = ['title', 'description', 'note', 'status', 'user', 'team']
+
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter title'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter description',
+                'rows': 4,
+            }),
+            'note': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter note',
+                'rows': 2,
+            }),
+            'status': forms.HiddenInput(),
+            'user': forms.HiddenInput(),
+            'team': forms.HiddenInput(),
+        }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(TodoForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['user'].initial = user
+            self.fields['team'].initial = user.team if user.team else None
         
 class AddUserForm(forms.ModelForm):
     user_name = forms.CharField(
