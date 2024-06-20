@@ -116,15 +116,6 @@ class AddUserForm(forms.ModelForm):
         ),
         required=False  # Assuming team is optional (null=True, blank=True)
     )
-    role = forms.IntegerField(
-        widget=forms.NumberInput(
-            attrs={
-                'class': 'form-control',
-                'placeholder': 'Role',
-                'id': 'customuser_role',
-            }
-        )
-    )
 
     class Meta:
         model = CustomUser

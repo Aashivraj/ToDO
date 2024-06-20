@@ -3,19 +3,19 @@ from django import views
 from .forms import TodoForm, AddUserForm,LoginForm
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
-from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
    
-
-@login_required(login_url="/login/")   
-class home(views.View):
+  
+class home(LoginRequiredMixin,views.View):
     def get(self,request,*args, **kwargs):
    
        return render(request, 'admin_templates/home.html')
 
 
-class add_todo(views.View):
+class add_todo(LoginRequiredMixin,views.View):
    def get(self,request,*args, **kwargs):
        form=TodoForm()
        return render(request, 'admin_templates/add_todo.html',{'form':form})
@@ -31,12 +31,12 @@ class add_todo(views.View):
             return render(request, 'admin_templates/add_todo.html',{'form':form})
 
 
-class ErrorView(views.View):   
+class ErrorView(LoginRequiredMixin,views.View):   
    def get(self,request,*args, **kwargs):
       return render(request,'admin_templates/error.html')
 
 
-class AddUserView(views.View):
+class AddUserView(LoginRequiredMixin,views.View):
    def get(self,request,*args, **kwargs):
        form=AddUserForm()
        return render(request, 'admin_templates/add_user.html',{'form':form})
@@ -85,7 +85,7 @@ class LoginFormView(views.View):
 
       return render(request, "admin_templates/login.html", {"form": form})
 
-@login_required(login_url="/login/")
-def Logoutpage(request):
-    logout(request)
-    return redirect('login')
+class LogoutView(LoginRequiredMixin,views.View):
+   def get(self,request,*args, **kwargs):
+      logout(request)
+      return redirect("login")
