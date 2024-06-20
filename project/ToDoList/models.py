@@ -5,8 +5,6 @@ from django.core.mail import send_mail
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.core.mail import send_mail
-from django.contrib.auth.models import AbstractUser
 
 class Team(models.Model):
     team_department = models.CharField(max_length=100)
@@ -44,11 +42,17 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(user_name, email, mobile_number, role, password, **extra_fields)
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    USER = (
+        ('1', 'Admin'),
+        ('2', 'TeamLeader'),
+        ('3', 'Developer'),
+    )
+
     user_name = models.CharField(_("user name"), max_length=150, unique=True)
     email = models.EmailField(_("email address"), unique=True)
     mobile_number = models.CharField(_("mobile number"), max_length=15, unique=True)
     team = models.ForeignKey(Team, on_delete=models.SET_NULL, null=True, blank=True, related_name="members")
-    role = models.IntegerField(_("role"))
+    role = models.CharField(max_length=50, choices=USER, default='3')
     photo = models.ImageField(_("photo"), upload_to="user_photos/", blank=True, null=True)
     is_staff = models.BooleanField(
         _("staff status"),
@@ -86,9 +90,6 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
-    
-    pass
-
 
 class Todo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
