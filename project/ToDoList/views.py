@@ -168,10 +168,11 @@ class DeleteUserView(views.View) :
         return redirect('userlist')
 
 class ToDoListView(views.View):
+    template_name = 'admin_templates/todo_list.html'
+
     def get(self, request, *args, **kwargs):
-        todos = Todo.objects.select_related('user__team').all()
+        todos = Todo.objects.all()  # You can filter or order this query as needed
         context = {
-            'todos':todos
-            
+            'todos': todos
         }
-        return render(request, 'admin_templates/todo_list.html', context)
+        return render(request, self.template_name, context)

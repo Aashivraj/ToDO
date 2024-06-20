@@ -1,3 +1,5 @@
+<!-- templates/todos/todo_list.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,13 +12,14 @@
     <ul>
         {% for todo in todos %}
             <li>
-                <strong>Title:</strong> {{ todo.title }} <br>
-                <strong>Description:</strong> {{ todo.description }} <br>
-                <strong>Status:</strong> {{ todo.status }} <br>
-                <strong>Date Created:</strong> {{ todo.date_created }} <br>
-                <strong>User:</strong> {{ todo.user.user_name }} <br>
-                <strong>Team:</strong> {{ todo.user.team.name }} <br>
-                <strong>Note:</strong> {{ todo.note }} <br>
+                <h2>{{ todo.title }}</h2>
+                <p>{{ todo.description }}</p>
+                <p>{{ todo.team }}</p>
+                <p>Status: {{ todo.status }}</p>
+                <p>Date Created: {{ todo.date_created }}</p>
+                {% if todo.note %}
+                    <p>Note: {{ todo.note }}</p>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>
