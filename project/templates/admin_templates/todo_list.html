@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Todo List</title>
+</head>
+<body>
+    <h1>Todo List</h1>
+    <ul>
+        {% for todo in todos %}
+            <li>
+                <strong>Title:</strong> {{ todo.title }} <br>
+                <strong>Description:</strong> {{ todo.description }} <br>
+                <strong>Status:</strong> {{ todo.status }} <br>
+                <strong>Date Created:</strong> {{ todo.date_created }} <br>
+                <strong>User:</strong> {{ todo.user.user_name }} <br>
+                <strong>Team:</strong> {{ todo.user.team.name }} <br>
+                <strong>Note:</strong> {{ todo.note }} <br>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

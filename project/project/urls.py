@@ -28,6 +28,7 @@ urlpatterns = [
     path('update_user/<int:id>', UpdateUserForm.as_view(), name="update"),
     path('delete/<int:id>',DeleteUserView.as_view(),name='delete'),
     path('user_list/',UserListView.as_view(),name="userlist"),
+    path('todo_list/',ToDoListView.as_view(),name="todolist"),
     
     
 
