@@ -118,3 +118,52 @@ class LogoutView(LoginRequiredMixin,views.View):
    def get(self,request,*args, **kwargs):
       logout(request)
       return redirect("login")
+  
+  
+
+class UserListView(LoginRequiredMixin,views.View):
+    def get(self,request,*args, **kwargs):
+        users=CustomUser.objects.all()
+    
+        #paginator
+   
+        context={
+            
+            'users':users,
+        }
+
+    
+        return render(request, 'admin_templates/user_list.html',context)
+
+
+
+    
+class UpdateUserForm(views.View):
+    def get(self,request,id,*args, **kwargs):
+        data=CustomUser.objects.get(pk=id)
+        form=AddUserForm(instance=data)
+        context={
+            'form':form,
+        }
+        return render(request,'admin_templates/update_user.html',context)
+        
+            
+            
+    def post(self,request,id,*args, **kwargs):
+        data=CustomUser.objects.get(pk=id)
+        form=AddUserForm(request.POST,instance=data)
+        if form.is_valid():
+            form.save()
+            return redirect('userlist')
+        return render(request,'templates/update_user.html',{'form':form})
+        
+        
+       
+class DeleteUserView(views.View) :
+    def get(self, request,id,*args, **kwargs):
+        delete_user=CustomUser.objects.get(pk=id)
+        delete_user.delete()
+        return redirect('userlist')
+
+
+
