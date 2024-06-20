@@ -3,11 +3,12 @@ from django import views
 from .forms import TodoForm, AddUserForm,LoginForm
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
    
 
-   
+@login_required(login_url="/login/")   
 class home(views.View):
     def get(self,request,*args, **kwargs):
    
@@ -84,7 +85,7 @@ class LoginFormView(views.View):
 
       return render(request, "admin_templates/login.html", {"form": form})
 
-
+@login_required(login_url="/login/")
 def Logoutpage(request):
     logout(request)
     return redirect('login')

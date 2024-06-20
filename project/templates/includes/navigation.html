@@ -113,19 +113,20 @@
           </a>
           <div class="dropdown-menu dropdown-menu-right profile-notification">
             <div class="pro-head">
-              <img src="{% static '/assets/images/boy.png' %}" style="box-shadow: 0px 0px 15px 6px white;" class="img-radius" alt="User-Profile-Image">
-             
-               
-               
-                <a href="#" class="dud-logout" title="Logout">
-               
-                <a href="{% url 'error' %}" class="dud-logout" title="Logout">
-              
-                  <i class="feather icon-log-out"></i>
-                </a>
-             
-               
-            </div>
+              <!-- <img src="{% static 'assets/images/boy.png' %}" style="box-shadow: 0px 0px 15px 6px white;" class="img-radius" alt="{{request.user}}"> -->
+              {% if request.user.is_authenticated %}
+              <p>{{request.user}}</p>
+                  <a href="#" class="dud-logout" title="Logout">
+                      <a href="{% url 'logout' %}" class="dud-logout" title="Logout">
+                          <i class="feather icon-log-out"></i>
+                      </a>
+                  </a>
+              {% else %}
+                  <a href="{% url 'login' %}" class="dud-logout" title="Login">
+                      <i class="feather icon-log-in"></i>
+                  </a>
+              {% endif %}
+          </div>          
 
             <ul class="pro-body">
        
