@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import get_object_or_404, render,redirect
 from django import views
 
 from .models import *
@@ -41,6 +41,16 @@ class add_todo(LoginRequiredMixin,views.View):
         else:
             return render(request, 'admin_templates/add_todo.html', {'form': form, 'user': user})
 
+class update_todo(LoginRequiredMixin, views.View):
+        
+    def post(self, request, todo_id):  # Add 'self' as the first parameter
+        todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+        new_status = request.POST.get('status')
+        if new_status:
+            todo.status = int(new_status)
+            todo.save()
+        
+        return redirect('home')  # Redirect to the home page after updating status
 
 class ErrorView(LoginRequiredMixin,views.View):   
    def get(self,request,*args, **kwargs):

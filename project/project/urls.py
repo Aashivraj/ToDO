@@ -29,9 +29,8 @@ urlpatterns = [
     path('delete/<int:id>',DeleteUserView.as_view(),name='delete'),
     path('user_list/',UserListView.as_view(),name="userlist"),
     path('todo_list/',ToDoListView.as_view(),name="todolist"),
-    
-    
-
+    path('update_todo_status/<int:todo_id>/',update_todo.as_view(), name='update_todo_status'),
+        
     path('error/',ErrorView.as_view(),name="error"),
     
     
