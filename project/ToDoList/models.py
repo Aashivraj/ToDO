@@ -93,7 +93,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         send_mail(subject, message, from_email, [self.email], **kwargs)
 
 class Todo(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.CharField(max_length=50)
     team = models.ForeignKey(Team, on_delete=models.CASCADE ,null=True, blank=True)
     title = models.CharField(max_length=255)
     description = models.TextField()

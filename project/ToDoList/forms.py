@@ -12,15 +12,6 @@ class CustomUserForm(forms.ModelForm):
         fields='__all__'
         
 class TodoForm(forms.ModelForm):
-    user = forms.ModelChoiceField(
-        queryset=CustomUser.objects.all(),
-        widget=forms.Select(
-            attrs={
-                "class": "form-control",
-                "id": "customuser",
-            }
-        )
-    )
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={

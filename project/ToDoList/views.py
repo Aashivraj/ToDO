@@ -26,13 +26,16 @@ class add_todo(LoginRequiredMixin,views.View):
         if not request.user.is_authenticated:
             return HttpResponse("User not authenticated", status=401)
         user = request.user
+        print(user.team.id)
         form = TodoForm()
+        print(form.errors)
         return render(request, 'admin_templates/add_todo.html', {'form': form, 'user': user})
     
     def post(self, request, *args, **kwargs):
         user = request.user
         form = TodoForm(request.POST)
         if form.is_valid():
+            print(form.as_p)
             todo = form.save(commit=False)
             todo.user = user
             todo.save()
