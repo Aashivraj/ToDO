@@ -1,7 +1,32 @@
 {% extends "layouts/base_auth.html" %} 
 {% block content %} 
 {% include "includes/sidebar.html" %}
-{% include "includes/navigation.html" %} 
+{% include "includes/navigation.html" %}
+
+<!-- Modal HTML for Add Team -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form action="" method="post">
+                {% csrf_token %}
+                
+
+            </form>
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <section class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
@@ -78,6 +103,35 @@
         
         // Set the value of the input field
         document.getElementById('id_date_created').value = date;
+
+        // Handle the submission of the Add Team form
+        document.getElementById('addTeamForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var teamDepartment = document.getElementById('team_department').value;
+            var csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+            
+            fetch('{% url "add_team_ajax" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify({
+                    'team_department': teamDepartment
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    var newOption = new Option(data.team.team_department, data.team.id, false, false);
+                    document.getElementById('customuser_team').add(newOption);
+                    $('#addTeamModal').modal('hide');
+                } else {
+                    alert('There was an error adding the team.');
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
     });
 </script>
 {% endblock content %}
