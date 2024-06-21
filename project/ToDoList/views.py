@@ -1,10 +1,9 @@
 from django.shortcuts import get_object_or_404, render,redirect
 from django import views
-
+from django.db.models import Q
 from .models import *
 from .forms import TodoForm, AddUserForm,LoginForm
 from django.contrib import messages
-from django.db.models import Q
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
 
@@ -187,8 +186,7 @@ class ToDoListView(views.View):
     template_name = 'admin_templates/todo_list.html'
 
     def get(self, request, *args, **kwargs):
-        todos = Todo.objects.all()  # You can filter or order this query as needed
-        context = {
-            'todos': todos
-        }
-        return render(request, self.template_name, context)
+        user = self.request.user
+        todos = Todo.objects.filter(user=user)  # Fetch todos for the authenticated user
+        form = TodoForm()
+        return render(request,self.template_name, {'form': form, 'todos': todos})
