@@ -2,15 +2,14 @@
 {% block content %}
 {% include "includes/sidebar.html" %}
 {% include "includes/navigation.html" %}
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css"> -->
 <section class="pcoded-main-container">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
             <div class="pcoded-inner-content">
                 <h1>Todo List</h1>
-                <table id="todoTable" class="table table-bordered ">
-                    <thead>
-                        <tr>
+                <table class="todoTable table  ">
+                    <thead class="thead-dark ">                        <tr>
                             <th>ID</th>
                             {% if user.is_authenticated and user.role != "3" %}
                             <th>User Name</th>
@@ -53,7 +52,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
     $(document).ready(function() {
-        $('#todoTable').DataTable({
+        $(".todoTable").DataTable({
             "paging": true,
             "lengthChange": false,
             "searching": true,
