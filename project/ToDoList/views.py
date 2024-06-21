@@ -4,7 +4,7 @@ from django import views
 from .models import *
 from .forms import TodoForm, AddUserForm,LoginForm
 from django.contrib import messages
-
+from django.db.models import Q
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
 
@@ -16,7 +16,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 class home(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         user = self.request.user
-        todos = Todo.objects.filter(user=user)  # Fetch todos for the authenticated user
+        today = timezone.now().date()  # Get today's date
+        todos = Todo.objects.filter(
+            Q(user=user) & 
+            (Q(date_created__date=today) | Q(status=0))
+        )  # Fetch todos for the authenticated user
         form = TodoForm()
         return render(request, 'admin_templates/home.html', {'form': form, 'todos': todos})
 
