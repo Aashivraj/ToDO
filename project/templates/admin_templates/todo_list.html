@@ -2,54 +2,60 @@
 {% block content %}
 {% include "includes/sidebar.html" %}
 {% include "includes/navigation.html" %}
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
-    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <section class="pcoded-main-container">
-        <div class="pcoded-wrapper">
-            <div class="pcoded-content">
-                <div class="pcoded-inner-content">
-                    <h1>Todo List</h1>
-                    <table id="todoTable" class="table table-bordered table-hover">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Team</th>
-                                <th>Status</th>
-                                <th>Date Created</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for todo in todos %}
-                            <tr>
-                                <td>{{ forloop.counter }}</td>
-                                <td>{{ todo.title }}</td>
-                                <td>{{ todo.description }}</td>
-                                <td>{{ todo.team }}</td>
-                                <td>
-                                    {% if todo.status == 0 %}
-                                        <span class="badge badge-secondary">Pending</span>
-                                    {% elif todo.status == 1 %}
-                                        <span class="badge badge-success">Completed</span>
-                                    {% endif %}
-                                </td>
-                                <td id="id_date_created">{{ todo.date_created|date:"d-M-Y" }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+<section class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <h1>Todo List</h1>
+                <table id="todoTable" class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Team</th>
+                            <th>Status</th>
+                            <th>Date Created</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for todo in todos %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ todo.title }}</td>
+                            <td>{{ todo.description }}</td>
+                            <td>{{ todo.team }}</td>
+                            <td>
+                                {% if todo.status == 0 %}
+                                <span class="badge badge-secondary">Pending</span>
+                                {% elif todo.status == 1 %}
+                                <span class="badge badge-success">Completed</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ todo.date_created|date:"d-M-Y" }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-    </section>
-    <script>
-        $(document).ready(function() {
-            $('#todoTable').DataTable({
-                "order": [[4, "asc"]],  // Default order by status column
-            });
+    </div>
+</section>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    $(document).ready(function() {
+        $('#todoTable').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "order": [[5, "desc"]],  // Default order by date_created column
         });
-    </script>
+    });
+</script>
 {% endblock content %}
