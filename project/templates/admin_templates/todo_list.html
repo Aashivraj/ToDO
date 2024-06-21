@@ -12,6 +12,9 @@
                     <thead>
                         <tr>
                             <th>ID</th>
+                            {% if user.is_authenticated and user.role != "3" %}
+                            <th>User Name</th>
+                            {% endif %}
                             <th>Title</th>
                             <th>Description</th>
                             <th>Team</th>
@@ -23,6 +26,9 @@
                         {% for todo in todos %}
                         <tr>
                             <td>{{ forloop.counter }}</td>
+                            {% if user.is_authenticated and user.role != "3" %}
+                            <td>{{todo.user}}</td>
+                            {% endif %}
                             <td>{{ todo.title }}</td>
                             <td>{{ todo.description }}</td>
                             <td>{{ todo.team }}</td>

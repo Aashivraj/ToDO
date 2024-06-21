@@ -37,15 +37,33 @@ class teamlead(LoginRequiredMixin, views.View):
    
   
 class home(LoginRequiredMixin, views.View):
+    
     def get(self, request, *args, **kwargs):
         user = self.request.user
-        today = timezone.now().date()  # Get today's date
-        todos = Todo.objects.filter(
-            Q(user=user) & 
-            (Q(date_created__date=today) | Q(status=0))
-        )  # Fetch todos for the authenticated user
-        form = TodoForm()
-        return render(request, 'admin_templates/home.html', {'form': form, 'todos': todos})
+
+        if user.role == "1":
+            teams = Team.objects.all()
+            team_todos = {}
+            for team in teams:
+                pending_todos = Todo.objects.filter(team=team, status=0)
+                team_todos[team] = pending_todos
+
+            context = {
+                'team_todos': team_todos,
+            }
+            return render(request, 'admin_templates/home.html', context)
+
+        else:
+            user = self.request.user
+            today = timezone.now().date()  # Get today's date
+            todos = Todo.objects.filter(
+                Q(user=user) & 
+                (Q(date_created__date=today) | Q(status=0))
+            )  # Fetch todos for the authenticated user
+            
+            form = TodoForm()
+            return render(request, 'admin_templates/home.html', {'form': form, 'todos': todos})
+
 
 
 class add_todo(LoginRequiredMixin,views.View):
@@ -205,23 +223,30 @@ class ToDoListView(views.View):
     template_name = 'admin_templates/todo_list.html'
     
     def get(self, request, *args, **kwargs):
-            user = request.user
-            todos = Todo.objects.filter(user=user).order_by('status')
-            return render(request, self.template_name, {'todos': todos})
- 
- 
-class AdminHomeToDoView(LoginRequiredMixin, views.View):
-    def get(self, request, *args, **kwargs):
-        teams = Team.objects.all()
-        team_todos = {}
-        for team in teams:
-            pending_todos = Todo.objects.filter(team=team, status=0)
-            team_todos[team] = pending_todos
+        user = request.user
+        
+        print(user.role)
 
-        context = {
-            'team_todos': team_todos,
-        }
-        return render(request, 'admin_templates/admintodolist.html', context)
+        if user.role == "1":
+            # Admin: view all ToDo items
+            todos = Todo.objects.all().order_by('status')
+        
+        elif user.role == "2":
+            # Team Leader: view ToDo items for their team, excluding their own
+            team1 = user.team
+            userid = user.id
+
+            todos = Todo.objects.filter(
+                Q(team=team1)
+            ).exclude(user__id=userid).order_by('status')
+        
+        else:
+            # Regular User: view only their ToDo items
+            todos = Todo.objects.filter(user=user).order_by('status')
+        
+        return render(request, self.template_name, {'todos': todos})
+ 
+ 
     
 class TeamView(views.View):
     def get(self, request, *args, **kwargs):
