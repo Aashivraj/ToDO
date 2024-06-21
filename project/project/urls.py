@@ -36,6 +36,8 @@ urlpatterns = [
     path('dashboard/',teamlead.as_view(),name="dashboard"),
 
     path('error/',ErrorView.as_view(),name="error"),
+    path('team/',TeamView.as_view(),name="team"),
+    
    
     
     

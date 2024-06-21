@@ -57,9 +57,12 @@
               <span class="pcoded-mtext">User List</span></a>
         </li>
         <!-- Add this to includes/sidebar.html where appropriate -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-          Launch demo modal
-        </button>
+        <li class="nav-item">
+          <a href="{% url 'team' %}" class="nav-link">
+            <span class="pcoded-micon"> <i class="fa-solid fa-users text-c-green"></i>
+              </span>
+              <span class="pcoded-mtext">Add team</span></a>
+        </li>
       </ul>
     </div>
   </div>

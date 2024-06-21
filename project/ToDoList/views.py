@@ -3,7 +3,7 @@ from django import views
 from django.db.models import Q
 from .models import *
 from django.http import JsonResponse
-from .forms import TodoForm, AddUserForm,LoginForm
+from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
@@ -220,3 +220,15 @@ class AdminHomeToDoView(LoginRequiredMixin, views.View):
             'team_todos': team_todos,
         }
         return render(request, 'admin_templates/admintodolist.html', context)
+    
+class TeamView(views.View):
+    def get(self, request, *args, **kwargs):
+        team_form=TeamForm()
+      
+        return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
+    def post(self, request, *args, **kwargs):
+        team_form=TeamForm(request.POST)
+        if team_form.is_valid():
+            team_form.save()
+            return redirect('add_user')
+        return render(request, 'admin_templates/team_form.html', {'team_form': team_form})

@@ -2,6 +2,15 @@ from django import forms
 from .models import *
 
 class TeamForm(forms.ModelForm):
+    team_department = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Team Department',
+                'id': 'user_team_department',
+            }
+        )
+    )
     class Meta:
       model=Team
       fields='__all__'
