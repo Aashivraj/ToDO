@@ -28,7 +28,7 @@ class teamlead(LoginRequiredMixin, views.View):
         todos = Todo.objects.filter(
             Q(team=team1) &
             (Q(date_created__date=today) | Q(status=0))
-        )
+        ).order_by('status')
         
         return render(request, 'teamleader_templates/dashboard.html', {'todos': todos})
 
