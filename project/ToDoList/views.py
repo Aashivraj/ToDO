@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, render,redirect
 from django import views
 from django.db.models import Q
 from .models import *
+from django.http import JsonResponse
 from .forms import TodoForm, AddUserForm,LoginForm
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
@@ -109,10 +110,6 @@ class LoginFormView(views.View):
    def post(self,request,*args, **kwargs):
       form = LoginForm(request.POST or None)
 
-  
-
-   
-
       if form.is_valid():
             username = form.cleaned_data.get("username")
             print("sdfasd",username)
@@ -149,7 +146,6 @@ class UserListView(LoginRequiredMixin,views.View):
             'users':users,
         }
 
-    
         return render(request, 'admin_templates/user_list.html',context)
 
 
@@ -184,9 +180,9 @@ class DeleteUserView(views.View) :
 
 class ToDoListView(views.View):
     template_name = 'admin_templates/todo_list.html'
-
+    
     def get(self, request, *args, **kwargs):
-        user = self.request.user
-        todos = Todo.objects.filter(user=user)  # Fetch todos for the authenticated user
-        form = TodoForm()
-        return render(request,self.template_name, {'form': form, 'todos': todos})
+            user = request.user
+            todos = Todo.objects.filter(user=user).order_by('status')
+            return render(request, self.template_name, {'todos': todos})
+ 
