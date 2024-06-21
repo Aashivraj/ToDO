@@ -186,3 +186,16 @@ class ToDoListView(views.View):
             todos = Todo.objects.filter(user=user).order_by('status')
             return render(request, self.template_name, {'todos': todos})
  
+ 
+class AdminHomeToDoView(LoginRequiredMixin, views.View):
+    def get(self, request, *args, **kwargs):
+        teams = Team.objects.all()
+        team_todos = {}
+        for team in teams:
+            pending_todos = Todo.objects.filter(team=team, status=0)
+            team_todos[team] = pending_todos
+
+        context = {
+            'team_todos': team_todos,
+        }
+        return render(request, 'admin_templates/admintodolist.html', context)
