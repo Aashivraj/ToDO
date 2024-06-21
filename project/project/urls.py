@@ -32,6 +32,7 @@ urlpatterns = [
     path('update_todo_status/<int:todo_id>/',update_todo.as_view(), name='update_todo_status'),
         
     path('error/',ErrorView.as_view(),name="error"),
+   
     
     
     
