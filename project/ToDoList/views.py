@@ -232,3 +232,20 @@ class TeamView(views.View):
             team_form.save()
             return redirect('add_user')
         return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
+    
+class AdminHomeTodoView(views.View):
+    template_name = 'admin_templates/todo_list.html'
+    
+    def get(self, request, *args, **kwargs):
+        teams = Team.objects.all()  # Fetch all teams
+        
+        print(teams)
+        team_todos = {}
+        
+        for team in teams:
+            todos = Todo.objects.filter(team=team).order_by('status')
+            team_todos[team] = todos
+            
+            print(team)
+        
+        return render(request, self.template_name, {'team_todos': team_todos})   
