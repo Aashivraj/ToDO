@@ -2,14 +2,125 @@
 {% block content %}
 {% include "includes/sidebar.html" %}
 {% include "includes/navigation.html" %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 <!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css"> -->
-<section class="pcoded-main-container">
+<style>
+  /* Custom DataTable Styles */
+
+/* Style for the table */
+.todoTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 15px;
+    text-align: left;
+}
+
+/* Header styling */
+.todoTable thead th {
+    background-color: #343a40;
+    color: white;
+    padding: 12px;
+    cursor: pointer;
+    position: relative;
+}
+
+/* Sorting arrows */
+.todoTable thead th.sorting:after,
+.todoTable thead th.sorting_asc:after,
+.todoTable thead th.sorting_desc:after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+}
+
+.todoTable thead th.sorting:after {
+    border-top-color: white;
+}
+
+.todoTable thead th.sorting_asc:after {
+    border-bottom-color: white;
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.todoTable thead th.sorting_desc:after {
+    border-top-color: white;
+}
+
+/* Body row styling */
+.todoTable tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.todoTable tbody tr:last-of-type {
+    border-bottom: 2px solid #343a40;
+}
+
+/* Pagination styling */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-left: 2px;
+    margin-right: 2px;
+    border: 1px solid #343a40;
+    border-radius: 4px;
+    background-color: white;
+    color: #343a40;
+    cursor: pointer;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #343a40;
+    color: white;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #343a40;
+    float: right; /* Float the buttons to the right */
+    color: white;
+}
+
+/* Next/Previous buttons on the right side */
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+.dataTables_wrapper .dataTables_paginate .paginate_button.next {
+    font-weight: bold;
+    float: right; /* Float the buttons to the right */
+    margin-left: 5px; /* Add a small margin between buttons */
+}
+
+
+/* Search box styling */
+.dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+}
+
+.dataTables_wrapper .dataTables_filter label {
+    font-weight: bold;
+}
+
+.dataTables_wrapper .dataTables_filter input {
+    margin-left: 0.5em;
+    padding: 6px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+}
+
+
+
+</style>
+<section class="pcoded-main-container" style="margin-bottom:40px;">
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
             <div class="pcoded-inner-content">
                 <h1>Todo List</h1>
                 <table class="todoTable table  ">
-                    <thead class="thead-dark ">                        <tr>
+                    <thead class="thead-dark ">                        
+                        <tr>
                             <th>ID</th>
                             {% if user.is_authenticated and user.role != "3" %}
                             <th>User Name</th>
