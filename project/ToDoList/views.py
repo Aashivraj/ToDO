@@ -11,6 +11,24 @@ from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
+class teamlead(LoginRequiredMixin, views.View):
+    def get(self, request, *args, **kwargs):
+        user = self.request.user
+        
+        # Check if user is authenticated and has role equal to 2
+        if not user.is_authenticated or user.role != 2:
+            # Redirect or handle unauthorized access
+            # For example, you can redirect to login or show a permission denied page
+            return render(request, 'admin_templates/error.html')  # Custom 403 Forbidden page
+        
+        today = timezone.now().date()  # Get today's date
+        todos = Todo.objects.filter(
+            Q(user=user) & 
+            (Q(date_created__date=today) | Q(status=0))
+        )  # Fetch todos for the authenticated user
+        form = TodoForm()
+        return render(request, 'teamleader_templates/dashboard.html', {'form': form, 'todos': todos})
+
    
   
 class home(LoginRequiredMixin, views.View):

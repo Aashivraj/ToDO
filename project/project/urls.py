@@ -31,7 +31,10 @@ urlpatterns = [
     path('todo_list/',ToDoListView.as_view(),name="todolist"),
     path('update_todo_status/<int:todo_id>/',update_todo.as_view(), name='update_todo_status'),
     path('admintodolist/',AdminHomeToDoView.as_view(),name="admintodolist"),
-        
+    
+    #team Lead Dashboard
+    path('dashboard/',teamlead.as_view(),name="dashboard"),
+
     path('error/',ErrorView.as_view(),name="error"),
    
     
