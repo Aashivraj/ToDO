@@ -23,14 +23,16 @@ class teamlead(LoginRequiredMixin, views.View):
         
         today = timezone.now().date()  # Get today's date
         team1 = user.team
+        userid = user.id
+        print(userid)
         
         # Filter Todo objects based on team
-        todos = Todo.objects.filter(
+        todo = Todo.objects.filter(
             Q(team=team1) &
             (Q(date_created__date=today) | Q(status=0))
-        ).order_by('status')
+        ).exclude(user__id=userid).order_by('status')
         
-        return render(request, 'teamleader_templates/dashboard.html', {'todos': todos})
+        return render(request, 'teamleader_templates/teamtodo.html', {'todo': todo})
 
    
   

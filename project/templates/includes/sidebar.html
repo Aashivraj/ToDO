@@ -28,6 +28,18 @@
               </span>
               <span class="pcoded-mtext">User-Profile</span></a>
         </li>
+        
+        
+        {% if user.is_authenticated and user.role == "2" %}
+        <li class="nav-item">
+          <a href="{% url 'teamtodo' %}" class="nav-link">
+            <span class="pcoded-micon">
+              <i class="fa-regular fa-user text-c-green"></i>
+            </span>
+            <span class="pcoded-mtext">Team Todo List</span>
+          </a>
+        </li>
+        {% endif %}
 
         <li class="nav-item">
           <a href="{% url 'add_todo' %}" class="nav-link">

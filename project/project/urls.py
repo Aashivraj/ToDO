@@ -33,7 +33,7 @@ urlpatterns = [
     path('admintodolist/',AdminHomeToDoView.as_view(),name="admintodolist"),
     
     #team Lead Dashboard
-    path('dashboard/',teamlead.as_view(),name="dashboard"),
+    path('teamtodo/',teamlead.as_view(),name="teamtodo"),
 
     path('error/',ErrorView.as_view(),name="error"),
     path('team/',TeamView.as_view(),name="team"),
