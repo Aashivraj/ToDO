@@ -162,26 +162,30 @@ class LoginFormView(views.View):
       form=LoginForm()
       return render(request, 'admin_templates/login.html')
     
-   def post(self,request,*args, **kwargs):
-      form = LoginForm(request.POST or None)
+   def post(self, request, *args, **kwargs):
+    form = LoginForm(request.POST or None)
 
-      if form.is_valid():
-            username = form.cleaned_data.get("username")
-            print("sdfasd",username)
-            password = form.cleaned_data.get("password")
-            user = authenticate(user_name=username, password=password)
-            if user is not None:
-                print("asdfasdfa",user)
+    if form.is_valid():
+        username = form.cleaned_data.get("username")
+        print("sdfasd", username)
+        password = form.cleaned_data.get("password")
+        user = authenticate(user_name=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                print("asdfasdfa", user)
                 login(request, user)
                 return redirect("/home/")
             else:
-               print(form.errors)
-               return redirect("login")
-      else:
-            print(form.errors)
+                print("User is not active.")
+                return redirect("login")
+        else:
+            print("Invalid credentials.")
+            return redirect("login")
+    else:
+        print(form.errors)
 
-
-      return render(request, "admin_templates/login.html", {"form": form})
+    return render(request, "admin_templates/login.html", {"form": form})
 
 class LogoutView(LoginRequiredMixin,views.View):
    def get(self,request,*args, **kwargs):
