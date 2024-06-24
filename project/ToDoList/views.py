@@ -309,3 +309,30 @@ class AdminHomeTodoView(views.View):
             print(team)
         
         return render(request, self.template_name, {'team_todos': team_todos})   
+    
+class TeamToDo(views.View):
+    template_name = 'teamleader_templates/teamtodo.html'
+    
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        
+        print(user.role)
+
+        if user.role == "1":
+            # Admin: view all ToDo items
+            todos = Todo.objects.all().order_by('status')
+        
+        elif user.role == "5":
+            # Team Leader: view ToDo items for their team, excluding their own
+            team1 = user.team
+            userid = user.id
+
+            todos = Todo.objects.filter(
+                Q(team=team1)
+            ).exclude(user__id=userid).order_by('status')
+        
+        else:
+            # Regular User: view only their ToDo items
+            todos = Todo.objects.filter(user=user).order_by('status')
+        
+        return render(request, self.template_name, {'todos': todos})
