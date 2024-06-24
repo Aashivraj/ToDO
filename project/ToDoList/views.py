@@ -7,7 +7,7 @@ from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
-
+from .filters import TodoFilter
 from django.contrib.auth.mixins import LoginRequiredMixin
 # Create your views here.
 
@@ -245,9 +245,16 @@ class DeleteUserView(views.View) :
         return redirect('userlist')
 
 class ToDoListView(views.View):
+    
+    
+   
+   
     template_name = 'admin_templates/todo_list.html'
     
     def get(self, request, *args, **kwargs):
+        filter = TodoFilter(request.GET, queryset=Todo.objects.all())
+        
+        
         user = request.user
         
         print(user.role)
@@ -269,7 +276,8 @@ class ToDoListView(views.View):
             # Regular User: view only their ToDo items
             todos = Todo.objects.filter(user=user).order_by('status')
         
-        return render(request, self.template_name, {'todos': todos})
+        
+        return render(request, self.template_name, {'todos': todos,'filters':filter})
  
  
     
