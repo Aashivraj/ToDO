@@ -34,6 +34,7 @@
                             <th>Phone</th>
                             <th>Team</th>
                             <th>Role</th>
+                            <th>Active</th>
                             <th>Action</th>
                           </tr>
                         </thead>
@@ -45,8 +46,19 @@
                             <td>{{i.email}}</td>
                             <td>{{i.mobile_number}}</td>
                             <td>{{i.team}}</td>
-                            <td>{{i.role}}</td>
-
+                            <td>{{i.get_role_display}}</td>
+                            <td>
+                              <form method="post" action="{% url 'toggle_active_status' i.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link">
+                                  {% if i.is_active %}
+                                    Active
+                                  {% else %}
+                                    Deactivate
+                                  {% endif %}
+                                </button>
+                              </form>
+                            </td>
                             <td>
                               <a href="{% url 'update' i.id %}">
                                 <i class="fa-solid fa-user-pen text-c-green"></i>
@@ -85,27 +97,7 @@
       </div>
     </div>
   </div>
-  <div class="pcoded-wrapper">
-    <div class="pcoded-content">
-      <div class="pcoded-inner-content">
-        <div class="main-body">
-          <div class="card">
-            <div class="row ">
-              <div class="col-md-4 bg-intro"></div>
-              <div class="col-md-8 px-3">
-                <div class="card-block px-3">
-                  <h4 class="card-title py-3">INTRODUCTION DIVE (BOAT DIVE, 1 DAY, 1 DIVE)</h4>
-                  <p class="card-text">Not a certified diver and only have 1 day free? Our Introduction Dive experience is what you need. The Intro Dive programme is perfect for someone who enjoys snorkelling and swimming and positive life changing experiences!</p>
-                  <p class="card-text">This programme does not provide you with a dive certification but rather intends to provide you with a less intense introduction to the sport and focus more on experiencing the awesome world of diving.</p>
-                  <p>Course Fee Per Person - IDR 1,045,000</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  
 </section>
 <label class="d-none">
   <i class="icon feather icon-moon" id="theme-indicator"></i>

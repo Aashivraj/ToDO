@@ -9,7 +9,16 @@ from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
 from .filters import TodoFilter
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse
 # Create your views here.
+
+
+
+class ToggleActiveStatusView(views.View):
+    def post(self, request, user_id):
+        user = get_object_or_404(CustomUser, id=user_id)
+        user.toggle_active_status()
+        return redirect(('userlist'))
 
 class teamlead(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):

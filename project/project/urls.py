@@ -37,6 +37,7 @@ urlpatterns = [
     path('teamtodo/',teamlead.as_view(),name="teamtodo"),
 
     path('error/',ErrorView.as_view(),name="error"),
+    path('users/toggle/<int:user_id>/', ToggleActiveStatusView.as_view(), name='toggle_active_status'),
     path('team/',TeamView.as_view(),name="team"),
     
    

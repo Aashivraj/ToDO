@@ -80,6 +80,9 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         verbose_name = _("user")
         verbose_name_plural = _("users")
 
+    def toggle_active_status(self):
+        self.is_active = not self.is_active
+        self.save()
     def get_full_name(self):
         """Return the full name of the user."""
         return self.user_name
@@ -91,6 +94,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     def email_user(self, subject, message, from_email=None, **kwargs):
         """Send an email to this user."""
         send_mail(subject, message, from_email, [self.email], **kwargs)
+    
 
 class Todo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
