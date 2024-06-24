@@ -336,3 +336,10 @@ class TeamToDo(views.View):
             todos = Todo.objects.filter(user=user).order_by('status')
         
         return render(request, self.template_name, {'todos': todos})
+    
+
+class ProfilePageView(views.View):
+    template_name = 'admin_templates/profile.html'
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name) 
