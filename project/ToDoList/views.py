@@ -231,7 +231,7 @@ class ToDoListView(views.View):
             # Admin: view all ToDo items
             todos = Todo.objects.all().order_by('status')
         
-        elif user.role == "2":
+        elif user.role == "5":
             # Team Leader: view ToDo items for their team, excluding their own
             team1 = user.team
             userid = user.id

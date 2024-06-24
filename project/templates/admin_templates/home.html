@@ -123,6 +123,7 @@
               <th>Username</th>
               <th>Title</th>
               <th>Description</th>
+              <th>Status</th>
               <th>Date Created</th>
             </tr>
           </thead>
@@ -131,6 +132,7 @@
               <td>{{ todo.user }}</td>
               <td>{{ todo.title }}</td>
               <td>{{ todo.description }}</td>
+              <td> {% if todo.status == 0 %} <span class="badge badge-secondary">Pending</span> {% elif todo.status == 1 %} <span class="badge badge-success">Completed</span> {% endif %} </td>    
               <td>{{ todo.date_created|date:"d-M-Y" }}</td>
             </tr> {% endfor %} </tbody>
         </table> {% endfor %}
