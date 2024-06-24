@@ -52,6 +52,21 @@ class home(LoginRequiredMixin, views.View):
                 'team_todos': team_todos,
             }
             return render(request, 'admin_templates/home.html', context)
+        
+        if user.role == "2":
+            user = self.request.user
+            users=CustomUser.objects.filter(
+                Q(team=user.team)
+            )
+            today = timezone.now().date()  # Get today's date
+            todos = Todo.objects.filter(
+                Q(user=user) & 
+                (Q(date_created__date=today) | Q(status=0))
+            )  # Fetch todos for the authenticated user
+            
+            form = TodoForm()
+
+            return render(request, 'admin_templates/home.html',{'form': form, 'users':users,'todos': todos})   
 
         else:
             user = self.request.user
@@ -63,7 +78,6 @@ class home(LoginRequiredMixin, views.View):
             
             form = TodoForm()
             return render(request, 'admin_templates/home.html', {'form': form, 'todos': todos})
-
 
 
 class add_todo(LoginRequiredMixin,views.View):
