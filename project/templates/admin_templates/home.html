@@ -3,125 +3,119 @@
 {% include "includes/sidebar.html" %} 
 {% include "includes/navigation.html" %} 
 {% if user.is_authenticated and user.role == "1" %}
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-
-<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css"> -->
 <style>
   /* Custom DataTable Styles */
-
-/* Style for the table */
-.todoTable {
+  /* Style for the table */
+  .todoTable {
     width: 100%;
     border-collapse: collapse;
     margin: 20px 0;
     font-size: 15px;
     text-align: left;
-}
+  }
 
-/* Header styling */
-.todoTable thead th {
+  /* Header styling */
+  .todoTable thead th {
     background-color: #343a40;
     color: white;
     padding: 12px;
     cursor: pointer;
     position: relative;
-}
+  }
 
-/* Sorting arrows */
-.todoTable thead th.sorting:after,
-.todoTable thead th.sorting_asc:after,
-.todoTable thead th.sorting_desc:after {
+  /* Sorting arrows */
+  .todoTable thead th.sorting:after,
+  .todoTable thead th.sorting_asc:after,
+  .todoTable thead th.sorting_desc:after {
     content: "";
     position: absolute;
     right: 10px;
     top: 50%;
     transform: translateY(-50%);
     border: 5px solid transparent;
-}
+  }
 
-.todoTable thead th.sorting:after {
+  .todoTable thead th.sorting:after {
     border-top-color: white;
-}
+  }
 
-.todoTable thead th.sorting_asc:after {
+  .todoTable thead th.sorting_asc:after {
     border-bottom-color: white;
     transform: translateY(-50%) rotate(180deg);
-}
+  }
 
-.todoTable thead th.sorting_desc:after {
+  .todoTable thead th.sorting_desc:after {
     border-top-color: white;
-}
+  }
 
-/* Body row styling */
-.todoTable tbody tr {
+  /* Body row styling */
+  .todoTable tbody tr {
     border-bottom: 1px solid #dddddd;
-}
+  }
 
-.todoTable tbody tr:last-of-type {
+  .todoTable tbody tr:last-of-type {
     border-bottom: 2px solid #343a40;
-}
+  }
 
-/* Pagination styling */
-.dataTables_wrapper .dataTables_paginate .paginate_button {
+  /* Pagination styling */
+  .dataTables_wrapper .dataTables_paginate {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
     display: inline-block;
     padding: 6px 12px;
-    margin-left: 2px;
-    margin-right: 2px;
+    margin: 0 2px;
     border: 1px solid #343a40;
     border-radius: 4px;
     background-color: white;
     color: #343a40;
     cursor: pointer;
-}
+  }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
     background-color: #343a40;
     color: white;
-}
+  }
 
-.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
     background-color: #343a40;
-    float: right; /* Float the buttons to the right */
     color: white;
-}
+  }
 
-/* Next/Previous buttons on the right side */
-.dataTables_wrapper .dataTables_paginate .paginate_button.previous,
-.dataTables_wrapper .dataTables_paginate .paginate_button.next {
+  /* Next/Previous buttons styling */
+  .dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+  .dataTables_wrapper .dataTables_paginate .paginate_button.next {
     font-weight: bold;
-    float: right; /* Float the buttons to the right */
-    margin-left: 5px; /* Add a small margin between buttons */
-}
+    margin: 0 5px;
+  }
 
-
-/* Search box styling */
-.dataTables_wrapper .dataTables_filter {
+  /* Search box styling */
+  .dataTables_wrapper .dataTables_filter {
     float: right;
     text-align: right;
-}
+  }
 
-.dataTables_wrapper .dataTables_filter label {
+  .dataTables_wrapper .dataTables_filter label {
     font-weight: bold;
-}
+  }
 
-.dataTables_wrapper .dataTables_filter input {
+  .dataTables_wrapper .dataTables_filter input {
     margin-left: 0.5em;
     padding: 6px;
     border: 1px solid #dddddd;
     border-radius: 4px;
-}
-
-
-
+  }
 </style>
 <section class="pcoded-main-container">
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
       <div class="pcoded-inner-content">
-        <h1>Todo List</h1>
-        {% for team, todos in team_todos.items %}
-        <h2>{{ team }}</h2>
+        <h1>Todo List</h1> {% for team, todos in team_todos.items %} <h2>{{ team }}</h2>
         <table class="todoTable table  ">
           <thead class="thead-dark ">
             <tr>
@@ -132,19 +126,14 @@
               <th>Date Created</th>
             </tr>
           </thead>
-          <tbody>
-            {% for todo in todos %}
-            <tr>
+          <tbody> {% for todo in todos %} <tr>
               <td>{{ forloop.counter }}</td>
               <td>{{ todo.user }}</td>
               <td>{{ todo.title }}</td>
               <td>{{ todo.description }}</td>
               <td>{{ todo.date_created|date:"d-M-Y" }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        {% endfor %}
+            </tr> {% endfor %} </tbody>
+        </table> {% endfor %}
       </div>
     </div>
   </div>
@@ -153,7 +142,7 @@
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
     $(".todoTable").DataTable({
       paging: true,
       lengthChange: false,
@@ -161,35 +150,32 @@
       info: true,
       autoWidth: false,
       responsive: true,
-      order: [[4, "desc"]], // Default order by date_created column
+      order: [
+        [4, "desc"]
+      ], // Default order by date_created column
     });
   });
-</script>
-
-
-{% endif %}
-
-{% if user.is_authenticated and user.role != "1" %}
-
-<style>
+</script> {% endif %} {% if user.is_authenticated and user.role != "1" %} <style>
   /* Updated styles for card-container */
   .pcoded-wrapper {
     display: flex;
-    justify-content: space-around; /* Adjust as needed: space-between, flex-start, etc. */
-    flex-wrap: wrap; /* Ensures cards wrap to new lines if there isn't enough space */
+    justify-content: space-around;
+    /* Adjust as needed: space-between, flex-start, etc. */
+    flex-wrap: wrap;
+    /* Ensures cards wrap to new lines if there isn't enough space */
   }
 
   .card {
-    width: calc(
-      33.33% - 20px
-    ); /* Adjust width to fit three cards in one line */
+    width: calc(33.33% - 20px);
+    /* Adjust width to fit three cards in one line */
     max-width: 400px;
     background: #fff;
     box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.2);
     padding: 25px;
     border-radius: 25px;
     transition: all 0.3s;
-    margin-bottom: 20px; /* Space between cards */
+    margin-bottom: 20px;
+    /* Space between cards */
   }
 
   .card__img {
@@ -253,33 +239,22 @@
     transform: translateY(-5px);
   }
 </style>
-<br /><br />
-
+<br />
+<br />
 <!-- Assuming you have other HTML structure -->
 <section class="pcoded-main-container">
-  <div class="pcoded-wrapper">
-    {% for todo in todos %}
-    <div class="card">
+  <div class="pcoded-wrapper"> {% for todo in todos %} <div class="card">
       <div class="card__content">
         <div class="card__title">{{ todo.title }}</div>
         <div class="card__text">{{ todo.description }}</div>
-        <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %}
-        </div>
+        <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %} </div>
         <div class="card__note">Note: {{ todo.note }}</div>
-        <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span>
-        {% if todo.status == 0 %}
-        <form method="post" action="{% url 'update_todo_status' todo.id %}">
-          {% csrf_token %}
-          <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+        <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span> {% if todo.status == 0 %} <form method="post" action="{% url 'update_todo_status' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
           <input type="hidden" name="status" value="1" />
           <!-- Hidden field to update status to 1 -->
           <button type="submit" class="card__button">Mark as Completed</button>
-        </form>
-        {% endif %}
+        </form> {% endif %}
       </div>
-    </div>
-    {% endfor %}
-  </div>
-</section>
-{% endif %}
+    </div> {% endfor %} </div>
+</section> {% endif %}
 {% endblock content %}
