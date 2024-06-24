@@ -32,7 +32,8 @@ urlpatterns = [
     path('update_todo_status/<int:todo_id>/',update_todo.as_view(), name='update_todo_status'),
     
     #team Lead Dashboard
-    path('teamtodo/',teamlead.as_view(),name="teamtodo"),
+    path('teamtodo/',TeamToDo.as_view(),name="teamtodo"),
+    path('team_todo/',TeamToDo.as_view(),name="team_todo"),
 
     path('error/',ErrorView.as_view(),name="error"),
     path('team/',TeamView.as_view(),name="team"),
