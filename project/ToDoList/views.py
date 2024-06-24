@@ -43,6 +43,12 @@ class home(LoginRequiredMixin, views.View):
 
         if user.role == "1":
             teams = Team.objects.all()
+            today = timezone.now().date()  # Get today's date
+            todos = Todo.objects.filter(
+                Q(user=user) & 
+                (Q(date_created__date=today) | Q(status=0))
+            )  # Fetch todos for the authenticated user
+            form = TodoForm()
             team_todos = {}
             for team in teams:
                 pending_todos = Todo.objects.filter(team=team, status=0)
@@ -50,8 +56,9 @@ class home(LoginRequiredMixin, views.View):
 
             context = {
                 'team_todos': team_todos,
+                'todos': todos,
             }
-            return render(request, 'admin_templates/home.html', context)
+            return render(request, 'admin_templates/home.html', context )
         
         if user.role == "2":
             user = self.request.user

@@ -87,28 +87,31 @@
 <!-- Assuming you have other HTML structure -->
 <section class="pcoded-main-container">
   <div class="pcoded-wrapper">
-    {% for todo in todo %}
-    <div class="card">
-      <div class="card__content">
-        <div class="card__title">{{ todo.user}}</div>
-        <div class="card__title">{{ todo.title }}</div>
-        <div class="card__text">{{ todo.description }}</div>
-        <div class="card__status">
-          Status: {% if todo.status == 0 %}<span class="badge badge-secondary">Pending</span>{% elif todo.status == 1 %}<span class="badge badge-success">Completed</span>{% endif %}
-        </div>        
-        <div class="card__note">Note: {{ todo.note }}</div>
-        <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span>
-        <!-- {% if todo.status == 0 %}
-        <form method="post" action="{% url 'update_todo_status' todo.id %}">
-          {% csrf_token %}
-          <input type="hidden" name="todo_id" value="{{ todo.id }}">
-          <input type="hidden" name="status" value="1"> 
-          <button type="submit" class="card__button">Mark as Completed</button>
-        </form>
-        {% endif %} -->
-      </div>
-    </div>
-    {% endfor %}
+    <!-- {% for todo in todo %} -->
+    <table class="todoTable table  ">
+      <thead class="thead-dark ">
+        <tr>
+          <th>User</th>
+          <th>Team</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th>Note</th>
+          <th>Date Created</th>
+        </tr>
+      </thead>
+      
+      <tbody> {% for todo in todos %} <tr>
+        <td>{{ forloop.counter }}</td> {% if user.is_authenticated and user.role != "3" %} <td>{{todo.user}}</td> {% endif %} <td>{{ todo.title }}</td>
+        <td>{{ todo.user }}</td>
+        <td>{{ todo.title }}</td>
+        <td>{{ todo.description }}</td>
+        <td> {% if todo.status == 0 %} <span class="badge badge-secondary">Pending</span> {% elif todo.status == 1 %} <span class="badge badge-success">Completed</span> {% endif %} </td>
+        <td>{{ todo.note }}</td>
+        <td>{{ todo.date_created|date:"d-M-Y" }}</td>
+      </tr> {% endfor %} </tbody>
+    </table>
+      
+    <!-- {% endfor %} -->
   </div>
 </section>
 {% endblock content %}
