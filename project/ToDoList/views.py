@@ -243,42 +243,33 @@ class DeleteUserView(views.View) :
         delete_user=CustomUser.objects.get(pk=id)
         delete_user.delete()
         return redirect('userlist')
-
+      
+        
 class ToDoListView(views.View):
-    
-    
-   
-   
     template_name = 'admin_templates/todo_list.html'
-    
+
     def get(self, request, *args, **kwargs):
-        filter = TodoFilter(request.GET, queryset=Todo.objects.all())
-        
-        
         user = request.user
-        
-        print(user.role)
+        queryset = Todo.objects.all()
 
         if user.role == "1":
             # Admin: view all ToDo items
-            todos = Todo.objects.all().order_by('status')
-        
+            todos = queryset.order_by('status')
         elif user.role == "5":
             # Team Leader: view ToDo items for their team, excluding their own
-            team1 = user.team
-            userid = user.id
-
-            todos = Todo.objects.filter(
-                Q(team=team1)
-            ).exclude(user__id=userid).order_by('status')
-        
+            todos = queryset.filter(
+                Q(team=user.team)
+            ).exclude(user__id=user.id).order_by('status')
         else:
             # Regular User: view only their ToDo items
-            todos = Todo.objects.filter(user=user).order_by('status')
-        
-        
-        return render(request, self.template_name, {'todos': todos,'filters':filter})
- 
+            todos = queryset.filter(user=user).order_by('status')
+
+        filter = TodoFilter(request.GET, queryset=todos)
+        todos = filter.qs
+
+        return render(request, self.template_name, {'todos': todos, 'filter': filter})
+
+
  
     
 class TeamView(views.View):

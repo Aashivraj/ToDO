@@ -1,11 +1,12 @@
+
 {% extends "layouts/base_auth.html" %}
 {% block content %}
 {% include "includes/sidebar.html" %}
 {% include "includes/navigation.html" %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <style>
   /* Custom DataTable Styles */
-  /* Style for the table */
   .todoTable {
     width: 100%;
     border-collapse: collapse;
@@ -14,7 +15,6 @@
     text-align: left;
   }
 
-  /* Header styling */
   .todoTable thead th {
     background-color: #343a40;
     color: white;
@@ -23,7 +23,6 @@
     position: relative;
   }
 
-  /* Sorting arrows */
   .todoTable thead th.sorting:after,
   .todoTable thead th.sorting_asc:after,
   .todoTable thead th.sorting_desc:after {
@@ -48,7 +47,6 @@
     border-top-color: white;
   }
 
-  /* Body row styling */
   .todoTable tbody tr {
     border-bottom: 1px solid #dddddd;
   }
@@ -57,7 +55,6 @@
     border-bottom: 2px solid #343a40;
   }
 
-  /* Pagination styling */
   .dataTables_wrapper .dataTables_paginate {
     display: flex;
     justify-content: flex-end;
@@ -86,14 +83,12 @@
     color: white;
   }
 
-  /* Next/Previous buttons styling */
   .dataTables_wrapper .dataTables_paginate .paginate_button.previous,
   .dataTables_wrapper .dataTables_paginate .paginate_button.next {
     font-weight: bold;
     margin: 0 5px;
   }
 
-  /* Search box styling */
   .dataTables_wrapper .dataTables_filter {
     float: right;
     text-align: right;
@@ -121,15 +116,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <form method="get"> 
-                          
-                            {{filters.form}}
+                            {{ filter.form.as_p }}
                             <button class="btn btn-primary shadow-2">Submit</button>
                             <div class="col-md-6"></div>
-
-                           
-
-                           
-                        
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -138,35 +130,50 @@
     <div class="pcoded-content">
       <div class="pcoded-inner-content">
         <h1>Todo List</h1>
-        <table class="todoTable table  ">
-          <thead class="thead-dark ">
+        <table class="todoTable table">
+          <thead class="thead-dark">
             <tr>
-              <th>ID</th> {% if user.is_authenticated and user.role != "3" %} <th>User Name</th> {% endif %} <th>Title</th>
+              <th>ID</th> 
+              {% if user.is_authenticated and user.role != "3" %}
+                <th>User Name</th>
+              {% endif %}
+              <th>Title</th>
               <th>Description</th>
               <th>Team</th>
               <th>Status</th>
               <th>Date Created</th>
             </tr>
           </thead>
-          <tbody> {% for todo in todos %} <tr>
-              <td>{{ forloop.counter }}</td> {% if user.is_authenticated and user.role != "3" %} <td>{{todo.user}}</td> {% endif %} <td>{{ todo.title }}</td>
+          <tbody>
+            {% for todo in todos %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              {% if user.is_authenticated and user.role != "3" %}
+                <td>{{ todo.user }}</td>
+              {% endif %}
+              <td>{{ todo.title }}</td>
               <td>{{ todo.description }}</td>
               <td>{{ todo.team }}</td>
-              <td> {% if todo.status == 0 %} <span class="badge badge-secondary">Pending</span> {% elif todo.status == 1 %} <span class="badge badge-success">Completed</span> {% endif %} </td>
+              <td>
+                {% if todo.status == 0 %}
+                  <span class="badge badge-secondary">Pending</span>
+                {% elif todo.status == 1 %}
+                  <span class="badge badge-success">Completed</span>
+                {% endif %}
+              </td>
               <td>{{ todo.date_created|date:"d-M-Y" }}</td>
-            </tr> {% endfor %} </tbody>
+            </tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
     </div>
   </div>
-</form>
-</div>
-</div>
-<!-- [ Main Content ] end -->
 </section>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
   $(document).ready(function() {
     $(".todoTable").DataTable({
@@ -179,6 +186,11 @@
       "order": [
         [5, "desc"]
       ], // Default order by date_created column
+    });
+
+    // Initialize Flatpickr on date fields
+    flatpickr(".datepicker", {
+      dateFormat: "Y-m-d",
     });
   });
 </script>
