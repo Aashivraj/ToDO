@@ -38,6 +38,8 @@ urlpatterns = [
     #team Lead Dashboard
     path('teamtodo/',TeamLeadView.as_view(),name="teamtodo"),
     path('system_settings/',SettingsView.as_view(),name="system_settings"),
+    
+    path('user/<int:user_id>/task/<int:task_id>/', TaskDetailView.as_view(), name='task_detail'),
 
     path('error/',ErrorView.as_view(),name="error"),
     path('users/toggle/<int:user_id>/', ToggleActiveStatusView.as_view(), name='toggle_active_status'),

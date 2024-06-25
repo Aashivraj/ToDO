@@ -417,3 +417,13 @@ class SettingsView(views.View):
             system_settings.save()
         
             return redirect('system_settings')
+        
+class TaskDetailView(views.View):
+     def get(self, request, *args, **kwargs):
+        user_id = kwargs.get('user_id')
+        task_id = kwargs.get('task_id')
+        task = get_object_or_404(Todo, id=task_id, user_id=user_id)
+        context = {
+            'task': task,
+        }
+        return render(request, 'admin_templates/individual_todo.html', context)
