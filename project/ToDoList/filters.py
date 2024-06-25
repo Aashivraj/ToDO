@@ -14,7 +14,8 @@ class TodoFilter(django_filters.FilterSet):
         widget=forms.DateInput(
             attrs={
                 'id': 'datepicker',
-                'type': 'text'
+                'type': 'text',
+                'class': 'datepicker theme-sensitive'  # Add a class to target the date picker
             }
         )
     )
@@ -31,7 +32,8 @@ class TeamTodoFilter(django_filters.FilterSet):
         widget=forms.DateInput(
             attrs={
                 'id': 'datepicker',
-                'type': 'text'
+                'type': 'text',
+                'class': 'datepicker theme-sensitive'  # Add a class to target the date picker
             }
         )
     )

@@ -4,8 +4,71 @@
 {% include "includes/navigation.html" %}
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
 <style>
+    #id_user {
+    /* Add your styles here */
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+    width: 200px; /* Adjust width as needed */
+    /* Add more styles as per your design */
+}
+
+/* Styling for Team field */
+#id_team {
+    /* Add your styles here */
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+    width: 200px; /* Adjust width as needed */
+    /* Add more styles as per your design */
+}
+#datepicker {
+    /* Add your styles here */
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+    width: 200px; /* Adjust width as needed */
+    /* Add more styles as per your design */
+}
+/* Dark Theme Styles for Flatpickr */
+
+body.dark .flatpickr-calendar {
+    background-color: #343a40;
+    color: white;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-day {
+    color: white;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-day:hover, 
+  body.dark .flatpickr-calendar .flatpickr-day:focus {
+    background-color: #495057;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-day.today {
+    background-color: #495057;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-day.selected {
+    background-color: #007bff;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-months, 
+  .flatpickr-calendar .flatpickr-weekdays {
+    background-color: #343a40;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-time input {
+    background-color: #343a40;
+    color: white;
+  }
   /* Custom DataTable Styles */
   /* Style for the table */
   .todoTable {
@@ -112,21 +175,49 @@
     border-radius: 4px;
   }
 </style>
-<section class="pcoded-main-container" style="margin-bottom:40px;">
-  <div class="row">
-    <div class="col-sm-12">
-        <div class="card">
-            <div class="card-header">
-                <h5>Basic Component</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form method="get"> 
-                            {{ todo_filter.form.as_p }}
-                            <button class="btn btn-primary shadow-2">Submit</button>
-                            <div class="col-md-6"></div>
-                        </form>
+<section class="pcoded-main-container" style="margin-bottom:10px;">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="m-0"><b>Basic Filters</b></h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <form method="get">
+                                        <div class="row">
+                                            <!-- User filter -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="user">User:</label>
+                                                    {{  todo_filter.form.user }}
+                                                </div>
+                                            </div>
+                                            <!-- Date Created filter -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="date_created">Date Created:</label>
+                                                    {{ todo_filter.form.date_created }}
+                                                </div>
+                                            </div>
+                                            <!-- Buttons -->
+                                            <div class="col-md-12">
+                                                <div class="form-group d-flex justify-content-end">
+                                                    <button id="applyBtn" class="btn btn-primary mr-2">Apply</button>
+                                                    <a href="{% url 'teamtodo' %}" type="button" id="clearBtn" class="btn btn-secondary">Clear Filters</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Hidden div for any additional fields -->
+                                        <div class="col-md-6"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -192,6 +283,14 @@
     });
   });
 </script>
+<script>
+  $(document).ready(function() {
+    flatpickr(".datepicker", {
+      dateFormat: "Y-m-d",
+    });
+  });
+</script>
+
 
 {% endblock content %}
 
