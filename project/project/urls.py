@@ -34,7 +34,7 @@ urlpatterns = [
 
     
     #team Lead Dashboard
-    path('teamtodo/',teamlead.as_view(),name="teamtodo"),
+    path('teamtodo/',TeamLeadView.as_view(),name="teamtodo"),
 
     path('error/',ErrorView.as_view(),name="error"),
     path('users/toggle/<int:user_id>/', ToggleActiveStatusView.as_view(), name='toggle_active_status'),
