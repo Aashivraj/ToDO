@@ -80,35 +80,29 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <div class="pcoded-content">
     <div class="pcoded-inner-content">
-      <h1>List Of Users in {{ request.user.team }} Team</h1>
-      <table class="todoTable table">
-        <thead class="thead-dark">
+      <h1>List Of User in {{ request.user.team }} Team</h1>
+      <table class="todoTable table  ">
+        <thead class="thead-dark ">
           <tr>
-            <th>No.</th>
-            <th>Username</th>
-            <th>Title</th>
-            <th>Description</th>
-            <th>Status</th>
-            <th>Date Created</th>
+            <th>id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Team</th>
+            <th>Role</th>
           </tr>
         </thead>
-        <tbody>
-          {% for todo in todos %}
+        <tbody> 
+          {% for i in users %} 
           <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ todo.user }}</td>
-            <td>{{ todo.title }}</td>
-            <td>{{ todo.description }}</td>
-            <td>
-                {% if todo.status == 0 %}
-                <span class="badge badge-secondary">Pending</span>
-                {% elif todo.status == 1 %}
-                <span class="badge badge-success">Completed</span>
-                {% endif %}
-            </td>
-            <td>{{ todo.date_created|date:"d-M-Y" }}</td>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>{{i.user_name}}</td>
+            <td>{{i.email}}</td>
+            <td>{{i.mobile_number}}</td>
+            <td>{{i.team}}</td>
+            <td>{% if i.role == "1" %} CEO / PM {% elif i.role == "2" %} TeamLead {% elif i.role == "3" %}Developer{% endif %}</td>
           </tr>
-          {% endfor %}
+          {% endfor %} 
         </tbody>
       </table>
     </div>
@@ -126,7 +120,23 @@
            </form> {% endif %}
         </div>
      </div> {% endfor %} </div>
-</section> 
+</section>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+  $(document).ready(function() {
+    $(".todoTable").DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+      "order": true, // Default order by date_created column
+    });
+  });
+</script>  
 {% endif %}
 
 

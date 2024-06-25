@@ -48,19 +48,24 @@
               <span class="pcoded-mtext">Add To-Do</span></a>
         </li>
 
+
         <li class="nav-item">
           <a href="{% url 'todolist' %}" class="nav-link">
             <span class="pcoded-micon"> <i class="fa-solid fa-table-list text-c-green"></i>
               </span>
               <span class="pcoded-mtext">ToDo List</span></a>
         </li>
-
+        {% if user.is_authenticated and user.role != "3" %}
         <li class="nav-item">
           <a href="{% url 'add_user' %}" class="nav-link">
             <span class="pcoded-micon"> <i class="fa-solid fa-user-plus text-c-green"></i>
               </span>
               <span class="pcoded-mtext">Add User</span></a>
         </li>
+        {% endif %}
+
+
+        {% if user.is_authenticated and user.role == "1" %}
 
         <li class="nav-item">
           <a href="{% url 'userlist' %}" class="nav-link">
@@ -68,6 +73,9 @@
               </span>
               <span class="pcoded-mtext">User List</span></a>
         </li>
+        {% endif %}
+
+        {% if user.is_authenticated and user.role == "1" %}
         <!-- Add this to includes/sidebar.html where appropriate -->
         <li class="nav-item">
           <a href="{% url 'team' %}" class="nav-link">
@@ -75,6 +83,18 @@
               </span>
               <span class="pcoded-mtext">Add team</span></a>
         </li>
+        {% endif %}
+
+        {% if user.is_authenticated and user.role == "1" %}
+        <li class="nav-item">
+          <a href="{% url 'system_settings' %}" class="nav-link">
+            <span class="pcoded-micon">
+              <i class="fas fa-cog text-c-green"></i> <!-- Adjust the icon class here -->
+            </span>
+            <span class="pcoded-mtext">System Settings</span>
+          </a>
+        </li>        
+        {% endif %}
       </ul>
     </div>
   </div>
