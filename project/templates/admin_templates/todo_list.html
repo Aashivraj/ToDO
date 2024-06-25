@@ -255,7 +255,11 @@ body.dark .flatpickr-calendar {
                 <td>{{ todo.user }}</td>
               {% endif %}
               <td>{{ todo.title }}</td>
-              <td>{{ todo.description }}</td>
+              <td>
+                {{ todo.description|slice:":50" }}
+                {% if todo.description|length > 50 %}...
+                {% endif %}
+            </td>        
               <td>{{ todo.team }}</td>
               <td>
                 {% if todo.status == 0 %}
@@ -284,10 +288,10 @@ body.dark .flatpickr-calendar {
   $(document).ready(function() {
     $(".todoTable").DataTable({
       "paging": true,
-      "lengthChange": false,
+      "lengthChange": true,
       "searching": true,
       "info": true,
-      "autoWidth": false,
+      "autoWidth": true,
       "responsive": true,
       "order": [
         [5, "desc"]

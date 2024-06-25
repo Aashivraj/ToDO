@@ -1,19 +1,31 @@
 {% extends "layouts/base_auth.html" %} 
 {% block content %} 
 {% include "includes/sidebar.html" %}
-{% include "includes/navigation.html" %} 
-<div class="container mt-5">
-    <h1>Task Details</h1>
-    <div class="card">
-        <div class="card-header">
-            Task ID: {{ task.id }}
+{% include "includes/navigation.html" %}
+<section class="pcoded-main-container">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="container mt-5">
+            <h1>Task Details</h1>
+            <div class="card">
+                <div class="card-header">
+                    Task ID: {{ task.id }}
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ task.title }}</h5>
+                    <p class="card-text">{{ task.description }}</p>
+                    <p class="card-text"><strong>Date Created:</strong> {{ task.date_created }}</p>
+                    <p class="card-text"><strong>Status:</strong>
+                        {% if task.status == 0 %}
+                        <span class="badge badge-danger">Pending</span>
+                        {% elif task.status == 1 %}
+                        <span class="badge badge-success">Completed</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-            <h5 class="card-title">{{ task.title }}</h5>
-            <p class="card-text">{{ task.description }}</p>
-            <p class="card-text"><strong>Date Created:</strong> {{ task.date_created }}</p>
-            <p class="card-text"><strong>Status:</strong> {{ task.status }}</p>
-        </div>
+      </div>
     </div>
-</div>
+</section>
 {% endblock content %}

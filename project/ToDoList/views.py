@@ -257,24 +257,26 @@ class ToDoListView(views.View):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-        queryset = Todo.objects.all()
 
+        print(user.role)
         if user.role == "1":
+            user = request.user
+            queryset = Todo.objects.all()
             # Admin: view all ToDo items
             todos = queryset.order_by('status')
-        elif user.role == "5":
-            # Team Leader: view ToDo items for their team, excluding their own
-            todos = queryset.filter(
-                Q(team=user.team)
-            ).exclude(user__id=user.id).order_by('status')
+            filter = TodoFilter(request.GET, queryset=todos)
+            todos = filter.qs
+            return render(request, self.template_name, {'todos': todos, 'filter': filter})
+        
+        elif user.role == "2":
+            user = request.user
+            todos = Todo.objects.filter(user=user).order_by('status')
+            return render(request, self.template_name, {'todos': todos})
         else:
-            # Regular User: view only their ToDo items
-            todos = queryset.filter(user=user).order_by('status')
+            user = request.user
+            todos = Todo.objects.filter(user=user).order_by('status')
+            return render(request, self.template_name, {'todos': todos})
 
-        filter = TodoFilter(request.GET, queryset=todos)
-        todos = filter.qs
-
-        return render(request, self.template_name, {'todos': todos, 'filter': filter})
 
 
  
@@ -345,17 +347,28 @@ class ProfilePageView(views.View):
     def post(self, request, *args, **kwargs):
         if 'profile_picture' in request.FILES:
             profile_picture = request.FILES['profile_picture']
+            username = request.user
             profile_images_dir = os.path.join(settings.MEDIA_ROOT, 'profile_images')
-
+            
+            # Delete old profile picture if it exists
+            if request.user.photo:
+                old_photo_path = os.path.join(settings.MEDIA_ROOT, str(request.user.photo))
+                if os.path.exists(old_photo_path):
+                    os.remove(old_photo_path)
+            
             # Ensure the directory exists
             if not os.path.exists(profile_images_dir):
                 os.makedirs(profile_images_dir)
 
+            # Save new profile picture
             fs = FileSystemStorage(location=profile_images_dir)
-            filename = fs.save(profile_picture.name, profile_picture)
+            filename = f'{username}.png'  # Save as username.png
+            filename = fs.save(filename, profile_picture)
             request.user.photo = 'profile_images/' + filename
             request.user.save()
             return redirect('profile')  # Redirect to the profile page or any other appropriate page
+        
+        # If no profile_picture in request.FILES, render the template
         return render(request, self.template_name)
     
 class SettingsView(views.View):
