@@ -386,14 +386,14 @@ class SettingsView(views.View):
             system_settings.company_logo = 'profile_images/' + filename
             system_settings.save()
         
-        if 'company_name' in request.POST:
-            system_settings.company_name = request.POST.get('company_name')
-            system_settings.mobile = request.POST.get('mobile')
-            system_settings.email = request.POST.get('email')
-            system_settings.facebook = request.POST.get('facebook')
-            system_settings.instagram = request.POST.get('instagram')
-            system_settings.linkdein = request.POST.get('linkdein')
-            system_settings.company_link = request.POST.get('company_link')
+        # if 'company_name' in request.POST:
+            system_settings.company_name = request.POST.get('company_name', system_settings.company_name)
+            system_settings.mobile = request.POST.get('mobile', system_settings.mobile)
+            system_settings.email = request.POST.get('email', system_settings.email)
+            system_settings.facebook = request.POST.get('facebook', system_settings.facebook)
+            system_settings.instagram = request.POST.get('instagram', system_settings.instagram)
+            system_settings.linkdein = request.POST.get('linkdein', system_settings.linkdein)
+            system_settings.company_link = request.POST.get('company_link', system_settings.company_link)
             system_settings.save()
         
-        return redirect('settings')
+        return redirect('system_settings')
