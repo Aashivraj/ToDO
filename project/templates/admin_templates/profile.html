@@ -48,7 +48,15 @@
                       <div class="col-sm-6 mb-4">
                         <div class="form-group">
                           <label for="ln">Designation</label>
-                          <input type="number" class="form-control" id="ln" aria-describedby="emailHelp" placeholder="Enter Mobile Number" value="{{ request.user.role }}" readonly>
+                          {% if user.is_authenticated %}
+                              {% if request.user.role == "1" %}
+                                  <input type="text" class="form-control" id="ln" value="CEO / Project_Manager" readonly>
+                              {% elif request.user.role == "2" %}
+                                  <input type="text" class="form-control" id="ln" value="Team Leader" readonly>
+                              {% elif request.user.role == "3" %}
+                                  <input type="text" class="form-control" id="ln" value="Developer" readonly>
+                              {% endif %}
+                          {% endif %}
                         </div>
                       </div>
                     </div>

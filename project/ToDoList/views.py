@@ -37,8 +37,7 @@ class teamlead(LoginRequiredMixin, views.View):
         
         # Filter Todo objects based on team
         todo = Todo.objects.filter(
-            Q(team=team1) &
-            (Q(date_created__date=today) | Q(status=0))
+            Q(team=team1) 
         ).exclude(user__id=userid).order_by('status')
         
         return render(request, 'teamleader_templates/teamtodo.html', {'todo': todo})
