@@ -7,7 +7,7 @@ from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
 from django.http import HttpResponse
-from .filters import TodoFilter
+from .filters import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.core.files.storage import FileSystemStorage
@@ -38,12 +38,11 @@ class TeamLeadView(LoginRequiredMixin, views.View):
         
         # Filter Todo objects based on team
         todo_list = Todo.objects.filter(
-            Q(team=team1) &
-            (Q(date_created__date=today) | Q(status=0))
+            Q(team=team1)
         ).exclude(user=user).order_by('status')
         
         # Apply filters if GET parameters are present
-        todo_filter = TodoFilter(request.GET, queryset=todo_list)
+        todo_filter = TeamTodoFilter(request.GET, queryset=todo_list, user=user)
         todo_list = todo_filter.qs
         
         return render(request, 'teamleader_templates/teamtodo.html', {'todo_list': todo_list, 'todo_filter': todo_filter})
