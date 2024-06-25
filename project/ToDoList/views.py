@@ -362,3 +362,38 @@ class ProfilePageView(views.View):
             request.user.save()
             return redirect('profile')  # Redirect to the profile page or any other appropriate page
         return render(request, self.template_name)
+    
+class SettingsView(views.View):
+    template_name = 'admin_templates/settings.html'
+    
+    def get(self, request, *args, **kwargs):
+        system_settings = SystemSettings.objects.first()
+        return render(request, self.template_name, {'system_settings': system_settings})
+    
+    def post(self, request, *args, **kwargs):
+        system_settings = SystemSettings.objects.first()
+        
+        if 'profile_picture' in request.FILES:
+            profile_picture = request.FILES['profile_picture']
+            profile_images_dir = os.path.join(settings.MEDIA_ROOT, 'profile_images')
+
+            # Ensure the directory exists
+            if not os.path.exists(profile_images_dir):
+                os.makedirs(profile_images_dir)
+
+            fs = FileSystemStorage(location=profile_images_dir)
+            filename = fs.save(profile_picture.name, profile_picture)
+            system_settings.company_logo = 'profile_images/' + filename
+            system_settings.save()
+        
+        if 'company_name' in request.POST:
+            system_settings.company_name = request.POST.get('company_name')
+            system_settings.mobile = request.POST.get('mobile')
+            system_settings.email = request.POST.get('email')
+            system_settings.facebook = request.POST.get('facebook')
+            system_settings.instagram = request.POST.get('instagram')
+            system_settings.linkdein = request.POST.get('linkdein')
+            system_settings.company_link = request.POST.get('company_link')
+            system_settings.save()
+        
+        return redirect('settings')

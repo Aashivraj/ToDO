@@ -23,3 +23,4 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Team)
 admin.site.register(Todo)
+admin.site.register(SystemSettings)

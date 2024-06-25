@@ -108,3 +108,15 @@ class Todo(models.Model):
 
     def __str__(self):
         return self.title
+
+class SystemSettings(models.Model):
+    id = models.AutoField(primary_key=True)
+    company_name = models.CharField(max_length=50)
+    company_logo = models.TextField( )
+    mobile = models.IntegerField(default=0)
+    email = models.CharField(max_length=30)
+    facebook = models.CharField(max_length=70)
+    instagram = models.CharField(max_length=70)
+    linkdein = models.CharField(max_length=70)
+    company_link = models.CharField(max_length=70)
+    

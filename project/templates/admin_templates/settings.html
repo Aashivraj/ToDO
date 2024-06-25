@@ -1,0 +1,130 @@
+
+{% extends "layouts/base_auth.html" %}
+{% load static %}
+{% block content %}
+{% include "includes/sidebar.html" %}
+{% include "includes/navigation.html" %}
+
+
+<section class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <!-- [ Main Content ] start -->
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Settings</h5>
+                  </div>
+                  <div class="card-block">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                    <div class="row">
+                      <div class="col-sm-6 mb-4">
+                        <div class="form-group">
+                          <label for="fn">Company Name</label>
+                          <input type="text" class="form-control" id="fn" aria-describedby="emailHelp" placeholder="Enter User Name" value="{{ system_settings.company_name }}" >
+                        </div>
+                      </div>
+                      <div class="col-sm-6 mb-4">
+                        <div class="form-group">
+                          <label for="ln">Mobile Number</label>
+                          <input type="number" class="form-control" id="ln" aria-describedby="emailHelp" placeholder="Enter Mobile Number" value="{{ system_settings.mobile }}" >
+                        </div>
+                      </div>
+                      <div class="col-sm-12 mb-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Email address</label>
+                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" value="{{ system_settings.email }}" >
+                        </div>
+                      </div>
+                      <div class="col-sm-12 mb-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Facebook Link</label>
+                          <input type="text" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Enter link" value="{{ system_settings.facebook }}" >
+                        </div>
+                      </div>
+                      <div class="col-sm-12 mb-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Instagram</label>
+                          <input type="text" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Enter link" value="{{ system_settings.instagram }}" >
+                        </div>
+                      </div>
+                      <div class="col-sm-12 mb-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Linkedin</label>
+                          <input type="text" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Enter link" value="{{ system_settings.linkdein }}" >
+                        </div>
+                      </div>
+                      <div class="col-sm-12 mb-4">
+                        <div class="form-group">
+                          <label for="exampleInputEmail1">Company Link</label>
+                          <input type="text" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Enter link" value="{{ system_settings.company_link }}" >
+                        </div>
+                      </div>
+                      </div>
+                      <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-sm-12 mb-4">
+                          <div class="form-group">
+                            <label for="ln">Profile Picture</label>
+                            <input type="file" class="form-control" name="profile_picture">
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 mb-4">
+                      <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                        <div class="col-sm-12 mb-4">
+                          <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4">
+                <div class="card">
+                  <div class="card-block">
+                    <div class="d-flex align-items-center justify-content-center flex-column">
+                      <div class="w-50 p-3">
+                        <img src="{% if request.user.photo %}{{ request.user.photo.url }}{% else %}https://via.placeholder.com/500{% endif %}" alt="profile image" class="img-fluid rounded-circle">
+                        <a>Company Logo</a>
+                    </div>
+                      <!-- <div class="text-center">
+                        <h4 class="font-weight-bold h6">{{ request.user }}</h4>
+                        <p class="font-italic text-muted">{{ request.user.team }}</p>
+                      </div>
+                    </div>
+                    <div class="small font-weight-light mt-4 text-center text-muted">
+                      {% if user.is_authenticated %}
+                      {% if request.user.role == "1" %}
+                      <p type="text">CEO / Project_Manager</p>
+                      {% elif request.user.role == "2" %}
+                      <p type="text">Team Leader</p>
+                      {% elif request.user.role == "3" %}
+                      <p type="text"> Developer</p>
+                      {% endif %}
+                      {% endif %}
+                    </div> -->
+                    <!-- <div class="d-flex justify-content-center align-items-center">
+                      <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-facebook"></i></a>
+                      <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-twitter"></i></a>
+                      <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-instagram"></i></a>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- [ Main Content ] end -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock content %}
