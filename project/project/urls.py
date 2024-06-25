@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ToDoList.views import *
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('login/',LoginFormView.as_view(),name="login"),
@@ -34,15 +36,13 @@ urlpatterns = [
 
     
     #team Lead Dashboard
-    path('teamtodo/',TeamLeadView.as_view(),name="teamtodo"),
+    path('teamtodo/',teamlead.as_view(),name="teamtodo"),
 
     path('error/',ErrorView.as_view(),name="error"),
     path('users/toggle/<int:user_id>/', ToggleActiveStatusView.as_view(), name='toggle_active_status'),
     path('team/',TeamView.as_view(),name="team"),
-    
-   
-    
-    
-    
-    
+ 
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
