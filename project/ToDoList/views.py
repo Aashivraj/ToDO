@@ -358,7 +358,7 @@ class ProfilePageView(views.View):
 
             fs = FileSystemStorage(location=profile_images_dir)
             filename = fs.save(profile_picture.name, profile_picture)
-            request.user.profile_picture = 'profile_images/' + filename
+            request.user.photo = 'profile_images/' + filename
             request.user.save()
             return redirect('profile')  # Redirect to the profile page or any other appropriate page
         return render(request, self.template_name)
