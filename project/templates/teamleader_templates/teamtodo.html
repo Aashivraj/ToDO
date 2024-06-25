@@ -240,6 +240,7 @@ body.dark .flatpickr-calendar {
               <th>Description</th>
               <th>Status</th>
               <th>Date Created</th>
+              <th>Detail View</th>
             </tr>
           </thead>
           <tbody>
@@ -250,7 +251,11 @@ body.dark .flatpickr-calendar {
                   <td>{{ todo.user }}</td>
                 {% endif %}
                 <td>{{ todo.title }}</td>
-                <td>{{ todo.description }}</td>
+                <td>
+                  {{ todo.description|slice:":50" }}
+                  {% if todo.description|length > 50 %}...
+                  {% endif %}
+                </td> 
                 <td>
                   {% if todo.status == 0 %}
                     <span class="badge badge-secondary">Pending</span>
@@ -259,6 +264,9 @@ body.dark .flatpickr-calendar {
                   {% endif %}
                 </td>
                 <td>{{ todo.date_created|date:"d-M-Y" }}</td>
+                <td>
+                <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}" class="btn btn-info btn-sm">View Details</a>
+                </td>
               </tr>
             {% endfor %}
           </tbody>

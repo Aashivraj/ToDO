@@ -12,9 +12,15 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.core.files.storage import FileSystemStorage
 import os
+from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
+
+
 
 
 # Create your views here.
+def user_is_admin(user):
+    return user.is_authenticated and user.role == "1"
 
 
 
@@ -280,7 +286,7 @@ class ToDoListView(views.View):
 
 
  
-    
+@method_decorator(user_passes_test(user_is_admin), name='dispatch')   
 class TeamView(views.View):
     def get(self, request, *args, **kwargs):
         team_form=TeamForm()
