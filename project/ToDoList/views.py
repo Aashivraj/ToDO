@@ -174,38 +174,33 @@ class AddUserView(LoginRequiredMixin,views.View):
 
         return render(request, 'admin_templates/add_user.html', {'form': form})
 
-         
-         
+  
 class LoginFormView(views.View):
-   def get(self,request,*args, **kwargs):
-      form=LoginForm()
-      return render(request, 'admin_templates/login.html')
-    
-   def post(self, request, *args, **kwargs):
-    form = LoginForm(request.POST or None)
+    def get(self, request, *args, **kwargs):
+        form = LoginForm()
+        return render(request, 'admin_templates/login.html', {'form': form})
 
-    if form.is_valid():
-        username = form.cleaned_data.get("username")
-        print("sdfasd", username)
-        password = form.cleaned_data.get("password")
-        user = authenticate(user_name=username, password=password)
+    def post(self, request, *args, **kwargs):
+        form = LoginForm(request.POST or None)
 
-        if user is not None:
-            if user.is_active:
-                print("asdfasdfa", user)
-                login(request, user)
-                return redirect("/home/")
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    messages.success(request, 'Login successful!')
+                    return redirect("/home/")
+                else:
+                    messages.warning(request, 'User is not active.')
             else:
-                print("User is not active.")
-                return redirect("login")
+                messages.error(request, 'Invalid credentials')
         else:
-            print("Invalid credentials.")
-            return redirect("login")
-    else:
-        print(form.errors)
+            messages.error(request, 'Form is not valid')
 
-    return render(request, "admin_templates/login.html", {"form": form})
-
+        return render(request, "admin_templates/login.html", {"form": form})
 class LogoutView(LoginRequiredMixin,views.View):
    def get(self,request,*args, **kwargs):
       logout(request)

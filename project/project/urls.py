@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from ToDoList.views import *
 from django.conf.urls.static import static
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -44,6 +45,8 @@ urlpatterns = [
     path('error/',ErrorView.as_view(),name="error"),
     path('users/toggle/<int:user_id>/', ToggleActiveStatusView.as_view(), name='toggle_active_status'),
     path('team/',TeamView.as_view(),name="team"),
+    path('change_password/',auth_views.PasswordChangeView.as_view(template_name='admin_templates/change_password.html',success_url='/'),name='change_password'),
+    
  
 ]
 

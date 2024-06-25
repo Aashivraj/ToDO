@@ -12,7 +12,7 @@
     <title>{% block title %}{% endblock title %}</title>
    
     <link href="/static/assets/css/base_data.css" rel="stylesheet" />
-   
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css">
 
     
    
@@ -34,13 +34,13 @@
         {% endblock content %}
     </div>
     
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
     <script src="{% static 'assets/js/vendor-all.min.js' %}"></script>
     <script src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="{% static 'assets/js/pcoded.min.js' %}"></script>
     <script src="{% static 'assets/js/dark-mode.js' %}"></script>
-
+   
 
      <!-- jQuery -->
 
@@ -56,7 +56,37 @@
     ></script>
 
     <!-- Custom Script to Initialize DataTable -->
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+          const messages = JSON.parse('{{ messages|escapejs }}');
+          messages.forEach(message => {
+              const colorMap = {
+                  'debug': 'blue',
+                  'info': 'blue',
+                  'success': 'green',
+                  'warning': 'yellow',
+                  'error': 'red'
+              };
+              const iconMap = {
+                  'debug': 'fa fa-info-circle',
+                  'info': 'fa fa-info-circle',
+                  'success': 'fa fa-check-circle',
+                  'warning': 'fa fa-exclamation-triangle',
+                  'error': 'fa fa-exclamation-circle'
+              };
 
+              iziToast.show({
+                  title: message.tags.charAt(0).toUpperCase() + message.tags.slice(1),
+                  message: message.message,
+                  position: 'topRight',
+                  timeout: 3000,
+                  color: colorMap[message.tags] || 'blue',
+                  icon: iconMap[message.tags] || 'fa fa-info-circle'
+              });
+          });
+      });
+  </script>
     <script>
       $(document).ready(function () {
         $("#example").DataTable({
@@ -80,7 +110,7 @@
         });
       });
     </script>
-    
+
   </body>
   
 </html>

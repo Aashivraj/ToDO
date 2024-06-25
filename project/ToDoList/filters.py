@@ -41,6 +41,10 @@ class TeamTodoFilter(django_filters.FilterSet):
     class Meta:
         model = Todo
         fields = ['user', 'date_created']
+        
+        
+    user = django_filters.ModelChoiceFilter(queryset=CustomUser.objects.none())
+    
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)  # Get the logged-in user from the kwargs
@@ -49,4 +53,7 @@ class TeamTodoFilter(django_filters.FilterSet):
         if user:
             # Assuming the CustomUser model has a ForeignKey to the Team model
             user_team = user.team  
-            self.filters['user'].queryset = CustomUser.objects.filter(team=user_team)
+            self.filters['user'].queryset = CustomUser.objects.filter(team=user_team).exclude(id=user.id)
+            
+            
+            
