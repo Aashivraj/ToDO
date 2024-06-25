@@ -65,6 +65,9 @@
                           <div class="form-group">
                             <label for="ln">Profile Picture</label>
                             <input type="file" class="form-control" name="profile_picture">
+                            {% if request.user.photo %}
+                            <p>{{ request.user.photo|cut:"profile_images/" }}</p>
+                            {% endif %}
                           </div>
                         </div>
                         <div class="col-sm-12 mb-4">
