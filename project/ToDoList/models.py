@@ -112,8 +112,8 @@ class Todo(models.Model):
 class SystemSettings(models.Model):
     id = models.AutoField(primary_key=True)
     company_name = models.CharField(max_length=50)
-    company_logo = models.TextField( )
-    mobile = models.IntegerField(default=0)
+    company_logo = models.TextField()
+    mobile = models.CharField(_("mobile number"), max_length=15, unique=True)
     email = models.CharField(max_length=30)
     facebook = models.CharField(max_length=70)
     instagram = models.CharField(max_length=70)

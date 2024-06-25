@@ -365,28 +365,47 @@ class ProfilePageView(views.View):
     
 class SettingsView(views.View):
     template_name = 'admin_templates/settings.html'
-    
+
     def get(self, request, *args, **kwargs):
-        system_settings = SystemSettings.objects.first()
-        return render(request, self.template_name, {'system_settings': system_settings})
-    
+            system_settings = SystemSettings.objects.first()
+            company_logo_url = None
+            if system_settings and system_settings.company_logo:
+                company_logo_url = settings.MEDIA_URL + system_settings.company_logo
+        
+            return render(request, self.template_name, {'system_settings': system_settings, 'company_logo_url': company_logo_url})
+
     def post(self, request, *args, **kwargs):
         system_settings = SystemSettings.objects.first()
-        
-        if 'profile_picture' in request.FILES:
-            profile_picture = request.FILES['profile_picture']
-            profile_images_dir = os.path.join(settings.MEDIA_ROOT, 'profile_images')
+        if 'logo' in request.FILES:
+            logo = request.FILES['logo']
+            logo_dir = os.path.join(settings.MEDIA_ROOT, 'logo')
 
             # Ensure the directory exists
-            if not os.path.exists(profile_images_dir):
-                os.makedirs(profile_images_dir)
+            if not os.path.exists(logo_dir):
+                os.makedirs(logo_dir)
 
-            fs = FileSystemStorage(location=profile_images_dir)
-            filename = fs.save(profile_picture.name, profile_picture)
-            system_settings.company_logo = 'profile_images/' + filename
-            system_settings.save()
-        
-        # if 'company_name' in request.POST:
+            # Delete the old logo if it exists
+            if system_settings and system_settings.company_logo:
+                old_logo_path = os.path.join(settings.MEDIA_ROOT, system_settings.company_logo)
+                if os.path.exists(old_logo_path):
+                    os.remove(old_logo_path)
+
+            # Determine the file extension and save the new logo
+            file_extension = logo.name.split('.')[-1]
+            filename = 'Systemlogo.' + file_extension
+            fs = FileSystemStorage(location=logo_dir)
+            filename = fs.save(filename, logo)
+
+            if system_settings:
+                system_settings.company_logo = 'logo/' + filename
+                system_settings.save()
+            else:
+                # Create a new SystemSettings instance if it doesn't exist
+                SystemSettings.objects.create(company_logo='logo/' + filename)
+
+            return redirect('system_settings')                   
+            
+        else:
             system_settings.company_name = request.POST.get('company_name', system_settings.company_name)
             system_settings.mobile = request.POST.get('mobile', system_settings.mobile)
             system_settings.email = request.POST.get('email', system_settings.email)
@@ -394,6 +413,7 @@ class SettingsView(views.View):
             system_settings.instagram = request.POST.get('instagram', system_settings.instagram)
             system_settings.linkdein = request.POST.get('linkdein', system_settings.linkdein)
             system_settings.company_link = request.POST.get('company_link', system_settings.company_link)
+            
             system_settings.save()
         
-        return redirect('system_settings')
+            return redirect('system_settings')

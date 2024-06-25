@@ -1,10 +1,8 @@
-
 {% extends "layouts/base_auth.html" %}
 {% load static %}
 {% block content %}
 {% include "includes/sidebar.html" %}
 {% include "includes/navigation.html" %}
-
 
 <section class="pcoded-main-container">
   <div class="pcoded-wrapper">
@@ -22,67 +20,60 @@
                   <div class="card-block">
                     <form method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                    <div class="row">
-                      <div class="col-sm-6 mb-4">
-                        <div class="form-group">
-                          <label for="fn">Company Name</label>
-                          <input type="text" class="form-control" id="fn" aria-describedby="emailHelp" placeholder="Enter User Name" value="{{ system_settings.company_name }}" >
-                        </div>
-                      </div>
-                      <div class="col-sm-6 mb-4">
-                        <div class="form-group">
-                          <label for="ln">Mobile Number</label>
-                          <input type="number" class="form-control" id="ln" aria-describedby="emailHelp" placeholder="Enter Mobile Number" value="{{ system_settings.mobile }}" >
-                        </div>
-                      </div>
-                      <div class="col-sm-12 mb-4">
-                        <div class="form-group">
-                          <label for="exampleInputEmail1">Email address</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" value="{{ system_settings.email }}" >
-                        </div>
-                      </div>
-                      <div class="col-sm-12 mb-4">
-                        <div class="form-group">
-                          <label for="exampleInputEmail1">Facebook Link</label>
-                          <input type="text" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Enter link" value="{{ system_settings.facebook }}" >
-                        </div>
-                      </div>
-                      <div class="col-sm-12 mb-4">
-                        <div class="form-group">
-                          <label for="exampleInputEmail1">Instagram</label>
-                          <input type="text" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Enter link" value="{{ system_settings.instagram }}" >
-                        </div>
-                      </div>
-                      <div class="col-sm-12 mb-4">
-                        <div class="form-group">
-                          <label for="exampleInputEmail1">Linkedin</label>
-                          <input type="text" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Enter link" value="{{ system_settings.linkdein }}" >
-                        </div>
-                      </div>
-                      <div class="col-sm-12 mb-4">
-                        <div class="form-group">
-                          <label for="exampleInputEmail1">Company Link</label>
-                          <input type="text" class="form-control" id="text" aria-describedby="emailHelp" placeholder="Enter link" value="{{ system_settings.company_link }}" >
-                        </div>
-                      </div>
-                      </div>
-                      <form method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="col-sm-12 mb-4">
-                          <div class="form-group">
-                            <label for="ln">Profile Picture</label>
-                            <input type="file" class="form-control" name="profile_picture">
+                        <div class="row">
+                          <div class="col-sm-6 mb-4">
+                            <div class="form-group">
+                              <label for="fn">Company Name</label>
+                              <input type="text" class="form-control" id="fn" name="company_name" placeholder="Enter Company Name" value="{{ system_settings.company_name }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-6 mb-4">
+                            <div class="form-group">
+                              <label for="ln">Mobile Number</label>
+                              <input type="number" class="form-control" id="ln" name="mobile" placeholder="Enter Mobile Number" value="{{ system_settings.mobile }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 mb-4">
+                            <div class="form-group">
+                              <label for="email">Email address</label>
+                              <input type="email" class="form-control" id="email" name="email" placeholder="Enter email" value="{{ system_settings.email }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 mb-4">
+                            <div class="form-group">
+                              <label for="facebook">Facebook Link</label>
+                              <input type="text" class="form-control" id="facebook" name="facebook" placeholder="Enter Facebook Link" value="{{ system_settings.facebook }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 mb-4">
+                            <div class="form-group">
+                              <label for="instagram">Instagram</label>
+                              <input type="text" class="form-control" id="instagram" name="instagram" placeholder="Enter Instagram" value="{{ system_settings.instagram }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 mb-4">
+                            <div class="form-group">
+                              <label for="linkdein">LinkedIn</label>
+                              <input type="text" class="form-control" id="linkdein" name="linkdein" placeholder="Enter LinkedIn" value="{{ system_settings.linkdein }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 mb-4">
+                            <div class="form-group">
+                              <label for="company_link">Company Link</label>
+                              <input type="text" class="form-control" id="company_link" name="company_link" placeholder="Enter Company Link" value="{{ system_settings.company_link }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 mb-4">
+                            <div class="form-group">
+                              <label for="logo">Profile Picture (PNG only)</label>
+                              <input type="file" class="form-control" name="logo" accept="image/png">
+                            </div>                          
+                          </div>
+                          <div class="col-sm-12 mb-4">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
                           </div>
                         </div>
-                    </div>
-                    <div class="col-sm-12 mb-4">
-                      <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                        <div class="col-sm-12 mb-4">
-                          <button type="submit" class="btn btn-primary">Upload</button>
-                        </div>
-                      </form>
-                    </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -90,31 +81,15 @@
                 <div class="card">
                   <div class="card-block">
                     <div class="d-flex align-items-center justify-content-center flex-column">
-                      <div class="w-50 p-3">
-                        <img src="{% if request.user.photo %}{{ request.user.photo.url }}{% else %}https://via.placeholder.com/500{% endif %}" alt="profile image" class="img-fluid rounded-circle">
+                      <div class="w-100 p-5">
+                        {% if company_logo_url %}
+                        <img src="{{ company_logo_url }}" alt="Company Logo" class="img-fluid rounded-circle">
+                        {% else %}
+                        <img src="{% static 'default_logo.png' %}" alt="Company Logo" class="img-fluid rounded-circle"> <!-- Default logo if none is provided -->
+                        {% endif %}
                         <a>Company Logo</a>
+                      </div>                                      
                     </div>
-                      <!-- <div class="text-center">
-                        <h4 class="font-weight-bold h6">{{ request.user }}</h4>
-                        <p class="font-italic text-muted">{{ request.user.team }}</p>
-                      </div>
-                    </div>
-                    <div class="small font-weight-light mt-4 text-center text-muted">
-                      {% if user.is_authenticated %}
-                      {% if request.user.role == "1" %}
-                      <p type="text">CEO / Project_Manager</p>
-                      {% elif request.user.role == "2" %}
-                      <p type="text">Team Leader</p>
-                      {% elif request.user.role == "3" %}
-                      <p type="text"> Developer</p>
-                      {% endif %}
-                      {% endif %}
-                    </div> -->
-                    <!-- <div class="d-flex justify-content-center align-items-center">
-                      <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-facebook"></i></a>
-                      <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-twitter"></i></a>
-                      <a href="#" class="h6 text-muted d-block m-1"><i class="icon feather icon-instagram"></i></a>
-                    </div> -->
                   </div>
                 </div>
               </div>
