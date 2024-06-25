@@ -2,7 +2,7 @@
 {% block content %} 
 {% include "includes/sidebar.html" %}
 {% include "includes/navigation.html" %}
-
+{% include "includes/messages.html" %}
 </div>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -107,48 +107,5 @@
 </script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var form = document.getElementById('teamForm');
 
-        form.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent default form submission
-
-            var formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    iziToast.success({
-                        title: 'Success',
-                        message: data.message,
-                        position: 'topRight'
-                    });
-                    form.reset(); // Optionally clear the form
-                } else {
-                    iziToast.error({
-                        title: 'Error',
-                        message: data.message,
-                        position: 'topRight'
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                iziToast.error({
-                    title: 'Error',
-                    message: 'Failed to submit the form. Please try again later.',
-                    position: 'topRight'
-                });
-            });
-        });
-    });
-</script>
 {% endblock content %}

@@ -197,7 +197,7 @@ class LoginFormView(views.View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    messages.success(request, 'Login successful!')
+                    
                     return redirect("/home/")
                 else:
                     messages.warning(request, 'User is not active.')
