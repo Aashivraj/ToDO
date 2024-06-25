@@ -141,17 +141,28 @@
 <br />
 <!-- Assuming you have other HTML structure -->
 <section class="pcoded-main-container">
-  <div class="pcoded-wrapper"> {% for todo in todos %} <div class="card">
-        <div class="card__content">
-           <div class="card__title">{{ todo.title }}</div>
-           <div class="card__text">{{ todo.description }}</div>
-           <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %} </div>
-           <div class="card__note">Note: {{ todo.note }}</div>
-           <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span> {% if todo.status == 0 %} <form method="post" action="{% url 'update_todo_status' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
-              <input type="hidden" name="status" value="1" />
-              <!-- Hidden field to update status to 1 -->
-              <button type="submit" class="card__button">Mark as Completed</button>
-           </form> {% endif %}
-        </div>
-     </div> {% endfor %} </div>
-</section> {% endif %} {% endblock content %}
+   <div class="pcoded-wrapper">
+     {% for todo in todos %}
+     <div class="card">
+       <div class="card__content">
+         <div class="card__title">{{ todo.title }}</div>
+         <div class="card__text">{{ todo.description }}</div>
+         <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %}</div>
+         <div class="card__note">Note: {{ todo.note }}</div>
+         <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span>
+         {% if todo.status == 0 %}
+         <form method="post" action="{% url 'update_todo_status' todo.id %}">
+           {% csrf_token %}
+           <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+           <input type="hidden" name="status" value="1" />
+           <!-- Hidden field to update status to 1 -->
+           <button type="submit" class="card__button">Mark as Completed</button>
+         </form>
+         {% endif %}
+       </div>
+     </div>
+     {% endfor %}
+   </div>
+ </section>
+ {% endif %} 
+ {% endblock content %}
