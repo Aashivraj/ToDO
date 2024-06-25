@@ -59,6 +59,18 @@
                           {% endif %}
                         </div>
                       </div>
+                      <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-sm-12 mb-4">
+                          <div class="form-group">
+                            <label for="ln">Profile Picture</label>
+                            <input type="file" class="form-control" name="profile_picture">
+                          </div>
+                        </div>
+                        <div class="col-sm-12 mb-4">
+                          <button type="submit" class="btn btn-primary">Upload</button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>

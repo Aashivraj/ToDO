@@ -10,6 +10,10 @@ from django.http import HttpResponse
 from .filters import TodoFilter
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
+from django.core.files.storage import FileSystemStorage
+import os
+
+
 # Create your views here.
 
 
@@ -342,4 +346,20 @@ class ProfilePageView(views.View):
     template_name = 'admin_templates/profile.html'
     
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name) 
+        return render(request, self.template_name)
+    
+    def post(self, request, *args, **kwargs):
+        if 'profile_picture' in request.FILES:
+            profile_picture = request.FILES['profile_picture']
+            profile_images_dir = os.path.join(settings.MEDIA_ROOT, 'profile_images')
+
+            # Ensure the directory exists
+            if not os.path.exists(profile_images_dir):
+                os.makedirs(profile_images_dir)
+
+            fs = FileSystemStorage(location=profile_images_dir)
+            filename = fs.save(profile_picture.name, profile_picture)
+            request.user.profile_picture = 'profile_images/' + filename
+            request.user.save()
+            return redirect('profile')  # Redirect to the profile page or any other appropriate page
+        return render(request, self.template_name)
