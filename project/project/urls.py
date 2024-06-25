@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/',LoginFormView.as_view(),name="login"),
+    path('',LoginFormView.as_view(),name="login"),
    
     path('home/',home.as_view(),name="home"),
     path('add_todo/',add_todo.as_view(),name="add_todo"),
@@ -37,6 +37,7 @@ urlpatterns = [
     
     #team Lead Dashboard
     path('teamtodo/',TeamLeadView.as_view(),name="teamtodo"),
+    path('settings/',SettingsView.as_view(),name="settings"),
 
     path('error/',ErrorView.as_view(),name="error"),
     path('users/toggle/<int:user_id>/', ToggleActiveStatusView.as_view(), name='toggle_active_status'),
