@@ -2,7 +2,9 @@
 {% block content %}
 {% include "includes/sidebar.html" %}
 {% include "includes/navigation.html" %}
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
 <style>
   /* Custom DataTable Styles */
   /* Style for the table */
@@ -111,57 +113,85 @@
   }
 </style>
 <section class="pcoded-main-container" style="margin-bottom:40px;">
+  <div class="row">
+    <div class="col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Basic Component</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form method="get"> 
+                            {{ todo_filter.form.as_p }}
+                            <button class="btn btn-primary shadow-2">Submit</button>
+                            <div class="col-md-6"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
       <div class="pcoded-inner-content">
         <h1>Todo List</h1>
-        <form method="get" action="">
-          <div>
-            <label for="user">User:</label>
-            <input type="text" id="user" name="user" value="{{ request.GET.user }}">
-          </div>
-          <div>
-            <label for="date">Date Created:</label>
-            <input type="date" id="date" name="date" value="{{ request.GET.date }}">
-          </div>
-          <button type="submit">Search</button>
-        </form>
-        <table class="todoTable table  ">
-          <thead class="thead-dark ">
+       
+        <table id="todoTable" class="table">
+          <thead class="thead-dark">
             <tr>
-              <th>ID</th> {% if user.is_authenticated and user.role != "3" %} <th>User Name</th> {% endif %} <th>Title</th>
+              <th>ID</th>
+              {% if user.is_authenticated and user.role != "3" %}
+                <th>User Name</th>
+              {% endif %}
+              <th>Title</th>
               <th>Description</th>
               <th>Status</th>
               <th>Date Created</th>
             </tr>
           </thead>
-          <tbody> {% for todo in todo %} <tr>
-              <td>{{ forloop.counter }}</td> {% if user.is_authenticated and user.role != "3" %} <td>{{todo.user}}</td> {% endif %} <td>{{ todo.title }}</td>
-              <td>{{ todo.description }}</td>
-              <td> {% if todo.status == 0 %} <span class="badge badge-secondary">Pending</span> {% elif todo.status == 1 %} <span class="badge badge-success">Completed</span> {% endif %} </td>
-              <td>{{ todo.date_created|date:"d-M-Y" }}</td>
-            </tr> {% endfor %} </tbody>
+          <tbody>
+            {% for todo in todo_list %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                {% if user.is_authenticated and user.role != "3" %}
+                  <td>{{ todo.user }}</td>
+                {% endif %}
+                <td>{{ todo.title }}</td>
+                <td>{{ todo.description }}</td>
+                <td>
+                  {% if todo.status == 0 %}
+                    <span class="badge badge-secondary">Pending</span>
+                  {% elif todo.status == 1 %}
+                    <span class="badge badge-success">Completed</span>
+                  {% endif %}
+                </td>
+                <td>{{ todo.date_created|date:"d-M-Y" }}</td>
+              </tr>
+            {% endfor %}
+          </tbody>
         </table>
       </div>
     </div>
   </div>
 </section>
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
   $(document).ready(function() {
-    $(".todoTable").DataTable({
+    $('#todoTable').DataTable({
       "paging": true,
       "lengthChange": false,
-      "searching": true,
+      "searching": false,
       "info": true,
       "autoWidth": false,
       "responsive": true,
-      "order": [
-        [5, "desc"]
-      ], // Default order by date_created column
+      "order": [[5, "desc"]]
     });
   });
 </script>
+
 {% endblock content %}
+

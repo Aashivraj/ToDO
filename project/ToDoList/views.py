@@ -20,28 +20,29 @@ class ToggleActiveStatusView(views.View):
         user.toggle_active_status()
         return redirect(('userlist'))
 
-class teamlead(LoginRequiredMixin, views.View):
+
+class TeamLeadView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         user = self.request.user
         
         # Check if user is authenticated and has role equal to 2
         if not user.is_authenticated or user.role != "2":
-            # Redirect or handle unauthorized access
-            # For example, you can redirect to login or show a permission denied page
             return render(request, 'admin_templates/error.html')  # Custom 403 Forbidden page
         
         today = timezone.now().date()  # Get today's date
         team1 = user.team
-        userid = user.id
-        print(userid)
         
         # Filter Todo objects based on team
-        todo = Todo.objects.filter(
-            Q(team=team1) 
-        ).exclude(user__id=userid).order_by('status')
+        todo_list = Todo.objects.filter(
+            Q(team=team1) &
+            (Q(date_created__date=today) | Q(status=0))
+        ).exclude(user=user).order_by('status')
         
-        return render(request, 'teamleader_templates/teamtodo.html', {'todo': todo})
-
+        # Apply filters if GET parameters are present
+        todo_filter = TodoFilter(request.GET, queryset=todo_list)
+        todo_list = todo_filter.qs
+        
+        return render(request, 'teamleader_templates/teamtodo.html', {'todo_list': todo_list, 'todo_filter': todo_filter})
    
   
 class home(LoginRequiredMixin, views.View):
