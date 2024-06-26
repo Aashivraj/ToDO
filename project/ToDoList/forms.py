@@ -1,5 +1,8 @@
 from django import forms
 from .models import *
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import password_validation
+
 
 
 class TeamForm(forms.ModelForm):
@@ -53,6 +56,47 @@ class TodoForm(forms.ModelForm):
         if user:
             self.fields['user'].initial = user
             self.fields['team'].initial = user.team if user.team else None
+            
+     
+     
+class UpdateTodoForm(forms.ModelForm):
+    class Meta:
+        model = Todo
+        fields = ['title', 'description', 'note', 'status', 'user', 'team', 'date_created']
+
+        widgets = {
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'readonly': True,
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'readonly': True,
+                'rows': 4,
+            }),
+            'note': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter note',
+                'rows': 2,
+            }),
+            'status': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'readonly': True,
+            }),
+            'user': forms.HiddenInput(),
+            'team': forms.HiddenInput(),
+            'date_created': forms.DateTimeInput(attrs={
+                'class': 'form-control',
+                'readonly': True,
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super(TodoForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['user'].initial = user
+            self.fields['team'].initial = user.team if user.team else None       
   
 class AddUserForm(forms.ModelForm):
     user_name = forms.CharField(
@@ -142,3 +186,22 @@ class LoginForm(forms.Form):
                 "class": "form-control"
             }
         ))
+
+
+class CustomPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label=("Old password"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'current-password', 'autofocus': True, "class": "form-control"}),
+    )
+    new_password1 = forms.CharField(
+        label=("New password"),
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', "class": "form-control"}),
+        strip=False,
+        help_text=password_validation.password_validators_help_text_html(), # type: ignore
+    )
+    new_password2 = forms.CharField(
+        label=("New password confirmation"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', "class": "form-control"}),
+    )

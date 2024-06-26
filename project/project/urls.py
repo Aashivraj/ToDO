@@ -28,7 +28,9 @@ urlpatterns = [
     path('add_todo/',add_todo.as_view(),name="add_todo"),
     path('add_user/',AddUserView.as_view(),name="add_user"),
     path('logout/', LogoutView.as_view(), name="logout"),
-    path('update_user/<int:id>', UpdateUserForm.as_view(), name="update"),
+    path('update_comment/<int:id>', UpdateTodoComment.as_view(), name="updatecomment"),
+    
+    path('update_user/<int:id>', UpdateUserView.as_view(), name="update"),
     path('delete/<int:id>',DeleteUserView.as_view(),name='delete'),
     path('user_list/',UserListView.as_view(),name="userlist"),
     path('todo_list/',ToDoListView.as_view(),name="todolist"),

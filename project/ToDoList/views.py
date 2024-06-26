@@ -16,6 +16,11 @@ from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.contrib.auth import views as auth_views
+from django.urls import reverse_lazy
+
+from .forms import CustomPasswordChangeForm
+
 
 
 
@@ -26,6 +31,48 @@ def user_is_admin(user):
 
 
 
+
+
+
+class ChangePasswordView(auth_views.PasswordChangeView):
+    form_class = CustomPasswordChangeForm
+    template_name = 'admin_templates/change_password.html'
+    success_url = reverse_lazy('password_change_done')
+
+    def form_valid(self, form):
+        messages.success(self.request, 'Your password has been changed successfully.')
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Please correct the errors below.')
+        return super().form_invalid(form)
+
+
+
+
+       
+class UpdateTodoComment(LoginRequiredMixin, views.View):
+
+    def get(self, request, id, *args, **kwargs):
+        todo_instance = get_object_or_404(Todo, pk=id)
+        form = UpdateTodoForm(instance=todo_instance)
+        context = {
+            'form': form,
+        }
+        return render(request, 'admin_templates/update_todo_comment.html', context)
+
+    def post(self, request, id, *args, **kwargs):
+        todo_instance = get_object_or_404(Todo, pk=id)
+        form = UpdateTodoForm(request.POST, instance=todo_instance)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Todo updated successfully.')
+            return redirect('todolist')
+        else:
+            messages.error(request, 'Error updating todo. Please check the form.')
+        return render(request, 'admin_templates/update_todo_comment.html', {'form': form})
+        
+        
 class ToggleActiveStatusView(LoginRequiredMixin, views.View):
     def post(self, request, user_id):
         user = get_object_or_404(CustomUser, id=user_id)
@@ -295,7 +342,7 @@ class UserListView(LoginRequiredMixin,views.View):
 
 
     
-class UpdateUserForm(LoginRequiredMixin, views.View):
+class UpdateUserView(LoginRequiredMixin, views.View):
     def get(self,request,id,*args, **kwargs):
         data=CustomUser.objects.get(pk=id)
         form=AddUserForm(instance=data)
@@ -324,7 +371,7 @@ class DeleteUserView(LoginRequiredMixin, views.View) :
         
         return redirect('userlist')
       
-        
+            
 class ToDoListView(views.View):
     template_name = 'admin_templates/todo_list.html'
 
