@@ -586,3 +586,44 @@ def system_settings(request):
     system_settings = SystemSettings.objects.first()  # Fetch your SystemSettings object
     return {'system_settings': system_settings}
         
+class TaskDetailView(LoginRequiredMixin, views.View):
+    def get(self, request, *args, **kwargs):
+        task_id = kwargs.get('task_id')
+        user_id = kwargs.get('user_id')
+
+        current_user = request.user
+        
+        # Fetch todos specific to the task_id and user_id
+        if current_user.role == "1":
+            # User with role 1 can see all tasks
+            todos = Todo.objects.filter(id=task_id)
+        elif current_user.role == "2":
+            # User with role 2 can see tasks of their team members
+            team_members = CustomUser.objects.filter(team=current_user.team)
+            todos = Todo.objects.filter(id=task_id, user__in=team_members)
+        elif current_user.role == "3":
+            # User with role 3 can only see their own tasks
+            todos = Todo.objects.filter(id=task_id, user=current_user)
+        else:
+            # For any other user, deny access
+            return render(request, 'admin_templates/forbiddenerror.html')
+
+        # Calculate time_taken for filtered todos
+        for todo in todos:
+            if todo.update_time and todo.date_created:
+                time_difference = todo.update_time - todo.date_created
+                hours, remainder = divmod(time_difference.total_seconds(), 3600)
+                minutes, _ = divmod(remainder, 60)
+                todo.time_taken = f"{int(hours)}h {int(minutes)}m"
+            else:
+                todo.time_taken = "N/A"
+
+        # Get the specific task based on task_id
+        task = get_object_or_404(Todo, id=task_id)
+
+        context = {
+            'task': task,
+            'can_view_task': True,
+            'todos': todos,
+        }
+        return render(request, 'admin_templates/individual_todo.html', context)
