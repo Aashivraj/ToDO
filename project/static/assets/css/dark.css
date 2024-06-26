@@ -92,4 +92,10 @@ body.dark {
   body.dark .pcoded-header .main-search.open .input-group .search-close {
     background-color: transparent; }
 
+  body.dark .swal2-toast {
+      background-color: #5c8baf;
+      
+      color: #082032;
+  }
+
 

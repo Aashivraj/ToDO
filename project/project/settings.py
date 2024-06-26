@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ToDoList',
     'widget_tweaks',
-    'izitoast',
+    
 ]
 
 MIDDLEWARE = [

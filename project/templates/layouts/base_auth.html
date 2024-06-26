@@ -59,36 +59,7 @@
 
     <!-- Custom Script to Initialize DataTable -->
     
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-          const messages = JSON.parse('{{ messages|escapejs }}');
-          messages.forEach(message => {
-              const colorMap = {
-                  'debug': 'blue',
-                  'info': 'blue',
-                  'success': 'green',
-                  'warning': 'yellow',
-                  'error': 'red'
-              };
-              const iconMap = {
-                  'debug': 'fa fa-info-circle',
-                  'info': 'fa fa-info-circle',
-                  'success': 'fa fa-check-circle',
-                  'warning': 'fa fa-exclamation-triangle',
-                  'error': 'fa fa-exclamation-circle'
-              };
-
-              iziToast.show({
-                  title: message.tags.charAt(0).toUpperCase() + message.tags.slice(1),
-                  message: message.message,
-                  position: 'topRight',
-                  timeout: 3000,
-                  color: colorMap[message.tags] || 'blue',
-                  icon: iconMap[message.tags] || 'fa fa-info-circle'
-              });
-          });
-      });
-  </script>
+  
     <script>
       $(document).ready(function () {
         $("#example").DataTable({

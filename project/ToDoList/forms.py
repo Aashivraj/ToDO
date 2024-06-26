@@ -1,8 +1,10 @@
 from django import forms
 from .models import *
 
+
 class TeamForm(forms.ModelForm):
     team_department = forms.CharField(
+        required=True,
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -11,10 +13,10 @@ class TeamForm(forms.ModelForm):
             }
         )
     )
+
     class Meta:
-      model=Team
-      fields='__all__'
-      
+        model = Team
+        fields = '__all__'
 class CustomUserForm(forms.ModelForm):
     class Meta:
         model=CustomUser

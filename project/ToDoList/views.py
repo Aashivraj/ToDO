@@ -119,7 +119,7 @@ class home(LoginRequiredMixin, views.View):
             return render(request, 'admin_templates/home.html', {'form': form, 'todos': todos})
 
 
-class add_todo(LoginRequiredMixin,views.View):
+class add_todo(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return HttpResponse("User not authenticated", status=401)
@@ -129,17 +129,24 @@ class add_todo(LoginRequiredMixin,views.View):
     
     def post(self, request, *args, **kwargs):
         user = request.user
-        form = TodoForm(request.POST, user=user)
+        form = TodoForm(request.POST, user=user)  # Initialize form with POST data and user
+        
+        # Check if form is valid and handle errors
         if form.is_valid():
             todo = form.save(commit=False)
             todo.user = user
             todo.team = user.team
             todo.save()
             messages.success(request, 'Todo added')
-            
-            return redirect('home')  # Assuming 'home' is the name of the URL for the home page
+            return redirect('home')  # Redirect to home page after successful form submission
         else:
-            messages.warning(request, 'Invalid credential')
+            # Add error messages for specific fields if they are empty
+            if 'title' not in form.cleaned_data or not form.cleaned_data['title']:
+                messages.error(request, 'Please enter a title.')
+            if 'description' not in form.cleaned_data or not form.cleaned_data['description']:
+                messages.error(request, 'Please enter a description.')
+            if 'note' not in form.cleaned_data or not form.cleaned_data['note']:
+                messages.error(request, 'Please enter a note.')
             
             return render(request, 'admin_templates/add_todo.html', {'form': form, 'user': user})
 
@@ -350,19 +357,44 @@ class ToDoListView(LoginRequiredMixin, views.View):
 
  
 @method_decorator(user_passes_test(user_is_admin), name='dispatch')   
-class TeamView(LoginRequiredMixin, views.View):
+class TeamView(views.View):
+    def get(self, request, *args, **kwargs):
+        team_form = TeamForm()
+        return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
+    
+    def post(self, request, *args, **kwargs):
+        team_form = TeamForm(request.POST)
+        
+        if team_form.is_valid():
+            team_form.save()
+            messages.success(request, 'Team added')
+            return redirect('add_user')
+        else:
+            # Check if team_department field is empty
+            if not team_form.cleaned_data['team_department']:
+                messages.error(request, 'Please enter a Team.')
+            
+            return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
     def get(self, request, *args, **kwargs):
         team_form=TeamForm()
       
         return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
     def post(self, request, *args, **kwargs):
         team_form=TeamForm(request.POST)
+        if team_form == None:
+            if 'team_department' not in team_form.cleaned_data or not team_form.cleaned_data['team_department']:
+                messages.error(request, 'Please enter a Team.')
+            return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
+            
         if team_form.is_valid():
             team_form.save()
             messages.success(request, 'Team added')
             
             return redirect('add_user')
-        return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
+        else:
+            if 'team_department' not in team_form.cleaned_data or not team_form.cleaned_data['team_department']:
+                messages.error(request, 'Please enter a Team.')
+            return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
     
 class AdminHomeTodoView(LoginRequiredMixin, views.View):
     template_name = 'admin_templates/todo_list.html'
