@@ -1,14 +1,13 @@
 <nav class="pcoded-navbar">
   <div class="navbar-wrapper">
     <div class="navbar-brand header-logo">
-      <a href="{% url 'home' %}" class="b-brand">
-        <div class="b-bg">
-          <i class="feather icon-trending-up"></i>
-        </div>
-        <span class="b-title">Home</span>
-      </a>
-      <a class="mobile-menu" id="mobile-collapse" href="javascript:"><span></span
-      ></a>
+      <i class="fa-regular fa-registered text-c-green" id="nav-icon" style="display: none;"></i>
+      <span class="pcoded-content" id="nav-logo">
+        {% if company_logo_url %}
+        <img src="{{ company_logo_url }}" alt="Company Logo" height="50px" width="150px">
+        {% endif %}
+      </span>
+      <a class="mobile-menu" id="mobile-collapse" href="javascript:void(0);"><span></span></a>
     </div>
     <div class="navbar-content scroll-div">
       <ul class="nav pcoded-inner-navbar">
@@ -21,15 +20,14 @@
             <span class="pcoded-micon">
               <i class="fa-solid fa-house text-c-green"></i></span><span class="pcoded-mtext">Home</span></a>
         </li>
-       
+
         <li class="nav-item">
           <a href="{% url 'profile' %}" class="nav-link">
             <span class="pcoded-micon"> <i class="fa-regular fa-user text-c-green"></i>
               </span>
               <span class="pcoded-mtext">User-Profile</span></a>
         </li>
-        
-        
+
         {% if user.is_authenticated and user.role == "2" %}
         <li class="nav-item">
           <a href="{% url 'teamtodo' %}" class="nav-link">
@@ -48,13 +46,13 @@
               <span class="pcoded-mtext">Add To-Do</span></a>
         </li>
 
-
         <li class="nav-item">
           <a href="{% url 'todolist' %}" class="nav-link">
             <span class="pcoded-micon"> <i class="fa-solid fa-table-list text-c-green"></i>
               </span>
               <span class="pcoded-mtext">ToDo List</span></a>
         </li>
+
         {% if user.is_authenticated and user.role != "3" %}
         <li class="nav-item">
           <a href="{% url 'add_user' %}" class="nav-link">
@@ -64,9 +62,7 @@
         </li>
         {% endif %}
 
-
         {% if user.is_authenticated and user.role == "1" %}
-
         <li class="nav-item">
           <a href="{% url 'userlist' %}" class="nav-link">
             <span class="pcoded-micon"> <i class="fa-solid fa-users text-c-green"></i>
@@ -76,7 +72,6 @@
         {% endif %}
 
         {% if user.is_authenticated and user.role == "1" %}
-        <!-- Add this to includes/sidebar.html where appropriate -->
         <li class="nav-item">
           <a href="{% url 'team' %}" class="nav-link">
             <span class="pcoded-micon"> <i class="fa-solid fa-users text-c-green"></i>
@@ -99,3 +94,38 @@
     </div>
   </div>
 </nav>
+<style>
+  .pcoded-navbar #nav-logo {
+  display: block;
+}
+
+.pcoded-navbar #nav-icon {
+  display: none;
+}
+
+.pcoded-navbar.collapsed #nav-logo {
+  display: none;
+}
+
+.pcoded-navbar.collapsed #nav-icon {
+  display: block;
+}
+
+</style>
+<script>
+document.getElementById('mobile-collapse').addEventListener('click', function () {
+  var navbar = document.querySelector('.pcoded-navbar');
+  navbar.classList.toggle('collapsed');
+
+  var navLogo = document.getElementById('nav-logo');
+  var navIcon = document.getElementById('nav-icon');
+
+  if (navbar.classList.contains('collapsed')) {
+    navLogo.style.display = 'none';
+    navIcon.style.display = 'block';
+  } else {
+    navLogo.style.display = 'block';
+    navIcon.style.display = 'none';
+  }
+});
+</script>

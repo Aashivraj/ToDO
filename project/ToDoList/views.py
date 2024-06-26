@@ -491,3 +491,10 @@ class TaskDetailView(views.View):
             'task': task,
         }
         return render(request, 'admin_templates/individual_todo.html', context)
+     
+
+def system_settings(request):
+    # Assuming SystemSettings has a unique instance or you fetch the appropriate settings
+    system_settings = SystemSettings.objects.first()  # Fetch your SystemSettings object
+    return {'system_settings': system_settings}
+        
