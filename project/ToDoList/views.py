@@ -43,19 +43,29 @@ class TeamLeadView(LoginRequiredMixin, views.View):
         if not user.is_authenticated or user.role != "2":
             return render(request, 'admin_templates/error.html')  # Custom 403 Forbidden page
         
-        today = timezone.now().date()  # Get today's date
         team1 = user.team
         
         # Filter Todo objects based on team
-        todo_list = Todo.objects.filter(
+        todos = Todo.objects.filter(
             Q(team=team1)
         ).exclude(user=user).order_by('status')
         
         # Apply filters if GET parameters are present
-        todo_filter = TeamTodoFilter(request.GET, queryset=todo_list, user=user)
-        todo_list = todo_filter.qs
+        todo_filter = TeamTodoFilter(request.GET, queryset=todos, user=user)
+        todos = todo_filter.qs
+
+        # Calculate time taken for each todo item
+        for todo in todos:
+            if todo.update_time and todo.date_created:
+                time_difference = todo.update_time - todo.date_created
+                hours, remainder = divmod(time_difference.total_seconds(), 3600)
+                minutes, _ = divmod(remainder, 60)
+                todo.time_taken = f"{int(hours)}h {int(minutes)}m"
+            else:
+                todo.time_taken = "N/A"
         
-        return render(request, 'teamleader_templates/teamtodo.html', {'todo_list': todo_list, 'todo_filter': todo_filter})
+        return render(request, 'teamleader_templates/teamtodo.html', {'todos': todos, 'todo_filter': todo_filter})
+   
    
   
 class home(LoginRequiredMixin, views.View):

@@ -239,12 +239,13 @@ body.dark .flatpickr-calendar {
               <th>Title</th>
               <th>Description</th>
               <th>Status</th>
-              <th>Date Created</th>
+              <th>Task Date</th>
+              <th>Time Taken</th>
               <th>Detail View</th>
             </tr>
           </thead>
           <tbody>
-            {% for todo in todo_list %}
+            {% for todo in todos %}
               <tr>
                 <td>{{ forloop.counter }}</td>
                 {% if user.is_authenticated and user.role != "3" %}
@@ -264,8 +265,12 @@ body.dark .flatpickr-calendar {
                   {% endif %}
                 </td>
                 <td>{{ todo.date_created|date:"d-M-Y" }}</td>
+                <td>{{ todo.time_taken }}</td>
                 <td>
-                <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}" class="btn btn-info btn-sm">View Details</a>
+                  <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}">
+                  <i class="fa-solid fa-eye text-c-green">  
+                  </i>
+                </a>
                 </td>
               </tr>
             {% endfor %}

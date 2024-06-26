@@ -53,9 +53,7 @@
                 <td> {% if todo.status == 0 %} <span class="badge badge-secondary">Pending</span> {% elif todo.status == 1 %} <span class="badge badge-success">Completed</span> {% endif %} </td>
                 <td>{{ todo.date_created|date:"d-M-Y" }}</td>
                 <td>
-                  <i class="fa-solid fa-eye text-c-green">
-                    <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"></a>
-                  </i>
+                    <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"><i class="fa-solid fa-eye text-c-green"></i></a>
                 </td>
               </tr> {% endfor %} </tbody>
         </table> {% endfor %}
