@@ -18,16 +18,16 @@
       <li><a href="javascript:" class="full-screen" onclick="javascript:toggleFullScreen()"><i
         class="feather icon-maximize"></i></a></li>
    
-      <li class="nav-item dropdown">
+      <!-- <li class="nav-item dropdown">
         <a class="dropdown-toggle" href="javascript:" data-toggle="dropdown">Dropdown</a>
         <ul class="dropdown-menu">
           <li><a class="dropdown-item" href="javascript:">Action</a></li>
           <li><a class="dropdown-item" href="javascript:">Another action</a></li>
           <li><a class="dropdown-item" href="javascript:">Something else here</a></li>
         </ul>
-      </li>
+      </li> -->
       <li class="nav-item">
-        <div class="main-search">
+        <!-- <div class="main-search">
           <div class="input-group">
             <input type="text" id="m-search" class="form-control" placeholder="Search . . .">
             <a href="javascript:" class="input-group-append search-close">
@@ -37,7 +37,7 @@
               <i class="feather icon-search input-group-text"></i>
             </span>
           </div>
-        </div>
+        </div> -->
       </li>
     </ul>
     
@@ -131,23 +131,24 @@
             <ul class="pro-body">
        
 
-              <li><a href="#" class="dropdown-item"><i class="feather icon-settings"></i>
-                  Settings</a></li>
-              <li><a href="#" class="dropdown-item"><i class="feather icon-user"></i>
-                  Profile</a></li>
-              
-                
-              
-              
+                 
               <li>
-               
-             
+                {% if user.is_authenticated and user.role == "1" %}
+                <a href="#" class="dropdown-item"><i class="feather icon-settings"></i>
+                  Settings</a></li>
+                {% endif %} 
+                
+              <li>
+                <a href="{% url 'profile' %}" class="dropdown-item">
+                <i class="feather icon-user"></i>Profile
+              </a>              
+              </li>                                                          
+              <li>
                 <a href="{% url 'change_password' %}" class="dropdown-item">
                 
                   <i class="feather icon-edit"></i>Change Password
                 </a>
-              </li>
-             
+              </li>            
             </ul>
           </div>
         </div>
