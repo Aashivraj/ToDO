@@ -26,7 +26,7 @@ def user_is_admin(user):
 
 
 
-class ToggleActiveStatusView(views.View):
+class ToggleActiveStatusView(LoginRequiredMixin, views.View):
     def post(self, request, user_id):
         user = get_object_or_404(CustomUser, id=user_id)
         user.toggle_active_status()
@@ -215,7 +215,7 @@ class AddUserView(LoginRequiredMixin,views.View):
         return render(request, 'admin_templates/add_user.html', {'form': form})
 
   
-class LoginFormView(views.View):
+class LoginFormView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         form = LoginForm()
         return render(request, 'admin_templates/login.html', {'form': form})
@@ -243,6 +243,7 @@ class LoginFormView(views.View):
             messages.error(request, 'Form is not valid')
 
         return render(request, "admin_templates/login.html", {"form": form})
+    
 class LogoutView(LoginRequiredMixin,views.View):
    def get(self,request,*args, **kwargs):
       logout(request)
@@ -266,7 +267,7 @@ class UserListView(LoginRequiredMixin,views.View):
 
 
     
-class UpdateUserForm(views.View):
+class UpdateUserForm(LoginRequiredMixin, views.View):
     def get(self,request,id,*args, **kwargs):
         data=CustomUser.objects.get(pk=id)
         form=AddUserForm(instance=data)
@@ -287,7 +288,7 @@ class UpdateUserForm(views.View):
         
         
        
-class DeleteUserView(views.View) :
+class DeleteUserView(LoginRequiredMixin, views.View) :
     def get(self, request,id,*args, **kwargs):
         delete_user=CustomUser.objects.get(pk=id)
         delete_user.delete()
@@ -296,7 +297,7 @@ class DeleteUserView(views.View) :
         return redirect('userlist')
       
         
-class ToDoListView(views.View):
+class ToDoListView(LoginRequiredMixin, views.View):
     template_name = 'admin_templates/todo_list.html'
 
     def get(self, request, *args, **kwargs):
@@ -325,7 +326,7 @@ class ToDoListView(views.View):
 
  
 @method_decorator(user_passes_test(user_is_admin), name='dispatch')   
-class TeamView(views.View):
+class TeamView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         team_form=TeamForm()
       
@@ -339,7 +340,7 @@ class TeamView(views.View):
             return redirect('add_user')
         return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
     
-class AdminHomeTodoView(views.View):
+class AdminHomeTodoView(LoginRequiredMixin, views.View):
     template_name = 'admin_templates/todo_list.html'
     
     def get(self, request, *args, **kwargs):
@@ -356,7 +357,7 @@ class AdminHomeTodoView(views.View):
         
         return render(request, self.template_name, {'team_todos': team_todos})   
     
-class TeamToDo(views.View):
+class TeamToDo(LoginRequiredMixin, views.View):
     template_name = 'teamleader_templates/teamtodo.html'
     
     def get(self, request, *args, **kwargs):
@@ -384,7 +385,7 @@ class TeamToDo(views.View):
         return render(request, self.template_name, {'todos': todos})
     
 
-class ProfilePageView(views.View):
+class ProfilePageView(LoginRequiredMixin, views.View):
     template_name = 'admin_templates/profile.html'
     
     def get(self, request, *args, **kwargs):
@@ -421,7 +422,7 @@ class ProfilePageView(views.View):
         # If no profile_picture in request.FILES, render the template
         return render(request, self.template_name)
     
-class SettingsView(views.View):
+class SettingsView(LoginRequiredMixin, views.View):
     template_name = 'admin_templates/settings.html'
 
     def get(self, request, *args, **kwargs):
@@ -482,7 +483,7 @@ class SettingsView(views.View):
         
             return redirect('system_settings')
         
-class TaskDetailView(views.View):
+class TaskDetailView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         task_id = kwargs.get('task_id')
         user_id = kwargs.get('user_role')
