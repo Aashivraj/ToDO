@@ -483,12 +483,38 @@ class SettingsView(views.View):
             return redirect('system_settings')
         
 class TaskDetailView(views.View):
-     def get(self, request, *args, **kwargs):
-        user_id = kwargs.get('user_id')
+    def get(self, request, *args, **kwargs):
         task_id = kwargs.get('task_id')
-        task = get_object_or_404(Todo, id=task_id, user_id=user_id)
+        user_id = kwargs.get('user_role')
+
+        current_user = request.user
+
+        if current_user.role == "1":
+            # User with role 1 can see all tasks
+            task = get_object_or_404(Todo, id=task_id)
+            
+        elif current_user.role == "2":
+            # User with role 2 can see tasks of their team members
+            team_members = CustomUser.objects.filter(team=current_user.team)
+            if Todo.objects.filter(id=task_id, user__in=team_members).exists():
+                task = get_object_or_404(Todo, id=task_id)
+            else:
+                return render(request, 'admin_templates/forbiddenerror.html')
+                
+        elif current_user.role == "3":
+            # User with role 3 can only see their own tasks
+            if Todo.objects.filter(id=task_id, user=current_user).exists():
+                task = get_object_or_404(Todo, id=task_id)
+            else:
+                return render(request, 'admin_templates/forbiddenerror.html')
+                
+        else:
+            # For any other user, deny access
+            return render(request, 'admin_templates/forbiddenerror.html')
+
         context = {
             'task': task,
+            'can_view_task': True,
         }
         return render(request, 'admin_templates/individual_todo.html', context)
      

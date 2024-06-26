@@ -1,0 +1,49 @@
+{% extends "layouts/base_error.html" %}
+{% block content %}
+
+<a href="https://codepen.io/uiswarup/full/vYPxywO" target="_blank">
+    <header class="top-header">
+  </header>
+  
+  <!--dust particel-->
+  <div>
+    <div class="starsec"></div>
+    <div class="starthird"></div>
+    <div class="starfourth"></div>
+    <div class="starfifth"></div>
+  </div>
+  <!--Dust particle end--->
+  
+  
+  <div class="lamp__wrap">
+    <div class="lamp">
+      <div class="cable"></div>
+      <div class="cover"></div>
+      <div class="in-cover">
+        <div class="bulb"></div>
+      </div>
+      <div class="light"></div>
+    </div>
+  </div>
+  <!-- END Lamp -->
+  <section class="error">
+    <!-- Content -->
+    <div class="error__content">
+      <div class="error__message message">
+        <h1 class="message__title">You are not authorized for this Data</h1>
+        <p class="message__text">You are not authorized for this Data</p>
+      </div>
+      <div class="error__nav e-nav">
+        <a href="{% url 'home' %}"  class="e-nav__link"></a>
+      </div>
+    </div>
+    <!-- END Content -->
+  
+  </section>
+  
+    </a>
+    <label class="d-none">
+        <i class="icon feather icon-moon" id="theme-indicator"></i>
+        <input type="checkbox" id="theme-switch" class="d-none" />
+      </label>
+{% endblock content %}
