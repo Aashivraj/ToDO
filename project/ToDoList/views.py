@@ -325,43 +325,31 @@ class DeleteUserView(LoginRequiredMixin, views.View) :
         return redirect('userlist')
       
         
-class ToDoListView(LoginRequiredMixin, views.View):
+class ToDoListView(views.View):
     template_name = 'admin_templates/todo_list.html'
 
     def get(self, request, *args, **kwargs):
         user = request.user
 
-        print(user.role)
         if user.role == "1":
-            user = request.user
-            todos = Todo.objects.all().order_by('status')
-            # Calculate time taken for each todo item
-            for todo in todos:
-                if todo.update_time and todo.date_created:
-                    time_difference = todo.update_time - todo.date_created
-                    hours, remainder = divmod(time_difference.total_seconds(), 3600)
-                    minutes, _ = divmod(remainder, 60)
-                    todo.time_taken = f"{int(hours)}h {int(minutes)}m"
-                else:
-                    todo.time_taken = "N/A"
-
-            return render(request, self.template_name, {'todos': todos})
-        
-        if user.role != "1":
-            user = request.user
+            queryset = Todo.objects.all()
+            todos = queryset.order_by('status')
+            filter = TodoFilter(request.GET, queryset=todos)
+            todos = filter.qs
+        elif user.role == "2" or user.role == "3":
             todos = Todo.objects.filter(user=user).order_by('status')
+        
+        # Calculate time_taken for each todo item
+        for todo in todos:
+            if todo.update_time and todo.date_created:
+                time_difference = todo.update_time - todo.date_created
+                hours, remainder = divmod(time_difference.total_seconds(), 3600)
+                minutes, _ = divmod(remainder, 60)
+                todo.time_taken = f"{int(hours)}h {int(minutes)}m"
+            else:
+                todo.time_taken = "N/A"
 
-            # Calculate time taken for each todo item
-            for todo in todos:
-                if todo.update_time and todo.date_created:
-                    time_difference = todo.update_time - todo.date_created
-                    hours, remainder = divmod(time_difference.total_seconds(), 3600)
-                    minutes, _ = divmod(remainder, 60)
-                    todo.time_taken = f"{int(hours)}h {int(minutes)}m"
-                else:
-                    todo.time_taken = "N/A"
-
-            return render(request, self.template_name, {'todos': todos})
+        return render(request, self.template_name, {'todos': todos, 'filter': filter})
 
 
 
@@ -464,62 +452,98 @@ class SettingsView(LoginRequiredMixin, views.View):
     template_name = 'admin_templates/settings.html'
 
     def get(self, request, *args, **kwargs):
-            system_settings = SystemSettings.objects.first()
-            company_logo_url = None
-            if system_settings and system_settings.company_logo:
-                company_logo_url = settings.MEDIA_URL + system_settings.company_logo
+        system_settings = SystemSettings.objects.first()
+        company_logo_url = None
+        small_logo_url = None
         
-            return render(request, self.template_name, {'system_settings': system_settings, 'company_logo_url': company_logo_url})
+        if system_settings:
+            if system_settings.company_logo:
+                company_logo_url = settings.MEDIA_URL + system_settings.company_logo
+            if system_settings.small_logo:
+                small_logo_url = settings.MEDIA_URL + system_settings.small_logo
+        
+        return render(request, self.template_name, {
+            'system_settings': system_settings,
+            'company_logo_url': company_logo_url,
+            'small_logo_url': small_logo_url,
+        })
 
     def post(self, request, *args, **kwargs):
         system_settings = SystemSettings.objects.first()
+        
         if 'logo' in request.FILES:
             logo = request.FILES['logo']
             logo_dir = os.path.join(settings.MEDIA_ROOT, 'logo')
-
+            
             # Ensure the directory exists
             if not os.path.exists(logo_dir):
                 os.makedirs(logo_dir)
-
+            
             # Delete the old logo if it exists
             if system_settings and system_settings.company_logo:
                 old_logo_path = os.path.join(settings.MEDIA_ROOT, system_settings.company_logo)
                 if os.path.exists(old_logo_path):
                     os.remove(old_logo_path)
                     messages.warning(request, 'Logo is removed')
-                    
-
+            
             # Determine the file extension and save the new logo
             file_extension = logo.name.split('.')[-1]
             filename = 'Systemlogo.' + file_extension
             fs = FileSystemStorage(location=logo_dir)
             filename = fs.save(filename, logo)
-
+            
             if system_settings:
                 system_settings.company_logo = 'logo/' + filename
                 system_settings.save()
                 messages.warning(request, 'New logo added')
-                
             else:
                 # Create a new SystemSettings instance if it doesn't exist
                 SystemSettings.objects.create(company_logo='logo/' + filename)
-
-            return redirect('system_settings')                   
-            
-        else:
-            system_settings.company_name = request.POST.get('company_name', system_settings.company_name)
-            system_settings.mobile = request.POST.get('mobile', system_settings.mobile)
-            system_settings.email = request.POST.get('email', system_settings.email)
-            system_settings.facebook = request.POST.get('facebook', system_settings.facebook)
-            system_settings.instagram = request.POST.get('instagram', system_settings.instagram)
-            system_settings.linkdein = request.POST.get('linkdein', system_settings.linkdein)
-            system_settings.company_link = request.POST.get('company_link', system_settings.company_link)
-            
-            system_settings.save()
-            messages.warning(request, 'Data added')
-            
         
-            return redirect('system_settings')
+        if 'small_logo' in request.FILES:
+            small_logo = request.FILES['small_logo']
+            small_logo_dir = os.path.join(settings.MEDIA_ROOT, 'logo')
+            
+            # Ensure the directory exists
+            if not os.path.exists(small_logo_dir):
+                os.makedirs(small_logo_dir)
+            
+            # Delete the old small logo if it exists
+            if system_settings and system_settings.small_logo:
+                old_small_logo_path = os.path.join(settings.MEDIA_ROOT, system_settings.small_logo)
+                if os.path.exists(old_small_logo_path):
+                    os.remove(old_small_logo_path)
+                    messages.warning(request, 'Small Logo is removed')
+            
+            # Save the new small logo
+            small_filename = 'small_logo.png'  # Fixed filename for small logo
+            fs = FileSystemStorage(location=small_logo_dir)
+            small_filename = fs.save(small_filename, small_logo)
+            
+            if system_settings:
+                system_settings.small_logo = 'logo/' + small_filename
+                system_settings.save()
+                messages.warning(request, 'New small logo added')
+            else:
+                # Create a new SystemSettings instance if it doesn't exist
+                SystemSettings.objects.create(small_logo='logo/' + small_filename)
+        
+        else:
+            # Handle other form fields update here
+            if system_settings:
+                system_settings.company_name = request.POST.get('company_name', system_settings.company_name)
+                system_settings.mobile = request.POST.get('mobile', system_settings.mobile)
+                system_settings.email = request.POST.get('email', system_settings.email)
+                system_settings.facebook = request.POST.get('facebook', system_settings.facebook)
+                system_settings.instagram = request.POST.get('instagram', system_settings.instagram)
+                system_settings.linkdein = request.POST.get('linkdein', system_settings.linkdein)
+                system_settings.company_link = request.POST.get('company_link', system_settings.company_link)
+                
+                system_settings.save()
+                messages.warning(request, 'Data updated')
+        
+        return redirect('system_settings')
+
         
 class TaskDetailView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
@@ -557,7 +581,6 @@ class TaskDetailView(LoginRequiredMixin, views.View):
         }
         return render(request, 'admin_templates/individual_todo.html', context)
      
-
 def system_settings(request):
     # Assuming SystemSettings has a unique instance or you fetch the appropriate settings
     system_settings = SystemSettings.objects.first()  # Fetch your SystemSettings object

@@ -1,15 +1,40 @@
+<style>
+  /* CSS styles for the navbar */
+  .pcoded-navbar #nav-logo {
+    display: block;
+  }
+
+  .pcoded-navbar #nav-icon {
+    display: none;
+  }
+
+  .pcoded-navbar.collapsed #nav-logo {
+    display: none;
+  }
+
+  .pcoded-navbar.collapsed #nav-icon {
+    display: block;
+  }
+</style>
+<!-- Navbar HTML structure -->
 <nav class="pcoded-navbar">
   <div class="navbar-wrapper">
     <div class="navbar-brand header-logo">
-      <i class="fa-regular fa-registered text-c-green" id="nav-icon" style="display: none;"></i>
+      <!-- Small logo (hidden by default) -->
+      <img class="pcoded-micon" src="{{ small_logo_url }}" id="nav-icon" height="30px" width="30px" style="display: none; margin-right: 0px;">
+      <!-- Main company logo (conditionally displayed) -->
       <span class="pcoded-content" id="nav-logo">
         {% if company_logo_url %}
-        <img src="{{ company_logo_url }}" alt="Company Logo" height="50px" width="150px">
+          <img src="{{ company_logo_url }}" alt="Company Logo" height="50px" width="150px">
         {% endif %}
       </span>
-      <a class="mobile-menu" id="mobile-collapse" href="javascript:void(0);"><span></span></a>
+      <!-- Mobile menu button -->
+      <a class="mobile-menu" id="mobile-collapse" href="javascript:void(0);">
+        <span></span>
+      </a>
     </div>
     <div class="navbar-content scroll-div">
+      <!-- Navigation links -->
       <ul class="nav pcoded-inner-navbar">
         <li class="nav-item pcoded-menu-caption">
           <label>Navigation</label>
@@ -18,14 +43,19 @@
         <li class="nav-item">
           <a href="{% url 'home' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-solid fa-house text-c-green"></i></span><span class="pcoded-mtext">Home</span></a>
+              <i class="fa-solid fa-house text-c-green"></i>
+            </span>
+            <span class="pcoded-mtext">Home</span>
+          </a>
         </li>
 
         <li class="nav-item">
           <a href="{% url 'profile' %}" class="nav-link">
-            <span class="pcoded-micon"> <i class="fa-regular fa-user text-c-green"></i>
-              </span>
-              <span class="pcoded-mtext">User-Profile</span></a>
+            <span class="pcoded-micon">
+              <i class="fa-regular fa-user text-c-green"></i>
+            </span>
+            <span class="pcoded-mtext">User Profile</span>
+          </a>
         </li>
 
         {% if user.is_authenticated and user.role == "2" %}
@@ -41,42 +71,52 @@
 
         <li class="nav-item">
           <a href="{% url 'add_todo' %}" class="nav-link">
-            <span class="pcoded-micon"> <i class="fa-solid fa-list-check text-c-green"></i>
-              </span>
-              <span class="pcoded-mtext">Add To-Do</span></a>
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-list-check text-c-green"></i>
+            </span>
+            <span class="pcoded-mtext">Add To-Do</span>
+          </a>
         </li>
 
         <li class="nav-item">
           <a href="{% url 'todolist' %}" class="nav-link">
-            <span class="pcoded-micon"> <i class="fa-solid fa-table-list text-c-green"></i>
-              </span>
-              <span class="pcoded-mtext">ToDo List</span></a>
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-table-list text-c-green"></i>
+            </span>
+            <span class="pcoded-mtext">ToDo List</span>
+          </a>
         </li>
 
         {% if user.is_authenticated and user.role != "3" %}
         <li class="nav-item">
           <a href="{% url 'add_user' %}" class="nav-link">
-            <span class="pcoded-micon"> <i class="fa-solid fa-user-plus text-c-green"></i>
-              </span>
-              <span class="pcoded-mtext">Add User</span></a>
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-user-plus text-c-green"></i>
+            </span>
+            <span class="pcoded-mtext">Add User</span>
+          </a>
         </li>
         {% endif %}
 
         {% if user.is_authenticated and user.role == "1" %}
         <li class="nav-item">
           <a href="{% url 'userlist' %}" class="nav-link">
-            <span class="pcoded-micon"> <i class="fa-solid fa-users text-c-green"></i>
-              </span>
-              <span class="pcoded-mtext">User List</span></a>
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-users text-c-green"></i>
+            </span>
+            <span class="pcoded-mtext">User List</span>
+          </a>
         </li>
         {% endif %}
 
         {% if user.is_authenticated and user.role == "1" %}
         <li class="nav-item">
           <a href="{% url 'team' %}" class="nav-link">
-            <span class="pcoded-micon"> <i class="fa-solid fa-users text-c-green"></i>
-              </span>
-              <span class="pcoded-mtext">Add team</span></a>
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-users text-c-green"></i>
+            </span>
+            <span class="pcoded-mtext">Add Team</span>
+          </a>
         </li>
         {% endif %}
 
@@ -88,44 +128,28 @@
             </span>
             <span class="pcoded-mtext">System Settings</span>
           </a>
-        </li>        
+        </li>
         {% endif %}
       </ul>
     </div>
   </div>
 </nav>
-<style>
-  .pcoded-navbar #nav-logo {
-  display: block;
-}
 
-.pcoded-navbar #nav-icon {
-  display: none;
-}
-
-.pcoded-navbar.collapsed #nav-logo {
-  display: none;
-}
-
-.pcoded-navbar.collapsed #nav-icon {
-  display: block;
-}
-
-</style>
 <script>
-document.getElementById('mobile-collapse').addEventListener('click', function () {
-  var navbar = document.querySelector('.pcoded-navbar');
-  navbar.classList.toggle('collapsed');
+  // JavaScript for toggling navbar collapse and switching logo visibility
+  document.getElementById('mobile-collapse').addEventListener('click', function () {
+    var navbar = document.querySelector('.pcoded-navbar');
+    navbar.classList.toggle('collapsed');
 
-  var navLogo = document.getElementById('nav-logo');
-  var navIcon = document.getElementById('nav-icon');
+    var navLogo = document.getElementById('nav-logo');
+    var navIcon = document.getElementById('nav-icon');
 
-  if (navbar.classList.contains('collapsed')) {
-    navLogo.style.display = 'none';
-    navIcon.style.display = 'block';
-  } else {
-    navLogo.style.display = 'block';
-    navIcon.style.display = 'none';
-  }
-});
+    if (navbar.classList.contains('collapsed')) {
+      navLogo.style.display = 'none';
+      navIcon.style.display = 'block';
+    } else {
+      navLogo.style.display = 'block';
+      navIcon.style.display = 'none';
+    }
+  });
 </script>

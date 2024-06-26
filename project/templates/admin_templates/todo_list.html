@@ -167,7 +167,7 @@ body.dark .flatpickr-calendar {
   }
 </style>
 <section class="pcoded-main-container" style="margin-bottom:10px;">
-  {% if user.is_authenticated and user.role == "1" %}
+  {% if user.is_authenticated and user.role == "1" %} 
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
         <div class="pcoded-inner-content">
@@ -208,6 +208,7 @@ body.dark .flatpickr-calendar {
                                                 <div class="form-group d-flex justify-content-end">
                                                     <button id="applyBtn" class="btn btn-primary mr-2">Apply</button>
                                                     <a href="{% url 'todolist' %}" type="button" id="clearBtn" class="btn btn-secondary">Clear Filters</a>
+                                                 
                                                 </div>
                                             </div>
                                         </div>
@@ -222,8 +223,9 @@ body.dark .flatpickr-calendar {
             </div>
         </div>
     </div>
-  </div>
-  {% endif %}
+</div>
+
+{% endif %} 
 
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
