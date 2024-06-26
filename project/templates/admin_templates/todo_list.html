@@ -167,7 +167,7 @@ body.dark .flatpickr-calendar {
   }
 </style>
 <section class="pcoded-main-container" style="margin-bottom:10px;">
-  {% if user.is_authenticated and user.role == "1" %} 
+  {% if user.is_authenticated and user.role == "1" %}
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
         <div class="pcoded-inner-content">
@@ -208,7 +208,6 @@ body.dark .flatpickr-calendar {
                                                 <div class="form-group d-flex justify-content-end">
                                                     <button id="applyBtn" class="btn btn-primary mr-2">Apply</button>
                                                     <a href="{% url 'todolist' %}" type="button" id="clearBtn" class="btn btn-secondary">Clear Filters</a>
-                                                 
                                                 </div>
                                             </div>
                                         </div>
@@ -223,10 +222,8 @@ body.dark .flatpickr-calendar {
             </div>
         </div>
     </div>
-</div>
-
-{% endif %} 
-
+  </div>
+  {% endif %}
 
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
@@ -237,14 +234,15 @@ body.dark .flatpickr-calendar {
             <tr>
               <th>ID</th> 
               {% if user.is_authenticated and user.role != "3" %}
-                <th>User Name</th>
+                <th>Name</th>
               {% endif %}
               <th>Title</th>
               <th>Description</th>
               <th>Team</th>
               <th>Status</th>
-              <th>Date Created</th>
-              <th>View Detail</th>
+              <th>Task Date</th>
+              <th>Time Taken</th>
+              <th>Detail</th>
             </tr>
           </thead>
           <tbody>
@@ -269,9 +267,12 @@ body.dark .flatpickr-calendar {
                 {% endif %}
               </td>
               <td>{{ todo.date_created|date:"d-M-Y" }}</td>
+              <td>{{ todo.time_taken }}</td>
               <td>
-                <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}" class="btn btn-info btn-sm">View Details</a>
-            </td>
+                <i class="fa-solid fa-eye text-c-green">
+                <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"></a>
+                </i>
+              </td>
             </tr>
             {% endfor %}
           </tbody>

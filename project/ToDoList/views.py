@@ -64,6 +64,7 @@ class home(LoginRequiredMixin, views.View):
         user = self.request.user
 
         if user.role == "1":
+            user = request.user
             teams = Team.objects.all()
             today = timezone.now().date()  # Get today's date
             todos = Todo.objects.filter(
@@ -72,15 +73,24 @@ class home(LoginRequiredMixin, views.View):
             )  # Fetch todos for the authenticated user
             form = TodoForm()
             team_todos = {}
+
             for team in teams:
                 pending_todos = Todo.objects.filter(team=team, status=0)
+                for todo in pending_todos:
+                    if todo.update_time and todo.date_created:
+                        time_difference = todo.update_time - todo.date_created
+                        hours, remainder = divmod(time_difference.total_seconds(), 3600)
+                        minutes, _ = divmod(remainder, 60)
+                        todo.time_taken = f"{int(hours)}h {int(minutes)}m"
+                    else:
+                        todo.time_taken = "N/A"
                 team_todos[team] = pending_todos
 
             context = {
                 'team_todos': team_todos,
                 'todos': todos,
             }
-            return render(request, 'admin_templates/home.html', context )
+            return render(request, 'admin_templates/home.html', context)
         
         if user.role == "2":
             user = self.request.user
@@ -140,6 +150,7 @@ class update_todo(LoginRequiredMixin, views.View):
         new_status = request.POST.get('status')
         if new_status:
             todo.status = int(new_status)
+            todo.update_time = timezone.now()  # Update the current time
             todo.save()
             messages.success(request, 'Task Updated')
             
@@ -215,7 +226,7 @@ class AddUserView(LoginRequiredMixin,views.View):
         return render(request, 'admin_templates/add_user.html', {'form': form})
 
   
-class LoginFormView(LoginRequiredMixin, views.View):
+class LoginFormView(views.View):
     def get(self, request, *args, **kwargs):
         form = LoginForm()
         return render(request, 'admin_templates/login.html', {'form': form})
@@ -306,20 +317,33 @@ class ToDoListView(LoginRequiredMixin, views.View):
         print(user.role)
         if user.role == "1":
             user = request.user
-            queryset = Todo.objects.all()
-            # Admin: view all ToDo items
-            todos = queryset.order_by('status')
-            filter = TodoFilter(request.GET, queryset=todos)
-            todos = filter.qs
-            return render(request, self.template_name, {'todos': todos, 'filter': filter})
-        
-        elif user.role == "2":
-            user = request.user
-            todos = Todo.objects.filter(user=user).order_by('status')
+            todos = Todo.objects.all().order_by('status')
+            # Calculate time taken for each todo item
+            for todo in todos:
+                if todo.update_time and todo.date_created:
+                    time_difference = todo.update_time - todo.date_created
+                    hours, remainder = divmod(time_difference.total_seconds(), 3600)
+                    minutes, _ = divmod(remainder, 60)
+                    todo.time_taken = f"{int(hours)}h {int(minutes)}m"
+                else:
+                    todo.time_taken = "N/A"
+
             return render(request, self.template_name, {'todos': todos})
-        else:
+        
+        if user.role != "1":
             user = request.user
             todos = Todo.objects.filter(user=user).order_by('status')
+
+            # Calculate time taken for each todo item
+            for todo in todos:
+                if todo.update_time and todo.date_created:
+                    time_difference = todo.update_time - todo.date_created
+                    hours, remainder = divmod(time_difference.total_seconds(), 3600)
+                    minutes, _ = divmod(remainder, 60)
+                    todo.time_taken = f"{int(hours)}h {int(minutes)}m"
+                else:
+                    todo.time_taken = "N/A"
+
             return render(request, self.template_name, {'todos': todos})
 
 
