@@ -171,12 +171,12 @@ class AddUserForm(forms.ModelForm):
                 self.fields['role'].choices = [
                     ('2', 'TeamLeader')
                 ]
-            elif user.role == '2':  # TeamLeader
+            elif user.role == '2': 
+                self.fields['team'].widget.attrs['style'] = 'display:none;' 
                 self.fields['role'].choices = [
                     ('3', 'Developer')
                 ]
-                
- 
+          
 
 class LoginForm(forms.Form):
     username = forms.CharField(

@@ -237,7 +237,7 @@ class AddUserView(LoginRequiredMixin,views.View):
     def get(self, request, *args, **kwargs):
         form = AddUserForm(user=request.user)
         return render(request, 'admin_templates/add_user.html', {'form': form})
-
+   
     def post(self, request, *args, **kwargs):
         form = AddUserForm(request.POST, user=request.user)
         
@@ -247,7 +247,8 @@ class AddUserView(LoginRequiredMixin,views.View):
             mobile_number = form.cleaned_data['mobile_number']
             team = form.cleaned_data['team']
             role = form.cleaned_data['role']
-            
+               # Only superusers can set the team
+           
             
             if not user_name:
                 messages.error(request, 'Username cannot be blank')
@@ -267,8 +268,14 @@ class AddUserView(LoginRequiredMixin,views.View):
             if not mobile_number:
                 messages.error(request, 'Mobile number cannot be blank')
                 return render(request, 'admin_templates/add_user.html', {'form': form})
-            if not team:
-                messages.error(request, 'Team cannot be blank')
+            
+            if not request.user.is_superuser:
+                # Set team to current user's team if not a superuser
+                team = request.user.team
+            else:
+                team = form.cleaned_data['team']
+            if not team :
+                messages.error(request, 'Team cannot be blank for admin users')
                 return render(request, 'admin_templates/add_user.html', {'form': form})
           
             
