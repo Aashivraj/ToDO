@@ -330,12 +330,13 @@ class ToDoListView(views.View):
 
     def get(self, request, *args, **kwargs):
         user = request.user
-
+        filters = None
+        
         if user.role == "1":
             queryset = Todo.objects.all()
             todos = queryset.order_by('status')
-            filter = TodoFilter(request.GET, queryset=todos)
-            todos = filter.qs
+            filters = TodoFilter(request.GET, queryset=todos)
+            todos = filters.qs
         elif user.role == "2" or user.role == "3":
             todos = Todo.objects.filter(user=user).order_by('status')
         
@@ -349,7 +350,7 @@ class ToDoListView(views.View):
             else:
                 todo.time_taken = "N/A"
 
-        return render(request, self.template_name, {'todos': todos, 'filter': filter})
+        return render(request, self.template_name, {'todos': todos, 'filter': filters})
 
 
 

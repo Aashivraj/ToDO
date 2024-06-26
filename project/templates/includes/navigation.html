@@ -134,7 +134,7 @@
                  
               <li>
                 {% if user.is_authenticated and user.role == "1" %}
-                <a href="#" class="dropdown-item"><i class="feather icon-settings"></i>
+                <a href="{% url 'system_settings' %}" class="dropdown-item"><i class="feather icon-settings"></i>
                   Settings</a></li>
                 {% endif %} 
                 
