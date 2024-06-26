@@ -274,13 +274,13 @@ body.dark .flatpickr-calendar {
               <td>{{ todo.date_created|date:"d-M-Y" }}</td>
               <td>{{ todo.time_taken }}</td>
               <td>
-                <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"><i class="fa-solid fa-eye text-c-green"></i></a>
-              </td>
-              <td>
+                <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"><i class="fa-solid fa-eye text-c-blue"></i></a>
+                &nbsp;
                 <a href="{% url 'updatecomment' todo.id %}">
                   <i class="fa-solid fa-comments text-c-blue"></i>
                 </a>
               </td>
+              <td>{{ todo.note }}</td>
             </tr>
             {% endfor %}
           </tbody>

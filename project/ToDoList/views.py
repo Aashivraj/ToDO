@@ -53,24 +53,31 @@ class ChangePasswordView(auth_views.PasswordChangeView):
        
 class UpdateTodoComment(LoginRequiredMixin, views.View):
 
-    def get(self, request, id, *args, **kwargs):
-        todo_instance = get_object_or_404(Todo, pk=id)
-        form = UpdateTodoForm(instance=todo_instance)
-        context = {
-            'form': form,
-        }
-        return render(request, 'admin_templates/update_todo_comment.html', context)
 
-    def post(self, request, id, *args, **kwargs):
-        todo_instance = get_object_or_404(Todo, pk=id)
-        form = UpdateTodoForm(request.POST, instance=todo_instance)
+    
+
+    def get(self,request,id,*args, **kwargs):
+        data=Todo.objects.get(pk=id)
+        form=UpdateTodoForm(instance=data)
+        context={
+            'form':form,
+        }
+        return render(request,'admin_templates/update_todo_comment.html',context)
+        
+            
+            
+    def post(self,request,id,*args, **kwargs):
+        data=Todo.objects.get(pk=id)
+      
+        form=UpdateTodoForm(request.POST,instance=data)
+        
         if form.is_valid():
+            if 'date_created' in form.changed_data:
+                form.instance.date_created = data.date_created  
             form.save()
-            messages.success(request, 'Todo updated successfully.')
             return redirect('todolist')
-        else:
-            messages.error(request, 'Error updating todo. Please check the form.')
-        return render(request, 'admin_templates/update_todo_comment.html', {'form': form})
+        
+        return render(request,'admin_templates/update_todo_comment.html',{'form':form})
         
         
 class ToggleActiveStatusView(LoginRequiredMixin, views.View):

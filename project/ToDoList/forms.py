@@ -62,7 +62,7 @@ class TodoForm(forms.ModelForm):
 class UpdateTodoForm(forms.ModelForm):
     class Meta:
         model = Todo
-        fields = ['title', 'description', 'note', 'status', 'user', 'team', 'date_created']
+        fields = ['title', 'description', 'note', 'status']
 
         widgets = {
             'title': forms.TextInput(attrs={
@@ -83,21 +83,28 @@ class UpdateTodoForm(forms.ModelForm):
                 'class': 'form-control',
                 'readonly': True,
             }),
-            'user': forms.HiddenInput(),
-            'team': forms.HiddenInput(),
-            'date_created': forms.DateTimeInput(attrs={
-                'class': 'form-control',
-                'readonly': True,
-            }),
+         
+         
         }
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
-        super(TodoForm, self).__init__(*args, **kwargs)
+        super(UpdateTodoForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['user'].initial = user
-            self.fields['team'].initial = user.team if user.team else None       
-  
+            self.fields['team'].initial = user.team if user.team else None 
+            
+    def clean(self):
+        cleaned_data = super().clean()
+        note = cleaned_data.get('note')
+        initial_note = self.instance.note if self.instance else None
+        current_status = cleaned_data.get('status')
+
+        # Check if note has changed and update status accordingly
+        if note != initial_note and current_status == 1:
+            cleaned_data['status'] = 0
+
+        return cleaned_data
 class AddUserForm(forms.ModelForm):
     user_name = forms.CharField(
         required=False,  # Remove HTML5 required
