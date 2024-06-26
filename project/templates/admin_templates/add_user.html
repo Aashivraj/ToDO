@@ -53,7 +53,7 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <form method="post"> 
+                                                <form method="post" novalidate> 
                                                     {% csrf_token %}
                                                     {{ form.as_p }}
                                                     <button type="submit" class="btn btn-primary shadow-2">Submit</button>

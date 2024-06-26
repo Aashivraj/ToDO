@@ -51,11 +51,10 @@ class TodoForm(forms.ModelForm):
         if user:
             self.fields['user'].initial = user
             self.fields['team'].initial = user.team if user.team else None
-        
+  
 class AddUserForm(forms.ModelForm):
-   
-
     user_name = forms.CharField(
+        required=False,  # Remove HTML5 required
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -65,6 +64,7 @@ class AddUserForm(forms.ModelForm):
         )
     )
     email = forms.EmailField(
+        required=False,  # Remove HTML5 required
         widget=forms.EmailInput(
             attrs={
                 'class': 'form-control',
@@ -74,6 +74,7 @@ class AddUserForm(forms.ModelForm):
         )
     )
     mobile_number = forms.CharField(
+        required=False,  # Remove HTML5 required
         widget=forms.TextInput(
             attrs={
                 'class': 'form-control',
@@ -84,16 +85,16 @@ class AddUserForm(forms.ModelForm):
     )
     team = forms.ModelChoiceField(
         queryset=Team.objects.all(),
+        required=False,  # Remove HTML5 required
         widget=forms.Select(
             attrs={
                 'class': 'form-control',
                 'id': 'customuser_team',
             }
-        ),
-        required=False  # Assuming team is optional (null=True, blank=True)
+        )
     )
-
     role = forms.ChoiceField(
+        required=False,  # Remove HTML5 required
         choices=[
             ('3', 'Developer'),  # Default choices
         ],
@@ -121,6 +122,8 @@ class AddUserForm(forms.ModelForm):
                 self.fields['role'].choices = [
                     ('3', 'Developer')
                 ]
+                
+ 
 
 class LoginForm(forms.Form):
     username = forms.CharField(

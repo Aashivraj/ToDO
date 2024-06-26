@@ -14,6 +14,8 @@ from django.core.files.storage import FileSystemStorage
 import os
 from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 
 
@@ -28,6 +30,8 @@ class ToggleActiveStatusView(views.View):
     def post(self, request, user_id):
         user = get_object_or_404(CustomUser, id=user_id)
         user.toggle_active_status()
+        messages.success(request, 'user active status change')
+        
         return redirect(('userlist'))
 
 
@@ -121,8 +125,12 @@ class add_todo(LoginRequiredMixin,views.View):
             todo.user = user
             todo.team = user.team
             todo.save()
+            messages.success(request, 'Todo added')
+            
             return redirect('home')  # Assuming 'home' is the name of the URL for the home page
         else:
+            messages.warning(request, 'Invalid credential')
+            
             return render(request, 'admin_templates/add_todo.html', {'form': form, 'user': user})
 
 class update_todo(LoginRequiredMixin, views.View):
@@ -133,6 +141,8 @@ class update_todo(LoginRequiredMixin, views.View):
         if new_status:
             todo.status = int(new_status)
             todo.save()
+            messages.success(request, 'Task Updated')
+            
         
         return redirect('home')  # Redirect to the home page after updating status
 
@@ -155,6 +165,30 @@ class AddUserView(LoginRequiredMixin,views.View):
             mobile_number = form.cleaned_data['mobile_number']
             team = form.cleaned_data['team']
             role = form.cleaned_data['role']
+            
+            
+            if not user_name:
+                messages.error(request, 'Username cannot be blank')
+                return render(request, 'admin_templates/add_user.html', {'form': form})
+            if not email:
+                messages.error(request, 'Email cannot be blank')
+                return render(request, 'admin_templates/add_user.html', {'form': form})
+            try:
+                validate_email(email)
+            except ValidationError:
+                messages.error(request, 'Invalid email format')
+                return render(request, 'admin_templates/add_user.html', {'form': form})
+                
+            
+                    
+        
+            if not mobile_number:
+                messages.error(request, 'Mobile number cannot be blank')
+                return render(request, 'admin_templates/add_user.html', {'form': form})
+            if not team:
+                messages.error(request, 'Team cannot be blank')
+                return render(request, 'admin_templates/add_user.html', {'form': form})
+          
             
             if CustomUser.objects.filter(email=email).exists():
                 messages.warning(request, 'Email already taken')
@@ -197,6 +231,8 @@ class LoginFormView(views.View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    messages.success(request, f'Welcome, {username}!')
+                    
                     
                     return redirect("/home/")
                 else:
@@ -255,6 +291,8 @@ class DeleteUserView(views.View) :
     def get(self, request,id,*args, **kwargs):
         delete_user=CustomUser.objects.get(pk=id)
         delete_user.delete()
+        messages.success(request, 'User Deleted Successfully')
+        
         return redirect('userlist')
       
         
@@ -296,6 +334,8 @@ class TeamView(views.View):
         team_form=TeamForm(request.POST)
         if team_form.is_valid():
             team_form.save()
+            messages.success(request, 'Team added')
+            
             return redirect('add_user')
         return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
     
@@ -361,6 +401,8 @@ class ProfilePageView(views.View):
                 old_photo_path = os.path.join(settings.MEDIA_ROOT, str(request.user.photo))
                 if os.path.exists(old_photo_path):
                     os.remove(old_photo_path)
+                    messages.warning(request, 'profile pic removed')
+                    
             
             # Ensure the directory exists
             if not os.path.exists(profile_images_dir):
@@ -372,6 +414,8 @@ class ProfilePageView(views.View):
             filename = fs.save(filename, profile_picture)
             request.user.photo = 'profile_images/' + filename
             request.user.save()
+            messages.success(request, 'profile pic added')
+            
             return redirect('profile')  # Redirect to the profile page or any other appropriate page
         
         # If no profile_picture in request.FILES, render the template
@@ -403,6 +447,8 @@ class SettingsView(views.View):
                 old_logo_path = os.path.join(settings.MEDIA_ROOT, system_settings.company_logo)
                 if os.path.exists(old_logo_path):
                     os.remove(old_logo_path)
+                    messages.warning(request, 'Logo is removed')
+                    
 
             # Determine the file extension and save the new logo
             file_extension = logo.name.split('.')[-1]
@@ -413,6 +459,8 @@ class SettingsView(views.View):
             if system_settings:
                 system_settings.company_logo = 'logo/' + filename
                 system_settings.save()
+                messages.warning(request, 'New logo added')
+                
             else:
                 # Create a new SystemSettings instance if it doesn't exist
                 SystemSettings.objects.create(company_logo='logo/' + filename)
@@ -429,6 +477,8 @@ class SettingsView(views.View):
             system_settings.company_link = request.POST.get('company_link', system_settings.company_link)
             
             system_settings.save()
+            messages.warning(request, 'Data added')
+            
         
             return redirect('system_settings')
         
