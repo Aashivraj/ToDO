@@ -44,8 +44,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ToDoList',
     'widget_tweaks',
-    
+    'shorturls',
 ]
+
+SHORTEN_MODELS = {
+    'T': 'yourapp.Task',
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -26,6 +26,8 @@ from django.contrib.auth import update_session_auth_hash
 
 
 
+
+
 # Create your views here.
 def user_is_admin(user):
     return user.is_authenticated and user.role == "1"
@@ -618,6 +620,7 @@ class TaskDetailView(LoginRequiredMixin, views.View):
         task_id = kwargs.get('task_id')
         user_id = kwargs.get('user_role')
 
+        
         current_user = request.user
 
         if current_user.role == "1":
