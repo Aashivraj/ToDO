@@ -213,3 +213,81 @@ class CustomPasswordChangeForm(PasswordChangeForm):
         strip=False,
         widget=forms.PasswordInput(attrs={'autocomplete': 'new-password', "class": "form-control"}),
     )
+    
+    
+class UpdateUserForm(forms.ModelForm):
+    user_name = forms.CharField(
+        required=False,  # Remove HTML5 required
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'User Name',
+                'id': 'customuser_username',
+            }
+        )
+    )
+    email = forms.EmailField(
+        required=False,  # Remove HTML5 required
+        widget=forms.EmailInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Email Address',
+                'id': 'customuser_email',
+            }
+        )
+    )
+    mobile_number = forms.CharField(
+        required=False,  # Remove HTML5 required
+        widget=forms.TextInput(
+            attrs={
+                'class': 'form-control',
+                'placeholder': 'Mobile Number',
+                'id': 'customuser_mobile_number',
+            }
+        )
+    )
+    team = forms.ModelChoiceField(
+        queryset=Team.objects.all(),
+        required=False,  # Remove HTML5 required
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+                'id': 'customuser_team',
+            }
+        )
+    )
+    role = forms.ChoiceField(
+        required=False,  # Remove HTML5 required
+      choices=[
+            ('3', 'Developer'),  # Default choices
+        ],
+        widget=forms.Select(
+            attrs={
+                'class': 'form-control',
+                'id': 'customuser_role',
+            }
+        )
+    )
+
+    class Meta:
+        model = CustomUser
+        fields = ('user_name', 'email', 'mobile_number', 'team', 'role')
+    
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            if user.role == '1':  # Admin
+                self.fields['role'].choices = [
+                    ('1', 'Admin')
+                ]
+            elif user.role == '2': 
+               
+                self.fields['role'].choices = [
+                    ('2', 'Teamlead')
+                ]
+            elif user.role == '3': 
+               
+                self.fields['role'].choices = [
+                    ('3', 'Developer')
+                ]
