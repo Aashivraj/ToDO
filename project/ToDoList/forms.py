@@ -173,6 +173,7 @@ class AddUserForm(forms.ModelForm):
                 ]
             elif user.role == '2': 
                 self.fields['team'].widget.attrs['style'] = 'display:none;' 
+                self.fields['team'].label = ''
                 self.fields['role'].choices = [
                     ('3', 'Developer')
                 ]
