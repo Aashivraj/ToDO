@@ -303,7 +303,7 @@ class AddUserView(LoginRequiredMixin,views.View):
             user.save()
 
             messages.success(request, 'User successfully added')
-            return redirect('add_user')
+            return redirect('userlist')
         else:
             messages.error(request, 'Invalid form data')
 
