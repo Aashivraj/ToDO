@@ -424,37 +424,28 @@ class ToDoListView(views.View):
  
 @method_decorator(user_passes_test(user_is_admin), name='dispatch')   
 class TeamView(views.View):
-    def get(self, request, *args, **kwargs):
-        team_form = TeamForm()
-        return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
     
-    def post(self, request, *args, **kwargs):
-        team_form = TeamForm(request.POST)
-        
-        if team_form.is_valid():
-            team_form.save()
-            messages.success(request, 'Team added')
-            return redirect('add_user')
-        else:
-            # Check if team_department field is empty
-            if not team_form.cleaned_data['team_department']:
-                messages.error(request, 'Please enter a Team.')
-            
-            return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
     def get(self, request, *args, **kwargs):
         team_form=TeamForm()
       
         return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
     def post(self, request, *args, **kwargs):
         team_form=TeamForm(request.POST)
-        if team_form == None:
-            if 'team_department' not in team_form.cleaned_data or not team_form.cleaned_data['team_department']:
-                messages.error(request, 'Please enter a Team.')
-            return render(request, 'admin_templates/team_form.html', {'team_form': team_form})
+       
+        
             
         if team_form.is_valid():
-            team_form.save()
-            messages.success(request, 'Team added')
+            department = team_form.cleaned_data.get("team_department")
+            if Team.objects.filter(team_department=department).exists():
+                messages.warning(request, 'Team already taken')
+                return redirect('team')
+            
+            team = Team(
+                team_department=department,
+            
+            )
+           
+            team.save()
             
             return redirect('add_user')
         else:
