@@ -530,22 +530,37 @@ class SettingsView(LoginRequiredMixin, views.View):
     def post(self, request, *args, **kwargs):
         system_settings = SystemSettings.objects.first()
         
-        if 'logo' in request.FILES:
-            logo = request.FILES['logo']
-            logo_dir = os.path.join(settings.MEDIA_ROOT, 'logo')
-            
-            # Ensure the directory exists
-            if not os.path.exists(logo_dir):
-                os.makedirs(logo_dir)
-            
-            # Delete the old logo if it exists
+        if 'remove_logo' in request.POST:
             if system_settings and system_settings.company_logo:
                 old_logo_path = os.path.join(settings.MEDIA_ROOT, system_settings.company_logo)
                 if os.path.exists(old_logo_path):
                     os.remove(old_logo_path)
-                    messages.warning(request, 'Logo is removed')
+                system_settings.company_logo = None
+                system_settings.save()
+                messages.success(request, 'Company logo removed')
+        
+        elif 'remove_small_logo' in request.POST:
+            if system_settings and system_settings.small_logo:
+                old_small_logo_path = os.path.join(settings.MEDIA_ROOT, system_settings.small_logo)
+                if os.path.exists(old_small_logo_path):
+                    os.remove(old_small_logo_path)
+                system_settings.small_logo = None
+                system_settings.save()
+                messages.success(request, 'Small logo removed')
+        
+        elif 'logo' in request.FILES:
+            logo = request.FILES['logo']
+            logo_dir = os.path.join(settings.MEDIA_ROOT, 'logo')
             
-            # Determine the file extension and save the new logo
+            if not os.path.exists(logo_dir):
+                os.makedirs(logo_dir)
+            
+            if system_settings and system_settings.company_logo:
+                old_logo_path = os.path.join(settings.MEDIA_ROOT, system_settings.company_logo)
+                if os.path.exists(old_logo_path):
+                    os.remove(old_logo_path)
+                    messages.success(request, 'Logo is removed')
+            
             file_extension = logo.name.split('.')[-1]
             filename = 'Systemlogo.' + file_extension
             fs = FileSystemStorage(location=logo_dir)
@@ -554,41 +569,35 @@ class SettingsView(LoginRequiredMixin, views.View):
             if system_settings:
                 system_settings.company_logo = 'logo/' + filename
                 system_settings.save()
-                messages.warning(request, 'New logo added')
+                messages.success(request, 'New logo added')
             else:
-                # Create a new SystemSettings instance if it doesn't exist
                 SystemSettings.objects.create(company_logo='logo/' + filename)
         
-        if 'small_logo' in request.FILES:
+        elif 'small_logo' in request.FILES:
             small_logo = request.FILES['small_logo']
             small_logo_dir = os.path.join(settings.MEDIA_ROOT, 'logo')
             
-            # Ensure the directory exists
             if not os.path.exists(small_logo_dir):
                 os.makedirs(small_logo_dir)
             
-            # Delete the old small logo if it exists
             if system_settings and system_settings.small_logo:
                 old_small_logo_path = os.path.join(settings.MEDIA_ROOT, system_settings.small_logo)
                 if os.path.exists(old_small_logo_path):
                     os.remove(old_small_logo_path)
-                    messages.warning(request, 'Small Logo is removed')
+                    messages.success(request, 'Small Logo is removed')
             
-            # Save the new small logo
-            small_filename = 'small_logo.png'  # Fixed filename for small logo
+            small_filename = 'small_logo.png'
             fs = FileSystemStorage(location=small_logo_dir)
             small_filename = fs.save(small_filename, small_logo)
             
             if system_settings:
                 system_settings.small_logo = 'logo/' + small_filename
                 system_settings.save()
-                messages.warning(request, 'New small logo added')
+                messages.success(request, 'New small logo added')
             else:
-                # Create a new SystemSettings instance if it doesn't exist
                 SystemSettings.objects.create(small_logo='logo/' + small_filename)
         
         else:
-            # Handle other form fields update here
             if system_settings:
                 system_settings.company_name = request.POST.get('company_name', system_settings.company_name)
                 system_settings.mobile = request.POST.get('mobile', system_settings.mobile)
@@ -599,7 +608,7 @@ class SettingsView(LoginRequiredMixin, views.View):
                 system_settings.company_link = request.POST.get('company_link', system_settings.company_link)
                 
                 system_settings.save()
-                messages.warning(request, 'Data updated')
+                messages.success(request, 'Data updated')
         
         return redirect('system_settings')
 
