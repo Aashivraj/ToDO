@@ -615,14 +615,22 @@ class SettingsView(LoginRequiredMixin, views.View):
         return redirect('system_settings')
 
         
+
+     
+def system_settings(request):
+    # Assuming SystemSettings has a unique instance or you fetch the appropriate settings
+    system_settings = SystemSettings.objects.first()  # Fetch your SystemSettings object
+    return {'system_settings': system_settings}
+        
 class TaskDetailView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         task_id = kwargs.get('task_id')
-        user_id = kwargs.get('user_role')
-
         
         current_user = request.user
 
+        # Initialize an empty task variable
+        task = None
+        
         if current_user.role == "1":
             # User with role 1 can see all tasks
             task = get_object_or_404(Todo, id=task_id)
@@ -646,14 +654,17 @@ class TaskDetailView(LoginRequiredMixin, views.View):
             # For any other user, deny access
             return render(request, 'admin_templates/forbiddenerror.html')
 
+        # Calculate time_taken for the task
+        if task and task.update_time and task.date_created:
+            time_difference = task.update_time - task.date_created
+            hours, remainder = divmod(time_difference.total_seconds(), 3600)
+            minutes, _ = divmod(remainder, 60)
+            task.time_taken = f"{int(hours)}h {int(minutes)}m"
+        else:
+            task.time_taken = "N/A"
+
         context = {
             'task': task,
             'can_view_task': True,
         }
         return render(request, 'admin_templates/individual_todo.html', context)
-     
-def system_settings(request):
-    # Assuming SystemSettings has a unique instance or you fetch the appropriate settings
-    system_settings = SystemSettings.objects.first()  # Fetch your SystemSettings object
-    return {'system_settings': system_settings}
-        
