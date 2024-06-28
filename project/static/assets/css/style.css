@@ -10598,3 +10598,31 @@ div.code-toolbar > .toolbar span:hover {
 		box-shadow: 0 0 0 0 rgba(4, 169, 245, 0)
 	}
 }
+
+.pcoded-navbar.mob-open ~ .pcoded-header,
+.pcoded-navbar.mob-open ~ .pcoded-footer-container,
+.pcoded-navbar.navbar-collapsed:hover ~ .pcoded-header,
+.pcoded-navbar.navbar-collapsed:hover ~ .pcoded-footer-container {
+  margin-left: 80px;
+}
+
+.pcoded-navbar.navbar-collapsed ~ .pcoded-footer-container {
+  margin-left: 80px;
+}
+
+.pcoded-footer-container {
+  position: relative;
+  margin: 0 auto;
+  display: block;
+  clear: both;
+  float: unset;
+  right: 0;
+  margin-left: 264px;
+  -webkit-transition: all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
+}
+
+.pcoded-footer-content {
+  position: relative;
+  display: block;
+}
