@@ -427,8 +427,15 @@ class ToDoListView(views.View):
 
 
  
-@method_decorator(user_passes_test(user_is_admin), name='dispatch')   
 class TeamView(views.View):
+    
+    
+    def dispatch(self, request, *args, **kwargs):
+        # Assuming user's role is stored in a field called 'role' in the user's profile or user model
+        if not request.user.is_authenticated or request.user.role != 1:
+            messages.error(request, "You do not have permission to access this page.")
+            return render(request, 'admin_templates/error.html')  # Redirect to a suitable page
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         team_form=TeamForm()
