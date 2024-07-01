@@ -7,32 +7,26 @@
 
 <style>
   #id_user {
-    /* Add your styles here */
     border: 1px solid #ccc;
     padding: 8px;
     font-size: 14px;
-    width: 200px; /* Adjust width as needed */
-    /* Add more styles as per your design */
-}
+    width: 200px;
+  }
 
-/* Styling for Team field */
-#id_team {
-    /* Add your styles here */
+  #id_team {
     border: 1px solid #ccc;
     padding: 8px;
     font-size: 14px;
-    width: 200px; /* Adjust width as needed */
-    /* Add more styles as per your design */
-}
-#datepicker {
-    /* Add your styles here */
+    width: 200px;
+  }
+
+  #datepicker {
     border: 1px solid #ccc;
     padding: 8px;
     font-size: 14px;
-    width: 200px; /* Adjust width as needed */
-    /* Add more styles as per your design */
-}
-  /* Custom DataTable Styles */
+    width: 200px;
+  }
+
   .todoTable {
     width: 100%;
     border-collapse: collapse;
@@ -131,9 +125,7 @@
     border-radius: 4px;
   }
 
-/* Dark Theme Styles for Flatpickr */
-
-body.dark .flatpickr-calendar {
+  body.dark .flatpickr-calendar {
     background-color: #343a40;
     color: white;
   }
@@ -142,7 +134,7 @@ body.dark .flatpickr-calendar {
     color: white;
   }
 
-  body.dark .flatpickr-calendar .flatpickr-day:hover, 
+  body.dark .flatpickr-calendar .flatpickr-day:hover,
   body.dark .flatpickr-calendar .flatpickr-day:focus {
     background-color: #495057;
   }
@@ -155,7 +147,7 @@ body.dark .flatpickr-calendar {
     background-color: #007bff;
   }
 
-  body.dark .flatpickr-calendar .flatpickr-months, 
+  body.dark .flatpickr-calendar .flatpickr-months,
   .flatpickr-calendar .flatpickr-weekdays {
     background-color: #343a40;
   }
@@ -172,16 +164,14 @@ body.dark .flatpickr-calendar {
       <div class="pcoded-inner-content">
         <div class="main-body">
           <div class="page-wrapper">
-            <!-- [ Main Content ] start -->
             <div class="row">
-              <!-- [ Hover-table ] start -->
               <div class="col-xl-12">
                 <div class="card">
                   <div class="card-header">
                     <h5>User List</h5>
                     <i class="fa-solid fa-table"></i>
                   </div>
-                  <div class="card-block table-border-style" >
+                  <div class="card-block table-border-style">
                     <div class="table-responsive">
                       <table class="userTable table">
                         <thead>
@@ -222,9 +212,12 @@ body.dark .flatpickr-calendar {
                                 <i class="fa-solid fa-user-pen text-c-green"></i>
                               </a>
                               &nbsp;&nbsp;
-                              <a href="{% url 'delete' i.id %}">
+                              <a href="javascript:void(0);" onclick="confirmDelete('{{i.id}}');">
                                 <i class="fa-solid fa-user-xmark text-c-green"></i>
                               </a>
+                              <form id="delete-form-{{i.id}}" method="post" action="{% url 'delete' i.id %}" style="display: none;">
+                                {% csrf_token %}
+                              </form>
                             </td>
                           </tr>
                           {% endfor %}
@@ -233,28 +226,29 @@ body.dark .flatpickr-calendar {
                     </div>
                   </div>
                 </div>
-              </div>  
+              </div>
             </div>
             <label class="d-none">
               <i class="icon feather icon-moon" id="theme-indicator"></i>
               <input type="checkbox" id="theme-switch" class="d-none" />
             </label>
-            
           </div>
         </div>
       </div>
     </div>
   </div>
-  
 </section>
+
 <label class="d-none">
   <i class="icon feather icon-moon" id="theme-indicator"></i>
   <input type="checkbox" id="theme-switch" class="d-none" />
 </label>
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
   $(document).ready(function() {
     $(".userTable").DataTable({
@@ -265,11 +259,27 @@ body.dark .flatpickr-calendar {
       "autoWidth": true,
       "responsive": true,
       "order": [
-        [0, "asc"] // Default order by id column
+        [0, "asc"]
       ],
-      "lengthMenu": [5, 10, 25, 50] 
+      "lengthMenu": [5, 10, 25, 50]
     });
   });
+
+  function confirmDelete(userId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('delete-form-' + userId).submit();
+      }
+    });
+  }
 </script>
 
 {% endblock content %}
