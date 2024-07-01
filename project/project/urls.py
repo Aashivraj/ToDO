@@ -29,12 +29,17 @@ urlpatterns = [
     path('add_user/',AddUserView.as_view(),name="add_user"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('update_comment/<int:id>', UpdateTodoComment.as_view(), name="updatecomment"),
+    # path('update_teamtodo_comment/<int:id>', UpdateTeamTodoComment.as_view(), name="updateteamtodocomment"),
+    
+ 
     
     path('update_user/<int:id>', UpdateUserView.as_view(), name="update"),
     path('delete/<int:id>',DeleteUserView.as_view(),name='delete'),
     path('user_list/',UserListView.as_view(),name="userlist"),
     path('todo_list/',ToDoListView.as_view(),name="todolist"),
     path('update_todo_status/<int:todo_id>/',update_todo.as_view(), name='update_todo_status'),
+   
+    
     path('Profile/',ProfilePageView.as_view(),name="profile"),
 
     

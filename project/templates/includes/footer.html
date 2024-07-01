@@ -1,4 +1,5 @@
-<!-- <!DOCTYPE html>
+{% load static %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -62,25 +63,8 @@
             color: #7e7e7e;
             line-height: 20px; /* Reduce line height */
         }
-        .footer-social-icon span {
-            color: #fff;
-            display: block;
-            font-size: 16px; /* Reduce font size */
-            font-weight: 700;
-            margin-bottom: 10px; /* Reduce margin */
-        }
-        .footer-social-icon a {
-            color: #fff;
-            font-size: 14px; /* Reduce font size */
-            margin-right: 10px; /* Reduce margin */
-        }
-        .footer-social-icon i {
-            height: 30px; /* Reduce icon size */
-            width: 30px; /* Reduce icon size */
-            text-align: center;
-            line-height: 28px; /* Adjust line height */
-            border-radius: 50%;
-        }
+       
+      
         .footer-widget-heading h3 {
             color: #fff;
             font-size: 18px; /* Reduce font size */
@@ -169,39 +153,44 @@
     
         <div class="pcoded-footer-content">
             <div class="pcoded-inner-content">
-                 [ breadcrumb ] start -->
-          
-<!-- 
+                
+
 
                 
                     <footer id="footer-section" class="footer-section">
                         <div class="container">
-                            <div class="footer-cta pt-3 pb-3">  Adjust padding here -->
-                                <!-- <div class="row">
-                                    <div class="col-xl-4 col-md-4 mb-20"> 
-                                        <div class="single-cta">
-                                            <i class="fas fa-map-marker-alt"></i>
-                                            <div class="cta-text">
-                                                <h4>Find us</h4>
-                                                <span>1010 Avenue, sw 54321, chandigarh</span>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="footer-cta pt-3 pb-3">  
+                           <div class="row">
+                            <div class="col-xl-4 col-md-4 mb-20">
+                            <div class="single-cta">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <div class="cta-text">
+                                    <h4>Find us</h4>
+                                    <a href="https://www.google.com/maps/search/?api=1&query={{ system_settings.location }}" target="_blank">
+                                        <span>{{ system_settings.location }}</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                                     <div class="col-xl-4 col-md-4 mb-20">
                                         <div class="single-cta">
                                             <i class="fas fa-phone"></i>
                                             <div class="cta-text">
                                                 <h4>Call us</h4>
-                                                <span>9876543210 0</span>
+                                                <a href="tel:{{ system_settings.mobile }}">
+                                                    <span>{{ system_settings.mobile }}</span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-md-4 mb-20"> 
+                                    <div class="col-xl-4 col-md-4 mb-20">
                                         <div class="single-cta">
                                             <i class="far fa-envelope-open"></i>
                                             <div class="cta-text">
                                                 <h4>Mail us</h4>
-                                                <span>mail@info.com</span>
+                                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ system_settings.email }}" target="_blank">
+                                                    <span>{{ system_settings.email }}</span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -212,10 +201,12 @@
                                     <div class="col-xl-4 col-lg-4 mb-30">
                                         <div class="footer-widget">
                                             <div class="footer-logo">
-                                                <a href="index.html"><img src="https://i.ibb.co/QDy827D/ak-logo.png" class="img-fluid" alt="logo"></a>
+                                                
+                                                    <img src="{{ company_logo_url }}" alt="Company Logo" height="50px" width="180px">
+                                               
                                             </div>
                                             <div class="footer-text">
-                                                <p>Lorem ipsum dolor sit amet, consec tetur adipisicing elit, sed do eiusmod tempor incididuntut consec tetur adipisicing elit,Lorem ipsum dolor sit amet.</p>
+                                                <p>{{system_settings.company_info}}</p>
                                             </div>
                                             <div class="footer-social-icon">
                                                 <span>Follow us</span>
@@ -233,67 +224,26 @@
                                             <ul>
                                                 <li><a href="#">Home</a></li>
                                                 <li><a href="#">about</a></li>
-                                                <li><a href="#">services</a></li>
-                                                <li><a href="#">portfolio</a></li>
                                                 <li><a href="#">Contact</a></li>
                                                 <li><a href="#">About us</a></li>
-                                                <li><a href="#">Our Services</a></li>
-                                                <li><a href="#">Expert Team</a></li>
-                                                <li><a href="#">Contact us</a></li>
-                                                <li><a href="#">Latest News</a></li>
+                                               
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-6 mb-30">
-                                        <div class="footer-widget">
-                                            <div class="footer-widget-heading">
-                                                <h3>Subscribe</h3>
-                                            </div>
-                                            <div class="footer-text mb-20"> 
-                                                <p>Don’t miss to subscribe to our new feeds, kindly fill the form below.</p>
-                                            </div>
-                                            <div class="subscribe-form">
-                                                <form action="#">
-                                                    <input type="text" placeholder="Email Address">
-                                                    <button><i class="fab fa-telegram-plane"></i></button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  
                                 </div>
                             </div>
                         </div>
                     </footer>
-                    <div class="copyright-area">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-xl-6 col-lg-6 text-center text-lg-left">
-                                    <div class="copyright-text">
-                                        <p>Copyright &copy; 2020, All Right Reserved <a href="https://google.com">Team</a></p>
-                                    </div>
-                                </div>
-                                <div class="col-xl-6 col-lg-6 d-none d-lg-block text-right">
-                                    <div class="footer-menu">
-                                        <ul>
-                                            <li><a href="#">Home</a></li>
-                                            <li><a href="#">Terms</a></li>
-                                            <li><a href="#">Privacy</a></li>
-                                            <li><a href="#">Policy</a></li>
-                                            <li><a href="#">Contact</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                 
                 </div>
-                Page-body end
+              
             </div>
             </div>
         </div>
     </div>
     
-    Mobile menu toggle
+
     <a class="mobile-menu on" id="mobile-collapse" href="javascript:void(0);" onclick="toggleFooter()">
         <span></span>
     </a>
@@ -307,4 +257,4 @@
 </section>
 
 </body>
-</html>   -->
+</html>  

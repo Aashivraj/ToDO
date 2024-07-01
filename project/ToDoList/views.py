@@ -73,6 +73,8 @@ class UpdateTodoComment(LoginRequiredMixin, views.View):
         return render(request, "admin_templates/update_todo_comment.html", context)
 
     def post(self, request, id, *args, **kwargs):
+        user=request.user
+        
         data = Todo.objects.get(pk=id)
 
         form = UpdateTodoForm(request.POST, instance=data)
@@ -80,12 +82,19 @@ class UpdateTodoComment(LoginRequiredMixin, views.View):
         if form.is_valid():
             if "date_created" in form.changed_data:
                 form.instance.date_created = data.date_created
+                
+            data.updated_by=user.get_username()
             form.save()
-            return redirect("todolist")
+            if user.role=="1":
+                return redirect("todolist")
+            elif user.role=="2":
+                return redirect("teamtodo")
+                
 
         return render(
             request, "admin_templates/update_todo_comment.html", {"form": form}
         )
+
 
 
 @method_decorator(user_passes_test(user_is_admin, login_url="/error/"), name="dispatch")
@@ -623,6 +632,15 @@ class SettingsView(LoginRequiredMixin, views.View):
                     "mobile", system_settings.mobile
                 )
                 system_settings.email = request.POST.get("email", system_settings.email)
+              
+              
+                system_settings.location = request.POST.get(
+                    "location", system_settings.location
+                )   
+                system_settings.company_info = request.POST.get(
+                    "company_info", system_settings.company_info
+                )
+               
                 system_settings.facebook = request.POST.get(
                     "facebook", system_settings.facebook
                 )

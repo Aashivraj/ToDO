@@ -62,7 +62,7 @@ class TodoForm(forms.ModelForm):
 class UpdateTodoForm(forms.ModelForm):
     class Meta:
         model = Todo
-        fields = ['title', 'description', 'note', 'status']
+        fields = ['title', 'description', 'note', 'status','updated_by']
 
         widgets = {
             'title': forms.TextInput(attrs={
@@ -73,18 +73,30 @@ class UpdateTodoForm(forms.ModelForm):
                 'class': 'form-control',
                 'readonly': True,
                 'rows': 4,
+                
             }),
             'note': forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter note',
                 'rows': 2,
+                'label':'comment'
+                
+                
             }),
             'status': forms.NumberInput(attrs={
                 'class': 'form-control',
                 'readonly': True,
             }),
+            'updated_by': forms.TextInput(attrs={
+                'class': 'form-control',
+                 'readonly': True,
+               
+            }),
          
          
+        }
+        labels = {
+            'note': 'Comment',  # Change label from 'note' to 'Comment'
         }
 
     def __init__(self, *args, **kwargs):
@@ -92,7 +104,7 @@ class UpdateTodoForm(forms.ModelForm):
         super(UpdateTodoForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['user'].initial = user
-            self.fields['team'].initial = user.team if user.team else None 
+          
             
     def clean(self):
         cleaned_data = super().clean()
@@ -105,6 +117,8 @@ class UpdateTodoForm(forms.ModelForm):
             cleaned_data['status'] = 0
 
         return cleaned_data
+    
+    
 class AddUserForm(forms.ModelForm):
     user_name = forms.CharField(
         required=False,  # Remove HTML5 required

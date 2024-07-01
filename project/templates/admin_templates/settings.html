@@ -41,6 +41,19 @@
                           </div>
                           <div class="col-sm-12 mb-4">
                             <div class="form-group">
+                              <label for="location">Location</label>
+                              <input type="location" class="form-control" id="location" name="location" placeholder="Enter location" value="{{ system_settings.location }}">
+                            </div>
+                          </div>
+
+                          <div class="col-sm-12 mb-4">
+                            <div class="form-group">
+                              <label for="company_info">Company Info</label>
+                              <input type="company_info" class="form-control" id="company_info" name="company_info" placeholder="Enter Company Info" value="{{ system_settings.company_info }}">
+                            </div>
+                          </div>
+                          <div class="col-sm-12 mb-4">
+                            <div class="form-group">
                               <label for="facebook">Facebook Link</label>
                               <input type="text" class="form-control" id="facebook" name="facebook" placeholder="Enter Facebook Link" value="{{ system_settings.facebook }}">
                             </div>
@@ -138,5 +151,5 @@
     </div>
   </div>
 </section>
-
+{% include "includes/footer.html" %} 
 {% endblock content %}
