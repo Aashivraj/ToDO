@@ -124,7 +124,7 @@ class TeamLeadView(LoginRequiredMixin, views.View):
                 minutes, _ = divmod(remainder, 60)
                 todo.time_taken = f"{int(hours)}h {int(minutes)}m"
             else:
-                todo.time_taken = "N/A"
+                todo.time_taken = "Task Pending"
         
         return render(request, 'teamleader_templates/teamtodo.html', {'todos': todos, 'todo_filter': todo_filter})
    
@@ -155,7 +155,7 @@ class home(LoginRequiredMixin, views.View):
                         minutes, _ = divmod(remainder, 60)
                         todo.time_taken = f"{int(hours)}h {int(minutes)}m"
                     else:
-                        todo.time_taken = "N/A"
+                        todo.time_taken = "Task Pending"
                 team_todos[team] = pending_todos
 
             context = {
@@ -305,7 +305,10 @@ class AddUserView(LoginRequiredMixin,views.View):
             user.save()
 
             messages.success(request, 'User successfully added')
-            return redirect('userlist')
+            if request.user.id == 1:
+                return redirect('userlist')
+            else:
+                return redirect('home')
         else:
             messages.error(request, 'Invalid form data')
 
@@ -417,7 +420,7 @@ class ToDoListView(views.View):
                 minutes, _ = divmod(remainder, 60)
                 todo.time_taken = f"{int(hours)}h {int(minutes)}m"
             else:
-                todo.time_taken = "N/A"
+                todo.time_taken = "Task Pending"
 
         return render(request, self.template_name, {'todos': todos, 'filter': filters})
 
@@ -439,7 +442,7 @@ class TeamView(views.View):
         if team_form.is_valid():
             department = team_form.cleaned_data.get("team_department")
             if Team.objects.filter(team_department=department).exists():
-                messages.warning(request, 'Team already taken')
+                messages.warning(request, 'Team already added')
                 return redirect('team')
             
             team = Team(
@@ -508,10 +511,19 @@ class ProfilePageView(LoginRequiredMixin, views.View):
         
         # If no profile_picture in request.FILES, render the template
         return render(request, self.template_name)
-    
+ 
+   
 class SettingsView(LoginRequiredMixin, views.View):
+    
     template_name = 'admin_templates/settings.html'
 
+    def dispatch(self, request, *args, **kwargs):
+        # Assuming user's role is stored in a field called 'role' in the user's profile or user model
+        if not request.user.is_authenticated or request.user.role != 1:
+            messages.error(request, "You do not have permission to access this page.")
+            return render(request, 'admin_templates/error.html')  # Redirect to a suitable page
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         system_settings = SystemSettings.objects.first()
         company_logo_url = None
@@ -661,7 +673,7 @@ class TaskDetailView(LoginRequiredMixin, views.View):
             minutes, _ = divmod(remainder, 60)
             task.time_taken = f"{int(hours)}h {int(minutes)}m"
         else:
-            task.time_taken = "N/A"
+            task.time_taken = "Task Still Pending"
 
         context = {
             'task': task,
