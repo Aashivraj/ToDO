@@ -66,6 +66,16 @@ body {
   position: relative;
 }
 
+ .form-control[readonly],
+ .custom-select[readonly],
+ .input-group-prepend input[readonly],
+ .input-group-append input[readonly] {
+    background-color: rgba(192, 192, 192, 0.781); /* Adjust opacity to suit your design */
+}
+
+
+
+
 *:focus {
   outline: none;
 }
