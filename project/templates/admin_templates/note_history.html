@@ -7,7 +7,7 @@
     <div class="pcoded-wrapper">
         <div class="pcoded-content">
             <div class="pcoded-inner-content">
-                <h1>Note History for {{ todo.title }}</h1>
+                <h1>Note History for {{ todo.user }}</h1>
                 <table class="table">
                     <thead>
                         <tr>
@@ -20,7 +20,7 @@
                     <tbody>
                         {% for note in notes %}
                         <tr>
-                            <td>{{ note.title }}</td>
+                            <td>{{ note.todo.title }}</td>
                             <td>{{ note.description }}</td>
                             <td>{{ note.date_created|date:"d-M-Y H:i" }}</td>
                             <td>{{ note.updated_by}}</td>
