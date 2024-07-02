@@ -71,35 +71,28 @@ class ChangePasswordView(views.View, LoginRequiredMixin):
 class UpdateTodoComment(LoginRequiredMixin, views.View):
     def get(self, request, id, *args, **kwargs):
         data = Todo.objects.get(pk=id)
-        form = UpdateTodoForm(instance=data)
+        form = UpdateTodoForm(instance=data, user=request.user)  # Pass user to form
         context = {
             "form": form,
         }
         return render(request, "admin_templates/update_todo_comment.html", context)
 
     def post(self, request, id, *args, **kwargs):
-        user=request.user
-        
         data = Todo.objects.get(pk=id)
-
-        form = UpdateTodoForm(request.POST, instance=data)
+        form = UpdateTodoForm(request.POST, instance=data, user=request.user)  # Pass user to form
 
         if form.is_valid():
             if "date_created" in form.changed_data:
                 form.instance.date_created = data.date_created
-                
-            data.updated_by=user.get_username()
+
             form.save()
-            if user.role=="1":
+
+            if request.user.role == "1":
                 return redirect("todolist")
-            elif user.role=="2":
+            elif request.user.role == "2":
                 return redirect("teamtodo")
-                
 
-        return render(
-            request, "admin_templates/update_todo_comment.html", {"form": form}
-        )
-
+        return render(request, "admin_templates/update_todo_comment.html", {"form": form})
 
 
 @method_decorator(user_passes_test(user_is_admin, login_url="/error/"), name="dispatch")
@@ -734,3 +727,11 @@ class TaskDetailView(LoginRequiredMixin, views.View):
             "can_view_task": True,
         }
         return render(request, "admin_templates/individual_todo.html", context)
+
+class NoteHistoryView(LoginRequiredMixin, views.View):
+    template_name = "admin_templates/note_history.html"
+
+    def get(self, request, todo_id, *args, **kwargs):
+        todo = Todo.objects.get(pk=todo_id)
+        notes = todo.notes.all().order_by('-date_created')
+        return render(request, self.template_name, {'todo': todo, 'notes': notes})

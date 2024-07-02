@@ -50,6 +50,8 @@
                  <th>Date Created</th>
                  <th>Detail View</th>
                  <th>Comments</th>
+                 <th>Comments By</th>
+
                  <th>time start</th>
 
               </tr>
@@ -68,7 +70,10 @@
                 <td>
                     <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"><i class="fa-solid fa-eye text-c-green"></i></a>
                 </td>
-                <td>{{ todo.note }}</td>
+                <td>   <a href="{% url 'note_history' todo.id %}">
+                  {{ todo.note|slice:":50" }}
+                  {% if todo.note|length > 50 %}...{% endif %}
+              </a></td>
                 <td>{{ todo.start_time }}</td>
 
               </tr> {% endfor %} </tbody>

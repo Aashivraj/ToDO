@@ -30,7 +30,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name="logout"),
     path('update_comment/<int:id>', UpdateTodoComment.as_view(), name="updatecomment"),
     # path('update_teamtodo_comment/<int:id>', UpdateTeamTodoComment.as_view(), name="updateteamtodocomment"),
-    
+    path('todo/<int:todo_id>/notes/', NoteHistoryView.as_view(), name='note_history'),
  
     
     path('update_user/<int:id>', UpdateUserView.as_view(), name="update"),

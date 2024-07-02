@@ -243,7 +243,7 @@ body.dark .flatpickr-calendar {
               <th>Time Taken</th>
               <th>Detail View</th>
               <th>Comments</th>
-              <th>Added By</th>
+              <th>Comment By</th>
 
             </tr>
           </thead>
@@ -281,7 +281,10 @@ body.dark .flatpickr-calendar {
                   </a>
                   {% endif %}
                 </td>
-                <td>{{ todo.note }}</td>
+                <td>   <a href="{% url 'note_history' todo.id %}">
+                  {{ todo.note|slice:":50" }}
+                  {% if todo.note|length > 50 %}...{% endif %}
+              </a></td>
                 <td>  
                   {{ todo.updated_by }}<br>
               </td>

@@ -286,7 +286,13 @@ body.dark .flatpickr-calendar {
                   </a>
                   {% endif %}
               </td>
-              <td>{{ todo.note }}</td>
+              <td>
+                <a href="{% url 'note_history' todo.id %}">
+                    {{ todo.note|slice:":50" }}
+                    {% if todo.note|length > 50 %}...{% endif %}
+                </a>
+            </td>
+
               <td>{{ todo.updated_by }}</td>
               <td>{{ todo.start_time }}</td>
 

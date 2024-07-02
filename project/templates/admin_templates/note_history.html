@@ -1,0 +1,37 @@
+{% extends "layouts/base_auth.html" %}
+{% block content %}
+{% include "includes/sidebar.html" %}
+{% include "includes/navigation.html" %}
+
+<section class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <h1>Note History for {{ todo.title }}</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Note</th>
+                            <th>User</th>
+                            <th>Date Created</th>
+                            <th>Comment By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for note in notes %}
+                        <tr>
+                            <td>{{ note.description }}</td>
+                            <td>{{ note.user }}</td>
+                            <td>{{ note.date_created|date:"d-M-Y H:i" }}</td>
+                            <td>{{ note.updated_by}}</td>
+                            {% endfor %}
+                    </tbody>
+                </table>
+                <a href="{% url 'todolist' %}" class="btn btn-secondary">Back to Todo List</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% include "includes/footer.html" %}
+{% endblock content %}

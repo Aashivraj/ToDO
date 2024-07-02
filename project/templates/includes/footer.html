@@ -141,7 +141,42 @@
             font-size: 12px; /* Reduce font size */
             color: #878787;
         }
-
+            
+        .social-icons-container {
+            margin-top: 10px; /* Adjust margin as needed */
+        }
+        
+        .ul, .ul2, .ul3 {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: inline-block;
+        }
+        
+        .li, .li2, .li3 {
+            display: inline-block;
+            margin-right: 10px; /* Adjust spacing between icons */
+        }
+        
+        .li a, .li2 a, .li3 a {
+            display: inline-block;
+            width: 30px; /* Adjust width of each icon */
+            height: 30px; /* Adjust height of each icon */
+            text-align: center;
+            line-height: 30px; /* Center icon vertically */
+            background: #333;
+            border-radius: 50%;
+            font-size: 16px; /* Adjust icon size */
+            color: #666;
+            transition: .5s;
+        }
+        
+        .li a:hover, .li2 a:hover, .li3 a:hover {
+            color: #7774ff; /* Adjust hover color */
+            background: #333; /* Adjust hover background color */
+            box-shadow: 0 0 5px #7774ff; /* Adjust hover box-shadow */
+            text-shadow: 0 0 5px #7774ff; /* Adjust hover text-shadow */
+        }
         /* Collapsed state for footer */
         .footer-section.collapsed {
             display: none;
@@ -208,12 +243,21 @@
                                             <div class="footer-text">
                                                 <p>{{system_settings.company_info}}</p>
                                             </div>
-                                            <div class="footer-social-icon">
+                                            <div class="footer-widget-heading">
                                                 <span>Follow us</span>
-                                                <a href="#"><i class="fab fa-facebook-f facebook-bg"></i></a>
-                                                <a href="#"><i class="fab fa-twitter twitter-bg"></i></a>
-                                                <a href="#"><i class="fab fa-google-plus-g google-bg"></i></a>
+                                                <div class="social-icons-container">
+                                                    <ul class="ul">
+                                                        <li class="li"><a href="#"><i class="fab fa-facebook-f facebook-bg"></i></a></li>
+                                                    </ul>
+                                                    <ul class="ul2">
+                                                        <li class="li2"><a href="#"><i class="fab fa-twitter twitter-bg"></i></a></li>
+                                                    </ul>
+                                                    <ul class="ul3">
+                                                        <li class="li3"><a href="#"><i class="fab fa-google-plus-g google-bg"></i></a></li>
+                                                    </ul>
+                                                </div>
                                             </div>
+                                          
                                         </div>
                                     </div>
                                     <div class="col-xl-4 col-lg-4 col-md-6 mb-20"> 

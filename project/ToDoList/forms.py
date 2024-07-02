@@ -62,8 +62,7 @@ class TodoForm(forms.ModelForm):
 class UpdateTodoForm(forms.ModelForm):
     class Meta:
         model = Todo
-        fields = ['title', 'description', 'note', 'status','updated_by']
-
+        fields = ['title', 'description', 'note', 'status', 'updated_by']
         widgets = {
             'title': forms.TextInput(attrs={
                 'class': 'form-control',
@@ -73,15 +72,12 @@ class UpdateTodoForm(forms.ModelForm):
                 'class': 'form-control',
                 'readonly': True,
                 'rows': 4,
-                
             }),
             'note': forms.Textarea(attrs={
                 'class': 'form-control',
                 'placeholder': 'Enter note',
                 'rows': 2,
-                'label':'comment'
-                
-                
+                'label': 'comment'
             }),
             'status': forms.NumberInput(attrs={
                 'class': 'form-control',
@@ -89,23 +85,17 @@ class UpdateTodoForm(forms.ModelForm):
             }),
             'updated_by': forms.TextInput(attrs={
                 'class': 'form-control',
-                 'readonly': True,
-               
+                'readonly': True,
             }),
-         
-         
         }
         labels = {
             'note': 'Comment',  # Change label from 'note' to 'Comment'
         }
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
+        self.user = kwargs.pop('user', None)  # Store user
         super(UpdateTodoForm, self).__init__(*args, **kwargs)
-        if user:
-            self.fields['user'].initial = user
-          
-            
+
     def clean(self):
         cleaned_data = super().clean()
         note = cleaned_data.get('note')
@@ -117,7 +107,26 @@ class UpdateTodoForm(forms.ModelForm):
             cleaned_data['status'] = 0
 
         return cleaned_data
-    
+
+    def save(self, commit=True):
+        todo = super().save(commit=False)
+        new_note = self.cleaned_data.get('note')
+
+        if new_note:
+            Notes.objects.create(
+                todo=todo, 
+                user=self.user, 
+                team=todo.team, 
+                description=new_note, 
+                updated_by=self.user.get_username()
+            )
+
+        todo.updated_by = self.user.get_username()  # Set updated_by here
+
+        if commit:
+            todo.save()
+
+        return todo
     
 class AddUserForm(forms.ModelForm):
     user_name = forms.CharField(
