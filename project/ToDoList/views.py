@@ -60,9 +60,7 @@ class ChangePasswordView(views.View, LoginRequiredMixin):
             return render(request, self.template_name, {"form": form})
 
 
-@method_decorator(
-    user_passes_test(user_is_teamlead, login_url="/error/"), name="dispatch"
-)
+@method_decorator(user_passes_test(user_is_teamlead, login_url="/error/"), name="dispatch")
 class UpdateTodoComment(LoginRequiredMixin, views.View):
     def get(self, request, id, *args, **kwargs):
         data = Todo.objects.get(pk=id)
@@ -261,9 +259,7 @@ class ErrorView(LoginRequiredMixin, views.View):
         return render(request, "admin_templates/error.html")
 
 
-@method_decorator(
-    user_passes_test(user_is_teamlead, login_url="/error/"), name="dispatch"
-)
+@method_decorator(user_passes_test(user_is_teamlead, login_url="/error/"), name="dispatch")
 class AddUserView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         form = AddUserForm(user=request.user)

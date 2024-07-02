@@ -97,5 +97,12 @@ body.dark {
       
       color: #082032;
   }
+  body.dark .form-control[readonly],
+  body.dark .custom-select[readonly],
+  body.dark .input-group-prepend input[readonly],
+  body.dark .input-group-append input[readonly] {
+      background-color: rgba(8, 32, 50, 0.3); /* Adjust opacity to suit your design */
+  }
+
 
 
