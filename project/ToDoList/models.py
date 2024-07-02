@@ -103,6 +103,7 @@ class Todo(models.Model):
     description = models.TextField()
     status = models.IntegerField(default=0)
     date_created = models.DateTimeField(default=timezone.now)
+    start_time = models.DateTimeField(null=True, blank=True)
     update_time = models.DateTimeField(null=True, blank=True)
     note = models.TextField(blank=True, null=True)
     updated_by=models.CharField(max_length=20,blank=True, null=True)

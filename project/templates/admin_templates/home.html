@@ -16,12 +16,23 @@
            <div class="card__title">{{ todo.title }}</div>
            <div class="card__text">{{ todo.description }}</div>
            <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %} </div>
-           <div class="card__note">Note: {{ todo.note }}</div>
-           <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span> {% if todo.status == 0 %} <form method="post" action="{% url 'update_todo_status' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+           <div class="card__note">Comment: {{ todo.note }}</div>
+           <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span> 
+           {% if todo.start_time != Null %} 
+           {% if todo.status == 0 %} 
+           <form method="post" action="{% url 'update_todo_status' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
               <input type="hidden" name="status" value="1" />
               <!-- Hidden field to update status to 1 -->
               <button type="submit" class="card__button">Mark as Completed</button>
            </form> {% endif %}
+          {% endif %}
+           {% if todo.start_time == Null %}
+            <form method="post" action="{% url 'update_todo_start_time' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+           
+            {% csrf_token %}
+            <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+            <button type="submit" class="card__button">Start Now</button>
+        </form>{% endif %}
         </div>
      </div> {% endfor %} </div>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -39,6 +50,7 @@
                  <th>Date Created</th>
                  <th>Detail View</th>
                  <th>Comments</th>
+                 <th>time start</th>
 
               </tr>
            </thead>
@@ -57,6 +69,7 @@
                     <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"><i class="fa-solid fa-eye text-c-green"></i></a>
                 </td>
                 <td>{{ todo.note }}</td>
+                <td>{{ todo.start_time }}</td>
 
               </tr> {% endfor %} </tbody>
         </table> {% endfor %}
@@ -101,6 +114,7 @@
             <th>Phone</th>
             <th>Team</th>
             <th>Role</th>
+            <th>start time</th>
           </tr>
         </thead>
         <tbody> 
@@ -112,26 +126,38 @@
             <td>{{i.mobile_number}}</td>
             <td>{{i.team}}</td>
             <td>{% if i.role == "1" %} CEO / PM {% elif i.role == "2" %} TeamLead {% elif i.role == "3" %}Developer{% endif %}</td>
+            <td>{{ todo.start_time }}</td>
+
           </tr>
           {% endfor %} 
         </tbody>
       </table>
     </div>
   </div>
-  <div class="pcoded-wrapper"> {% for todo in todos %}
-    <div class="card">
-        <div class="card__content">
-           <div class="card__title">{{ todo.title }}</div>
-           <div class="card__text">{{ todo.description }}</div>
-           <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %} </div>
-           <div class="card__note">Note: {{ todo.note }}</div>
-           <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span> {% if todo.status == 0 %} <form method="post" action="{% url 'update_todo_status' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
-              <input type="hidden" name="status" value="1" />
-              <!-- Hidden field to update status to 1 -->
-              <button type="submit" class="card__button">Mark as Completed</button>
-           </form> {% endif %}
-        </div>
-     </div> {% endfor %} </div>
+  <div class="pcoded-wrapper"> {% for todo in todos %} <div class="card">
+    <div class="card__content">
+       <div class="card__title">{{ todo.title }}</div>
+       <div class="card__text">{{ todo.description }}</div>
+       <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %} </div>
+       <div class="card__note">Comment: {{ todo.note }}</div>
+       <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span> 
+       {% if todo.start_time != Null %} 
+       {% if todo.status == 0 %} 
+       <form method="post" action="{% url 'update_todo_status' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+          <input type="hidden" name="status" value="1" />
+          <!-- Hidden field to update status to 1 -->
+          <button type="submit" class="card__button">Mark as Completed</button>
+       </form> {% endif %}
+      {% endif %}
+       {% if todo.start_time == Null %}
+        <form method="post" action="{% url 'update_todo_start_time' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+       
+        {% csrf_token %}
+        <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+        <button type="submit" class="card__button">Start Now</button>
+    </form>{% endif %}
+    </div>
+ </div> {% endfor %} </div>
 </section>
 
 
@@ -165,28 +191,30 @@
 <br />
 <!-- Assuming you have other HTML structure -->
 <section class="pcoded-main-container">
-   <div class="pcoded-wrapper">
-     {% for todo in todos %}
-     <div class="card">
-       <div class="card__content">
-         <div class="card__title">{{ todo.title }}</div>
-         <div class="card__text">{{ todo.description }}</div>
-         <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %}</div>
-         <div class="card__note">Note: {{ todo.note }}</div>
-         <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span>
-         {% if todo.status == 0 %}
-         <form method="post" action="{% url 'update_todo_status' todo.id %}">
-           {% csrf_token %}
-           <input type="hidden" name="todo_id" value="{{ todo.id }}" />
-           <input type="hidden" name="status" value="1" />
-           <!-- Hidden field to update status to 1 -->
-           <button type="submit" class="card__button">Mark as Completed</button>
-         </form>
-         {% endif %}
-       </div>
-     </div>
-     {% endfor %}
-   </div>
+  <div class="pcoded-wrapper"> {% for todo in todos %} <div class="card">
+    <div class="card__content">
+       <div class="card__title">{{ todo.title }}</div>
+       <div class="card__text">{{ todo.description }}</div>
+       <div class="card__status">Status: {% if todo.status == 0 %}Pending{% elif todo.status == 1 %}Completed{% endif %} </div>
+       <div class="card__note">Comment: {{ todo.note }}</div>
+       <span class="card__date">Date :- {{ todo.date_created|date:"d F Y" }}</span> 
+       {% if todo.start_time != Null %} 
+       {% if todo.status == 0 %} 
+       <form method="post" action="{% url 'update_todo_status' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+          <input type="hidden" name="status" value="1" />
+          <!-- Hidden field to update status to 1 -->
+          <button type="submit" class="card__button">Mark as Completed</button>
+       </form> {% endif %}
+      {% endif %}
+       {% if todo.start_time == Null %}
+        <form method="post" action="{% url 'update_todo_start_time' todo.id %}"> {% csrf_token %} <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+       
+        {% csrf_token %}
+        <input type="hidden" name="todo_id" value="{{ todo.id }}" />
+        <button type="submit" class="card__button">Start Now</button>
+    </form>{% endif %}
+    </div>
+ </div> {% endfor %} </div>
  </section>
  {% endif %} 
  

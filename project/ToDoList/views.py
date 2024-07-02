@@ -1,7 +1,9 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django import views
 from django.db.models import Q
-from django.core.mail import send_mail
+
+
+
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -13,7 +15,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from .filters import *
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
+
 from django.core.files.storage import FileSystemStorage
 import os
 from django.contrib.auth.decorators import user_passes_test
@@ -127,8 +129,8 @@ class TeamLeadView(LoginRequiredMixin, views.View):
 
         # Calculate time taken for each todo item
         for todo in todos:
-            if todo.update_time and todo.date_created:
-                time_difference = todo.update_time - todo.date_created
+            if todo.update_time and todo.start_time:
+                time_difference = todo.update_time - todo.start_time
                 hours, remainder = divmod(time_difference.total_seconds(), 3600)
                 minutes, _ = divmod(remainder, 60)
                 todo.time_taken = f"{int(hours)}h {int(minutes)}m"
@@ -159,8 +161,8 @@ class home(LoginRequiredMixin, views.View):
             for team in teams:
                 pending_todos = Todo.objects.filter(team=team, status=0)
                 for todo in pending_todos:
-                    if todo.update_time and todo.date_created:
-                        time_difference = todo.update_time - todo.date_created
+                    if todo.update_time and todo.start_time:
+                        time_difference = todo.update_time - todo.start_time
                         hours, remainder = divmod(time_difference.total_seconds(), 3600)
                         minutes, _ = divmod(remainder, 60)
                         todo.time_taken = f"{int(hours)}h {int(minutes)}m"
@@ -257,7 +259,17 @@ class update_todo(LoginRequiredMixin, views.View):
             messages.success(request, "Task Updated")
 
         return redirect("home")  # Redirect to the home page after updating status
+    
+class UpdateTodoStartTime(LoginRequiredMixin, views.View):
+    def post(self, request, todo_id):
+        todo = get_object_or_404(Todo, id=todo_id, user=request.user)
+        if todo.start_time is None:  # Check if start_time is not already set
+            todo.start_time = timezone.now()
+            todo.update_time = timezone.now()  # Optionally update this field as well
+            todo.save()
+            messages.success(request, "Task Start Time Updated")
 
+        return redirect("home")
 
 class ErrorView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
@@ -279,7 +291,8 @@ class AddUserView(LoginRequiredMixin, views.View):
             mobile_number = form.cleaned_data["mobile_number"]
             team = form.cleaned_data["team"]
             role = form.cleaned_data["role"]
-            
+            # Only superusers can set the team
+
             if not user_name:
                 messages.error(request, "Username cannot be blank")
                 return render(request, "admin_templates/add_user.html", {"form": form})
@@ -322,7 +335,8 @@ class AddUserView(LoginRequiredMixin, views.View):
             user.set_password(request.POST.get("user_name"))
             user.save()
 
-            # Send email to the newly added user
+            # Send email to the newly added user  
+ 
             subject = 'Welcome to our platform!'
             html_content = render_to_string('emails/Add_User_Email.html', {
                 'user_name': user_name,
@@ -335,6 +349,7 @@ class AddUserView(LoginRequiredMixin, views.View):
             msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
             msg.attach_alternative(html_content, "text/html")
             msg.send()
+
 
             messages.success(request, "User successfully added")
             if request.user.id == 1:
@@ -445,8 +460,8 @@ class ToDoListView(views.View):
 
         # Calculate time_taken for each todo item
         for todo in todos:
-            if todo.update_time and todo.date_created:
-                time_difference = todo.update_time - todo.date_created
+            if todo.update_time and todo.start_time:
+                time_difference = todo.update_time - todo.start_time
                 hours, remainder = divmod(time_difference.total_seconds(), 3600)
                 minutes, _ = divmod(remainder, 60)
                 todo.time_taken = f"{int(hours)}h {int(minutes)}m"
@@ -706,8 +721,8 @@ class TaskDetailView(LoginRequiredMixin, views.View):
             return render(request, "admin_templates/forbiddenerror.html")
 
         # Calculate time_taken for the task
-        if task and task.update_time and task.date_created:
-            time_difference = task.update_time - task.date_created
+        if task and task.update_time and task.start_time:
+            time_difference = task.update_time - task.start_time
             hours, remainder = divmod(time_difference.total_seconds(), 3600)
             minutes, _ = divmod(remainder, 60)
             task.time_taken = f"{int(hours)}h {int(minutes)}m"

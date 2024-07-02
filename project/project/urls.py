@@ -38,6 +38,7 @@ urlpatterns = [
     path('user_list/',UserListView.as_view(),name="userlist"),
     path('todo_list/',ToDoListView.as_view(),name="todolist"),
     path('update_todo_status/<int:todo_id>/',update_todo.as_view(), name='update_todo_status'),
+    path('update_todo_start_time/<int:todo_id>/', UpdateTodoStartTime.as_view(), name='update_todo_start_time'),
    
     
     path('Profile/',ProfilePageView.as_view(),name="profile"),
