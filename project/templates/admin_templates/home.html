@@ -50,7 +50,7 @@
                  <th>Date Created</th>
                  <th>Detail View</th>
                  <th>Comments</th>
-                 <th>Comments By</th>
+               
 
                  <th>time start</th>
 
@@ -74,6 +74,7 @@
                   {{ todo.note|slice:":50" }}
                   {% if todo.note|length > 50 %}...{% endif %}
               </a></td>
+
                 <td>{{ todo.start_time }}</td>
 
               </tr> {% endfor %} </tbody>
