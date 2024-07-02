@@ -215,7 +215,7 @@
                               <a href="javascript:void(0);" onclick="confirmDelete('{{i.id}}');">
                                 <i class="fa-solid fa-user-xmark text-c-green"></i>
                               </a>
-                              <form id="delete-form-{{i.id}}" method="post" action="{% url 'delete' i.id %}" style="display: none;">
+                              <form id="delete-form-{{i.id}}" method="get" action="{% url 'delete' i.id %}" style="display: none;">
                                 {% csrf_token %}
                               </form>
                             </td>

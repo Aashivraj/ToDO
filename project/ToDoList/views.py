@@ -1,6 +1,11 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from django import views
 from django.db.models import Q
+from django.core.mail import send_mail
+from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from .models import *
 from .forms import *
 from django.contrib import messages
@@ -274,8 +279,7 @@ class AddUserView(LoginRequiredMixin, views.View):
             mobile_number = form.cleaned_data["mobile_number"]
             team = form.cleaned_data["team"]
             role = form.cleaned_data["role"]
-            # Only superusers can set the team
-
+            
             if not user_name:
                 messages.error(request, "Username cannot be blank")
                 return render(request, "admin_templates/add_user.html", {"form": form})
@@ -317,6 +321,20 @@ class AddUserView(LoginRequiredMixin, views.View):
             )
             user.set_password(request.POST.get("user_name"))
             user.save()
+
+            # Send email to the newly added user
+            subject = 'Welcome to our platform!'
+            html_content = render_to_string('emails/Add_User_Email.html', {
+                'user_name': user_name,
+                'team': team,
+            })
+            text_content = strip_tags(html_content)
+            from_email = settings.DEFAULT_FROM_EMAIL
+            to_email = [email]
+
+            msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
 
             messages.success(request, "User successfully added")
             if request.user.id == 1:
