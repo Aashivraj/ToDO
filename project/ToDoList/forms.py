@@ -120,6 +120,14 @@ class UpdateTodoForm(forms.ModelForm):
                 description=new_note, 
                 updated_by=self.user.get_username()
             )
+            
+            Notification.objects.create(
+                    sender=self.user,
+                    receiver=todo.user,  # Assuming the task owner should be notified
+                    todo=todo,
+                    message=f'{self.user.get_username()} added/edited a comment: {new_note}'
+                )
+
 
         todo.updated_by = self.user.get_username()  # Set updated_by here
 

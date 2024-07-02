@@ -114,7 +114,22 @@ class Todo(models.Model):
     def __str__(self):
         return self.title
 
-   
+
+class Notification(models.Model):
+    sender = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='sent_notifications', on_delete=models.CASCADE)
+    receiver = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='received_notifications', on_delete=models.CASCADE)
+    todo = models.ForeignKey(Todo, on_delete=models.CASCADE)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Notification from {self.sender} to {self.receiver} about {self.todo}'
+
+    @property
+    def display_message(self):
+        return f"{self.message} ✓✓" if self.is_read else self.message
+
 class Notes(models.Model):
     todo = models.ForeignKey(Todo, related_name='notes', on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)

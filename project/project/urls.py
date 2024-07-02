@@ -32,7 +32,11 @@ urlpatterns = [
     # path('update_teamtodo_comment/<int:id>', UpdateTeamTodoComment.as_view(), name="updateteamtodocomment"),
     path('todo/<int:todo_id>/notes/', NoteHistoryView.as_view(), name='note_history'),
  
+    path('notifications/', NotificationListView.as_view(), name='notifications'),
     
+    path('notifications/mark_all_as_read/', mark_all_as_read, name='mark_all_as_read'),
+    path('mark-as-read/<int:notification_id>/', mark_notification_as_read, name='mark_notification_as_read'),
+    path('notifications/clear_all/', clear_all_notifications, name='clear_all_notifications'),
     path('update_user/<int:id>', UpdateUserView.as_view(), name="update"),
     path('delete/<int:id>',DeleteUserView.as_view(),name='delete'),
     path('user_list/',UserListView.as_view(),name="userlist"),

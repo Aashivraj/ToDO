@@ -1,6 +1,9 @@
+
 from django.shortcuts import get_object_or_404, render, redirect
 from django import views
 from django.db.models import Q
+from django.views.generic import ListView, RedirectView
+from django.views.decorators.http import require_POST
 
 
 
@@ -68,18 +71,23 @@ class ChangePasswordView(views.View, LoginRequiredMixin):
 
 
 @method_decorator(user_passes_test(user_is_teamlead, login_url="/error/"), name="dispatch")
+
 class UpdateTodoComment(LoginRequiredMixin, views.View):
     def get(self, request, id, *args, **kwargs):
         data = Todo.objects.get(pk=id)
-        form = UpdateTodoForm(instance=data, user=request.user)  # Pass user to form
+        form = UpdateTodoForm(instance=data, user=request.user)
+        latest_notifications = request.user.received_notifications.all().order_by('-timestamp')[:5]
+        unread_notifications_count = request.user.received_notifications.filter(is_read=False).count()
         context = {
             "form": form,
+            "unread_notifications_count": unread_notifications_count,
+            'latest_notifications': latest_notifications,
         }
         return render(request, "admin_templates/update_todo_comment.html", context)
 
     def post(self, request, id, *args, **kwargs):
         data = Todo.objects.get(pk=id)
-        form = UpdateTodoForm(request.POST, instance=data, user=request.user)  # Pass user to form
+        form = UpdateTodoForm(request.POST, instance=data, user=request.user)
 
         if form.is_valid():
             if "date_created" in form.changed_data:
@@ -92,7 +100,8 @@ class UpdateTodoComment(LoginRequiredMixin, views.View):
             elif request.user.role == "2":
                 return redirect("teamtodo")
 
-        return render(request, "admin_templates/update_todo_comment.html", {"form": form})
+        unread_notifications_count = request.user.received_notifications.filter(is_read=False).count()
+        return render(request, "admin_templates/update_todo_comment.html", {"form": form, "unread_notifications_count": unread_notifications_count})
 
 
 @method_decorator(user_passes_test(user_is_admin, login_url="/error/"), name="dispatch")
@@ -472,8 +481,6 @@ class DeleteUserView(LoginRequiredMixin, views.View):
         messages.success(request, "User Deleted Successfully")
 
         return redirect("userlist")
-
-
 class ToDoListView(views.View):
     template_name = "admin_templates/todo_list.html"
 
@@ -776,3 +783,31 @@ class NoteHistoryView(LoginRequiredMixin, views.View):
         todo = Todo.objects.get(pk=todo_id)
         notes = todo.notes.all().order_by('-date_created')
         return render(request, self.template_name, {'todo': todo, 'notes': notes})
+
+
+
+class NotificationListView(LoginRequiredMixin, ListView):
+    model = Notification
+    template_name = 'admin_templates/notification.html'
+    context_object_name = 'notifications'
+
+    def get_queryset(self):
+        return Notification.objects.filter(receiver=self.request.user).order_by('-timestamp')
+
+
+
+def mark_all_as_read(request):
+    request.user.received_notifications.update(is_read=True)
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+def clear_all_notifications(request):
+    request.user.received_notifications.all().delete()
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+
+@require_POST
+def mark_notification_as_read(request, notification_id):
+    notification = get_object_or_404(Notification, id=notification_id)
+    notification.is_read = True
+    notification.save()
+    return redirect(request.META.get('HTTP_REFERER', 'home'))

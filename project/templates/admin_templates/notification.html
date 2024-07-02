@@ -1,0 +1,46 @@
+<!-- all_notifications.html -->
+
+{% extends "layouts/base_auth.html" %}
+
+{% block content %}
+<div class="container">
+    <h2>Notifications</h2>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sender</th>
+                    <th>Message</th>
+                    <th>Timestamp</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notification in notifications %}
+                <tr>
+                    <td>{{ notification.sender }}</td>
+                    <td>{{ notification.message }}</td>
+                    <td>{{ notification.timestamp }}</td>
+                    <td>
+                        {% if not notification.is_read %}
+                        <form action="{% url 'mark_notification_as_read' notification.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-sm btn-link">Mark as read</button>
+                        </form>
+                        {% else %}
+                         DONE ✓✓
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div>
+        <a href="{% url 'mark_all_as_read' %}" class="btn btn-primary">Mark All as Read</a>
+        <a href="{% url 'clear_all_notifications' %}" class="btn btn-danger">Clear All Notifications</a>
+        <a href="{% url 'home' %}" class="btn badge-secondary">Go To Home</a>
+    </div>
+</div>
+{% endblock %}
