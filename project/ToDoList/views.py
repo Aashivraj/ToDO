@@ -259,9 +259,7 @@ class ErrorView(LoginRequiredMixin, views.View):
         return render(request, "admin_templates/error.html")
 
 
-@method_decorator(
-    user_passes_test(user_is_teamlead, login_url="/error/"), name="dispatch"
-)
+@method_decorator(user_passes_test(user_is_teamlead, login_url="/error/"), name="dispatch")
 class AddUserView(LoginRequiredMixin, views.View):
     def get(self, request, *args, **kwargs):
         form = AddUserForm(user=request.user)
