@@ -228,6 +228,56 @@ body.dark .flatpickr-calendar {
   </div>
   {% endif %}
 
+
+  {% if user.is_authenticated and user.role != "1" %}
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="m-0"><b>Filters</b></h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-12">
+                                    <form method="get">
+                                        <div class="row">
+                
+                                      
+                                            <!-- Date Created filter -->
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="date_created">Date Created:</label>
+                                                    {{ filter.form.date_created }}
+                                                </div>
+                                            </div>
+                          
+                                            <!-- Buttons -->
+                                            <div class="col-md-12">
+                                                <div class="form-group d-flex justify-content-end">
+                                                    <button id="applyBtn" class="btn btn-primary mr-2">Apply</button>
+                                                    <a href="{% url 'todolist' %}" type="button" id="clearBtn" class="btn btn-secondary">Clear Filters</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Hidden div for any additional fields -->
+                                        <div class="col-md-6"></div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+  {% endif %}
+
+
+
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
       <div class="pcoded-inner-content">

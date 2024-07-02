@@ -482,12 +482,15 @@ class ToDoListView(views.View):
         filters = None
 
         if user.role == "1":
-            queryset = Todo.objects.all()
+            queryset = Todo.objects.filter().order_by("date_created")
             todos = queryset.order_by("status")
             filters = TodoFilter(request.GET, queryset=todos)
             todos = filters.qs
         elif user.role == "2" or user.role == "3":
-            todos = Todo.objects.filter(user=user).order_by("status")
+            todos = Todo.objects.filter(user=user).order_by("status","date_created")
+            # print(todos)
+            filters = TodoFilter(request.GET, queryset=todos)
+            todos = filters.qs
 
         # Calculate time_taken for each todo item
         for todo in todos:
