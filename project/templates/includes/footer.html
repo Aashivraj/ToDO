@@ -1,304 +1,363 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
+      body .footer-section {
+        background: #2c394b;
+        color: white;
+      }
 
-        /* Your existing CSS styles */
-        ul {
-            margin: 0px;
-            padding: 0px;
-        }
-        .footer-section {
-            background: #151414;
-            position: relative;
-            padding: 20px 0; /* Reduce padding */
-        }
-        .footer-cta {
-            border-bottom: 1px solid #373636;
-            padding: 10px 0; /* Reduce padding */
-        }
-        .single-cta i {
-            color: #ff5e14;
-            font-size: 20px; /* Reduce icon size */
-            float: left;
-            margin-top: 4px; /* Reduce margin */
-        }
-        .cta-text {
-            padding-left: 10px; /* Reduce padding */
-            display: inline-block;
-        }
-        .cta-text h4 {
-            color: #fff;
-            font-size: 16px; /* Reduce font size */
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-        .cta-text span {
-            color: #757575;
-            font-size: 12px; /* Reduce font size */
-        }
-        .footer-content {
-            position: relative;
-            z-index: 2;
-            padding: 20px 0; /* Reduce padding */
-        }
-        .footer-logo {
-            margin-bottom: 20px; /* Reduce margin */
-        }
-        .footer-logo img {
-            max-width: 150px; /* Reduce image size */
-        }
-        .footer-text p {
-            margin-bottom: 10px; /* Reduce margin */
-            font-size: 12px; /* Reduce font size */
-            color: #7e7e7e;
-            line-height: 20px; /* Reduce line height */
-        }
-       
-      
-        .footer-widget-heading h3 {
-            color: #fff;
-            font-size: 18px; /* Reduce font size */
-            font-weight: 600;
-            margin-bottom: 20px; /* Reduce margin */
-            position: relative;
-        }
-        .footer-widget-heading h3::before {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -10px; /* Adjust position */
-            height: 2px;
-            width: 40px; /* Reduce width */
-            background: #ff5e14;
-        }
-        .footer-widget ul li {
-            display: inline-block;
-            float: left;
-            width: 50%;
-            margin-bottom: 8px; /* Reduce margin */
-        }
-        .footer-widget ul li a:hover {
-            color: #ff5e14;
-        }
-        .footer-widget ul li a {
-            color: #878787;
-            text-transform: capitalize;
-        }
-        .subscribe-form {
-            position: relative;
-            overflow: hidden;
-        }
-        .subscribe-form input {
-            width: 100%;
-            padding: 10px 20px; /* Reduce padding */
-            background: #2E2E2E;
-            border: 1px solid #2E2E2E;
-            color: #fff;
-        }
-        .subscribe-form button {
-            position: absolute;
-            right: 0;
-            background: #ff5e14;
-            padding: 10px 15px; /* Reduce padding */
-            border: 1px solid #ff5e14;
-            top: 0;
-        }
-        .subscribe-form button i {
-            color: #fff;
-            font-size: 18px; /* Reduce font size */
-            transform: rotate(-6deg);
-        }
-        .copyright-area {
-            background: #202020;
-            padding: 15px 0; /* Reduce padding */
-        }
-        .copyright-text p {
-            margin: 0;
-            font-size: 12px; /* Reduce font size */
-            color: #878787;
-        }
-        .copyright-text p a {
-            color: #ff5e14;
-        }
-        .footer-menu li {
-            display: inline-block;
-            margin-left: 15px; /* Reduce margin */
-        }
-        .footer-menu li:hover a {
-            color: #ff5e14;
-        }
-        .footer-menu li a {
-            font-size: 12px; /* Reduce font size */
-            color: #878787;
-        }
-            
-        .social-icons-container {
-            margin-top: 10px; /* Adjust margin as needed */
-        }
-        
-        .ul, .ul2, .ul3 {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: inline-block;
-        }
-        
-        .li, .li2, .li3 {
-            display: inline-block;
-            margin-right: 10px; /* Adjust spacing between icons */
-        }
-        
-        .li a, .li2 a, .li3 a {
-            display: inline-block;
-            width: 30px; /* Adjust width of each icon */
-            height: 30px; /* Adjust height of each icon */
-            text-align: center;
-            line-height: 30px; /* Center icon vertically */
-            background: #333;
-            border-radius: 50%;
-            font-size: 16px; /* Adjust icon size */
-            color: #666;
-            transition: .5s;
-        }
-        
-        .li a:hover, .li2 a:hover, .li3 a:hover {
-            color: #7774ff; /* Adjust hover color */
-            background: #333; /* Adjust hover background color */
-            box-shadow: 0 0 5px #7774ff; /* Adjust hover box-shadow */
-            text-shadow: 0 0 5px #7774ff; /* Adjust hover text-shadow */
-        }
-        /* Collapsed state for footer */
-        .footer-section.collapsed {
-            display: none;
-        }
+      ul {
+        margin: 0px;
+        padding: 0px;
+      }
+
+      .footer-section {
+        background: #151414;
+        position: relative;
+        padding: 20px 0;
+        /* Reduce padding */
+      }
+
+      .footer-cta {
+        border-bottom: 1px solid #373636;
+        padding: 10px 0;
+        /* Reduce padding */
+      }
+
+      .single-cta i {
+        color: #ff5e14;
+        font-size: 20px;
+        /* Reduce icon size */
+        float: left;
+        margin-top: 4px;
+        /* Reduce margin */
+      }
+
+      .cta-text {
+        padding-left: 10px;
+        /* Reduce padding */
+        display: inline-block;
+      }
+
+      .cta-text h4 {
+        color: #fff;
+        font-size: 16px;
+        /* Reduce font size */
+        font-weight: 600;
+        margin-bottom: 2px;
+      }
+
+      .cta-text span {
+        color: #757575;
+        font-size: 12px;
+        /* Reduce font size */
+      }
+
+      .footer-content {
+        position: relative;
+        z-index: 2;
+        padding: 20px 0;
+        /* Reduce padding */
+      }
+
+      .footer-logo {
+        margin-bottom: 20px;
+        /* Reduce margin */
+      }
+
+      .footer-logo img {
+        max-width: 150px;
+        /* Reduce image size */
+      }
+
+      .footer-text p {
+        margin-bottom: 10px;
+        /* Reduce margin */
+        font-size: 12px;
+        /* Reduce font size */
+        color: white !important; 
+        line-height: 20px;
+        /* Reduce line height */
+      }
+
+      .footer-widget-heading h3 {
+        color: #fff;
+        font-size: 18px;
+        /* Reduce font size */
+        font-weight: 600;
+        margin-bottom: 20px;
+        /* Reduce margin */
+        position: relative;
+      }
+
+      .footer-widget-heading h3::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: -10px;
+        /* Adjust position */
+        height: 2px;
+        width: 40px;
+        /* Reduce width */
+        background: #ff5e14;
+      }
+
+      .footer-widget ul li {
+        display: inline-block;
+        float: left;
+        width: 50%;
+        margin-bottom: 8px;
+        /* Reduce margin */
+      }
+
+      .footer-widget ul li a:hover {
+        color: #ff5e14;
+      }
+
+      .footer-widget ul li a {
+        color: #878787;
+        text-transform: capitalize;
+      }
+
+      .subscribe-form {
+        position: relative;
+        overflow: hidden;
+      }
+
+      .subscribe-form input {
+        width: 100%;
+        padding: 10px 20px;
+        /* Reduce padding */
+        background: #2E2E2E;
+        border: 1px solid #2E2E2E;
+        color: #fff;
+      }
+
+      .subscribe-form button {
+        position: absolute;
+        right: 0;
+        background: #ff5e14;
+        padding: 10px 15px;
+        /* Reduce padding */
+        border: 1px solid #ff5e14;
+        top: 0;
+      }
+
+      .subscribe-form button i {
+        color: #fff;
+        font-size: 18px;
+        /* Reduce font size */
+        transform: rotate(-6deg);
+      }
+
+      .copyright-area {
+        background: #202020;
+        padding: 15px 0;
+        /* Reduce padding */
+      }
+
+      .copyright-text p {
+        margin: 0;
+        font-size: 12px;
+        /* Reduce font size */
+        color: #878787;
+      }
+
+      .copyright-text p a {
+        color: #ff5e14;
+      }
+
+      .footer-menu li {
+        display: inline-block;
+        margin-left: 15px;
+        /* Reduce margin */
+      }
+
+      .footer-menu li:hover a {
+        color: #ff5e14;
+      }
+
+      .footer-menu li a {
+        font-size: 12px;
+        /* Reduce font size */
+        color: #878787;
+      }
+
+      .social-icons-container {
+        margin-top: 10px;
+        /* Adjust margin as needed */
+      }
+
+      .ul,
+      .ul2,
+      .ul3 {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: inline-block;
+      }
+
+      .li,
+      .li2,
+      .li3 {
+        display: inline-block;
+        margin-right: 10px;
+        /* Adjust spacing between icons */
+      }
+
+      .li a,
+      .li2 a,
+      .li3 a {
+        display: inline-block;
+        width: 30px;
+        /* Adjust width of each icon */
+        height: 30px;
+        /* Adjust height of each icon */
+        text-align: center;
+        line-height: 30px;
+        /* Center icon vertically */
+        background: #333;
+        border-radius: 50%;
+        font-size: 16px;
+        /* Adjust icon size */
+        color: #666;
+        transition: .5s;
+      }
+
+      .li a:hover,
+      .li2 a:hover,
+      .li3 a:hover {
+        color: #7774ff;
+        /* Adjust hover color */
+        background: #333;
+        /* Adjust hover background color */
+        box-shadow: 0 0 5px #7774ff;
+        /* Adjust hover box-shadow */
+        text-shadow: 0 0 5px #7774ff;
+        /* Adjust hover text-shadow */
+      }
+
+      /* Collapsed state for footer */
+      .footer-section.collapsed {
+        display: none;
+      }
     </style>
-</head>
-<body>
-<section class="pcoded-footer-container">
-    
-        <div class="pcoded-footer-content">
-            <div class="pcoded-inner-content">
-                
-
-
-                
-                    <footer id="footer-section" class="footer-section">
-                        <div class="container">
-                            <div class="footer-cta pt-3 pb-3">  
-                           <div class="row">
-                            <div class="col-xl-4 col-md-4 mb-20">
-                            <div class="single-cta">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <div class="cta-text">
-                                    <h4>Find us</h4>
-                                    <a href="https://www.google.com/maps/search/?api=1&query={{ system_settings.location }}" target="_blank">
-                                        <span>{{ system_settings.location }}</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                                    <div class="col-xl-4 col-md-4 mb-20">
-                                        <div class="single-cta">
-                                            <i class="fas fa-phone"></i>
-                                            <div class="cta-text">
-                                                <h4>Call us</h4>
-                                                <a href="tel:{{ system_settings.mobile }}">
-                                                    <span>{{ system_settings.mobile }}</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-md-4 mb-20">
-                                        <div class="single-cta">
-                                            <i class="far fa-envelope-open"></i>
-                                            <div class="cta-text">
-                                                <h4>Mail us</h4>
-                                                <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ system_settings.email }}" target="_blank">
-                                                    <span>{{ system_settings.email }}</span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="footer-content pt-3 pb-3"> 
-                                <div class="row">
-                                    <div class="col-xl-4 col-lg-4 mb-30">
-                                        <div class="footer-widget">
-                                            <div class="footer-logo">
-                                                
-                                                    <img src="{{ company_logo_url }}" alt="Company Logo" height="50px" width="180px">
-                                               
-                                            </div>
-                                            <div class="footer-text">
-                                                <p>{{system_settings.company_info}}</p>
-                                            </div>
-                                            <div class="footer-widget-heading">
-                                                <span>Follow us</span>
-                                                <div class="social-icons-container">
-                                                    <ul class="ul">
-                                                        <li class="li"><a href="#"><i class="fab fa-facebook-f facebook-bg"></i></a></li>
-                                                    </ul>
-                                                    <ul class="ul2">
-                                                        <li class="li2"><a href="#"><i class="fab fa-twitter twitter-bg"></i></a></li>
-                                                    </ul>
-                                                    <ul class="ul3">
-                                                        <li class="li3"><a href="#"><i class="fab fa-google-plus-g google-bg"></i></a></li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                          
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-4 col-lg-4 col-md-6 mb-20"> 
-                                        <div class="footer-widget">
-                                            <div class="footer-widget-heading">
-                                                <h3>Useful Links</h3>
-                                            </div>
-                                            <ul>
-                                                <li><a href="#">Home</a></li>
-                                                <li><a href="#">about</a></li>
-                                                <li><a href="#">Contact</a></li>
-                                                <li><a href="#">About us</a></li>
-                                               
-                                            </ul>
-                                        </div>
-                                    </div>
-                                  
-                                </div>
-                            </div>
-                        </div>
-                    </footer>
-                 
+    <section class="pcoded-footer-container">
+      <div class="pcoded-footer-content">
+        <div class="pcoded-inner-content">
+          <footer id="footer-section" class="footer-section">
+            <div class="container">
+              <div class="footer-cta pt-3 pb-3">
+                <div class="row">
+                  <div class="col-xl-4 col-md-4 mb-20">
+                    <div class="single-cta">
+                      <i class="fas fa-map-marker-alt"></i>
+                      <div class="cta-text">
+                        <h4>Find us</h4>
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ system_settings.location }}" target="_blank">
+                          <span>{{ system_settings.location }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-4 col-md-4 mb-20">
+                    <div class="single-cta">
+                      <i class="fas fa-phone"></i>
+                      <div class="cta-text">
+                        <h4>Call us</h4>
+                        <a href="tel:{{ system_settings.mobile }}">
+                          <span>{{ system_settings.mobile }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-4 col-md-4 mb-20">
+                    <div class="single-cta">
+                      <i class="far fa-envelope-open"></i>
+                      <div class="cta-text">
+                        <h4>Mail us</h4>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ system_settings.email }}" target="_blank">
+                          <span>{{ system_settings.email }}</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-              
+              </div>
+              <div class="footer-content pt-3 pb-3">
+                <div class="row">
+                  <div class="col-xl-8 col-lg-8 mb-30">
+                    <div class="footer-widget">
+                      <div class="footer-logo">
+                        <img src="{{ company_logo_url }}" alt="Company Logo" height="50px" width="180px">
+                      </div>
+                      <div class="footer-text">
+                        <p>{{system_settings.company_info}}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-4 col-lg-4 col-md-6 mb-20">
+                    <div class="footer-widget">
+                      <div class="footer-widget-heading">
+                        <h3>Follow Us On</h3>
+                      </div>
+                      <div class="social-icons-container">
+                        <ul class="ul">
+                          <li class="li">
+                            <a href="{{ system_settings.facebook }}" target="_blank">
+                              <i class="fab fa-facebook-f facebook-bg"></i>
+                            </a>
+                          </li>
+                        </ul>
+                        <ul class="ul2">
+                          <li class="li2">
+                            <a href="{{ system_settings.instagram }}" target="_blank">
+                              <i class="fab fa-instagram instagram-bg"></i>
+                            </a>
+                          </li>
+                        </ul>
+                        <ul class="ul3">
+                          <li class="li3">
+                            <a href="{{ system_settings.linkdein }}" target="_blank">
+                              <i class="fab fa-linkedin linkedin-bg"></i>
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-6">
+                  <p class="footer-text m-0">Copyright &copy;
+                      <script>
+                      document.write(new Date().getFullYear());
+                      </script> All rights reserved 
+                      <i class="fa fa-heart-o" aria-hidden="true"></i>
+                          by
+                      <a href="https://redsparkinfo.com/" target="_blank">
+                          Redspark Technologies
+                      </a>
+                  </p>
+                </div>
+                <div class="col-md-2"></div>
+              </div>
             </div>
-            </div>
+          </footer>
         </div>
-    </div>
-    
-
-    <a class="mobile-menu on" id="mobile-collapse" href="javascript:void(0);" onclick="toggleFooter()">
+      </div>
+      </div>
+      </div>
+      </div>
+      <a class="mobile-menu on" id="mobile-collapse" href="javascript:void(0);" onclick="toggleFooter()">
         <span></span>
-    </a>
-
-    <script>
+      </a>
+      <script>
         function toggleFooter() {
-            var footer = document.getElementById('footer-section');
-            footer.classList.toggle('collapsed');
+          var footer = document.getElementById('footer-section');
+          footer.classList.toggle('collapsed');
         }
-    </script>
-</section>
-
-</body>
-</html>  
+      </script>
+    </section>

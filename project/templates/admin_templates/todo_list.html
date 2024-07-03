@@ -1,7 +1,3 @@
-
-
-
-    
 {% extends "layouts/base_auth.html" %}
 {% block content %}
 {% include "includes/sidebar.html" %}
@@ -10,33 +6,13 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
 <style>
-  #id_user {
-    /* Add your styles here */
+  #id_user, #id_team, #datepicker {
     border: 1px solid #ccc;
     padding: 8px;
     font-size: 14px;
-    width: 200px; /* Adjust width as needed */
-    /* Add more styles as per your design */
-}
+    width: 200px;
+  }
 
-/* Styling for Team field */
-#id_team {
-    /* Add your styles here */
-    border: 1px solid #ccc;
-    padding: 8px;
-    font-size: 14px;
-    width: 200px; /* Adjust width as needed */
-    /* Add more styles as per your design */
-}
-#datepicker {
-    /* Add your styles here */
-    border: 1px solid #ccc;
-    padding: 8px;
-    font-size: 14px;
-    width: 200px; /* Adjust width as needed */
-    /* Add more styles as per your design */
-}
-  /* Custom DataTable Styles */
   .todoTable {
     width: 100%;
     border-collapse: collapse;
@@ -51,30 +27,6 @@
     padding: 12px;
     cursor: pointer;
     position: relative;
-  }
-
-  .todoTable thead th.sorting:after,
-  .todoTable thead th.sorting_asc:after,
-  .todoTable thead th.sorting_desc:after {
-    content: "";
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: 5px solid transparent;
-  }
-
-  .todoTable thead th.sorting:after {
-    border-top-color: white;
-  }
-
-  .todoTable thead th.sorting_asc:after {
-    border-bottom-color: white;
-    transform: translateY(-50%) rotate(180deg);
-  }
-
-  .todoTable thead th.sorting_desc:after {
-    border-top-color: white;
   }
 
   .todoTable tbody tr {
@@ -135,9 +87,7 @@
     border-radius: 4px;
   }
 
-/* Dark Theme Styles for Flatpickr */
-
-body.dark .flatpickr-calendar {
+  body.dark .flatpickr-calendar {
     background-color: #343a40;
     color: white;
   }
@@ -173,188 +123,171 @@ body.dark .flatpickr-calendar {
   {% if user.is_authenticated and user.role == "1" %}
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
-        <div class="pcoded-inner-content">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="m-0"><b>Filters</b></h3>
+      <div class="pcoded-inner-content">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="m-0"><b>Filters</b></h3>
+              </div>
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-md-12">
+                    <form method="get">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="user">User:</label>
+                            {{ filter.form.user }}
+                          </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-md-12">
-                                    <form method="get">
-                                        <div class="row">
-                                            <!-- User filter -->
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="user">User:</label>
-                                                    {{ filter.form.user }}
-                                                </div>
-                                            </div>
-                                            <!-- Date Created filter -->
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="date_created">Date Created:</label>
-                                                    {{ filter.form.date_created }}
-                                                </div>
-                                            </div>
-                                            <!-- Team filter -->
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="team">Team:</label>
-                                                    {{ filter.form.team }}
-                                                </div>
-                                            </div>
-                                            <!-- Buttons -->
-                                            <div class="col-md-12">
-                                                <div class="form-group d-flex justify-content-end">
-                                                    <button id="applyBtn" class="btn btn-primary mr-2">Apply</button>
-                                                    <a href="{% url 'todolist' %}" type="button" id="clearBtn" class="btn btn-secondary">Clear Filters</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Hidden div for any additional fields -->
-                                        <div class="col-md-6"></div>
-                                    </form>
-                                </div>
-                            </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="date_created">Date Created:</label>
+                            {{ filter.form.date_created }}
+                          </div>
                         </div>
-                    </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="team">Team:</label>
+                            {{ filter.form.team }}
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="form-group d-flex justify-content-end">
+                            <button id="applyBtn" class="btn btn-primary mr-2">Apply</button>
+                            <a href="{% url 'todolist' %}" type="button" id="clearBtn" class="btn btn-secondary">Clear Filters</a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6"></div>
+                    </form>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
   </div>
   {% endif %}
-
 
   {% if user.is_authenticated and user.role != "1" %}
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
-        <div class="pcoded-inner-content">
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="m-0"><b>Filters</b></h3>
+      <div class="pcoded-inner-content">
+        <div class="row">
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="m-0"><b>Filters</b></h3>
+              </div>
+              <div class="card-body">
+                <div class="row align-items-center">
+                  <div class="col-md-12">
+                    <form method="get">
+                      <div class="row">
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="date_created">Date Created:</label>
+                            {{ filter.form.date_created }}
+                          </div>
                         </div>
-                        <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-md-12">
-                                    <form method="get">
-                                        <div class="row">
-                
-                                      
-                                            <!-- Date Created filter -->
-                                            <div class="col-md-4">
-                                                <div class="form-group">
-                                                    <label for="date_created">Date Created:</label>
-                                                    {{ filter.form.date_created }}
-                                                </div>
-                                            </div>
-                          
-                                            <!-- Buttons -->
-                                            <div class="col-md-12">
-                                                <div class="form-group d-flex justify-content-end">
-                                                    <button id="applyBtn" class="btn btn-primary mr-2">Apply</button>
-                                                    <a href="{% url 'todolist' %}" type="button" id="clearBtn" class="btn btn-secondary">Clear Filters</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Hidden div for any additional fields -->
-                                        <div class="col-md-6"></div>
-                                    </form>
-                                </div>
-                            </div>
+                        <div class="col-md-12">
+                          <div class="form-group d-flex justify-content-end">
+                            <button id="applyBtn" class="btn btn-primary mr-2">Apply</button>
+                            <a href="{% url 'todolist' %}" type="button" id="clearBtn" class="btn btn-secondary">Clear Filters</a>
+                          </div>
                         </div>
-                    </div>
+                      </div>
+                      <div class="col-md-6"></div>
+                    </form>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
   </div>
   {% endif %}
-
-
 
   <div class="pcoded-wrapper">
     <div class="pcoded-content">
       <div class="pcoded-inner-content">
         <h1>Todo List</h1>&nbsp;
-        <table class="todoTable table">
-          <thead class="thead-dark">
-            <tr>
-              <th>ID</th> 
-              {% if user.is_authenticated and user.role != "3" %}
-                <th>Name</th>
-              {% endif %}
-              <th>Title</th>
-              <th>Description</th>
-              <th>Team</th>
-              <th>Status</th>
-              <th>Task Date</th>
-              <th>Time Taken</th>
-              <th>Detail</th>
-              <th>Comments</th>
-              <th>Comment by</th>
-              <th>Start time</th>
-
-
-            </tr>
-          </thead>
-          <tbody>
-            {% for todo in todos %}
-            <tr>
-              <td>{{ forloop.counter }}</td>
-              {% if user.is_authenticated and user.role != "3" %}
-                <td>{{ todo.user }}</td>
-              {% endif %}
-              <td>{{ todo.title }}</td>
-              <td>
-                {{ todo.description|slice:":50" }}
-                {% if todo.description|length > 50 %}...
+        <div style="overflow-x: auto;">
+          <table class="todoTable table">
+            <thead class="thead-dark">
+              <tr>
+                <th>ID</th> 
+                {% if user.is_authenticated and user.role != "3" %}
+                  <th>Name</th>
                 {% endif %}
-              </td>        
-              <td>{{ todo.team }}</td>
-              <td>
-                {% if todo.status == 0 %}
-                  <span class="badge badge-secondary">Pending</span>
-                {% elif todo.status == 1 %}
-                  <span class="badge badge-success">Completed</span>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Team</th>
+                <th>Status</th>
+                <th>Task Date</th>
+                <th>Time Taken</th>
+                <th>Detail</th>
+                <th>Comments</th>
+                <th>Comment by</th>
+                <th>Start time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for todo in todos %}
+              <tr>
+                <td>{{ forloop.counter }}</td>
+                {% if user.is_authenticated and user.role != "3" %}
+                  <td>{{ todo.user }}</td>
                 {% endif %}
-              </td>
-              <td>{{ todo.date_created|date:"d-M-Y" }}</td>
-              <td>{{ todo.time_taken }}</td>
-              <td>
-                <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"><i class="fa-solid fa-eye text-c-blue"></i></a>
-                &nbsp;
-                {% if request.user.is_superuser %}
-                
-                  <a href="{% url 'updatecomment' todo.id %}">
-                    <i class="fa-solid fa-comments text-c-blue"></i>
-                  </a>
+                <td>{{ todo.title }}</td>
+                <td>
+                  {{ todo.description|slice:":50" }}
+                  {% if todo.description|length > 50 %}...
                   {% endif %}
-              </td>
-              <td>
-                <a href="{% url 'note_history' todo.id %}">
+                </td>        
+                <td>{{ todo.team }}</td>
+                <td>
+                  {% if todo.status == 0 %}
+                    <span class="badge badge-secondary">Pending</span>
+                  {% elif todo.status == 1 %}
+                    <span class="badge badge-success">Completed</span>
+                  {% endif %}
+                </td>
+                <td>{{ todo.date_created|date:"d-M-Y" }}</td>
+                <td>{{ todo.time_taken }}</td>
+                <td>
+                  <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"><i class="fa-solid fa-eye text-c-blue"></i></a>
+                  &nbsp;
+                  {% if request.user.is_superuser %}
+                    <a href="{% url 'updatecomment' todo.id %}">
+                      <i class="fa-solid fa-comments text-c-blue"></i>
+                    </a>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{% url 'note_history' todo.id %}">
                     {{ todo.note|slice:":50" }}
                     {% if todo.note|length > 50 %}...{% endif %}
-                </a>
-            </td>
-
-              <td>{{ todo.updated_by }}</td>
-              <td>{{ todo.start_time }}</td>
-
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
+                  </a>
+                </td>
+                <td>{{ todo.updated_by }}</td>
+                <td>{{ todo.start_time }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </section>
-{% include "includes/footer.html" %} 
+{% include "includes/footer.html" %}
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
@@ -367,14 +300,13 @@ body.dark .flatpickr-calendar {
       "lengthChange": true,
       "searching": true,
       "info": true,
-      "autoWidth": true,
+      "autoWidth": false,
       "responsive": true,
       "order": [
         [5, "desc"]
-      ], // Default order by date_created column
+      ],
     });
 
-    // Initialize Flatpickr on date fields
     flatpickr(".datepicker", {
       dateFormat: "Y-m-d",
     });
