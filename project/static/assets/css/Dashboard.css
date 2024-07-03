@@ -4,6 +4,7 @@
     justify-content: space-around;
     /* Adjust as needed: space-between, flex-start, etc. */
     flex-wrap: wrap;
+    padding-top: 15px;
     /* Ensures cards wrap to new lines if there isn't enough space */
  }
 

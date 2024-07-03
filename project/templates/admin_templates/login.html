@@ -1,7 +1,42 @@
 {% extends "layouts/base_auth.html" %}
 {% block content %}
 
+<script>
+    // Function to save details to localStorage when checkbox is checked
+    function saveDetails() {
+        var username = document.getElementById('username').value;
+        var password = document.getElementById('password').value;
+        var saveDetailsCheckbox = document.getElementById('checkbox-fill-a1');
 
+        if (saveDetailsCheckbox.checked) {
+            // Save username and password to localStorage or sessionStorage
+            localStorage.setItem('savedUsername', username);
+            localStorage.setItem('saveDetailsChecked', 'true'); // Store checkbox state
+        } else {
+            // Clear saved details if checkbox is not checked
+            localStorage.removeItem('savedUsername');
+            localStorage.removeItem('saveDetailsChecked'); // Remove checkbox state
+        }
+    }
+
+    // Function to load saved details if available
+    function loadSavedDetails() {
+        var savedUsername = localStorage.getItem('savedUsername');
+        var saveDetailsChecked = localStorage.getItem('saveDetailsChecked');
+        
+        if (savedUsername) {
+            document.getElementById('username').value = savedUsername;
+        }
+        if (saveDetailsChecked === 'true') {
+            document.getElementById('checkbox-fill-a1').checked = true;
+        }
+    }
+
+    // Load saved details when the page is loaded
+    window.onload = function() {
+        loadSavedDetails();
+    };
+</script>
 
 <div class="auth-wrapper">
     <div class="auth-content">
@@ -20,14 +55,14 @@
                 <form method="post" id="login-form">
                     {% csrf_token %}
                     <div class="input-group mb-3">
-                        <input type="text" name="username" class="form-control" placeholder="Username">
+                        <input type="text" name="username" id="username" class="form-control" placeholder="Username">
                     </div>
                     <div class="input-group mb-4">
-                        <input type="password" name="password" class="form-control" placeholder="Password">
+                        <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                     </div>
                     <div class="form-group text-left">
                         <div class="checkbox checkbox-fill d-inline">
-                            <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
+                            <input type="checkbox" name="save-details" id="checkbox-fill-a1" onchange="saveDetails()">
                             <label for="checkbox-fill-a1" class="cr"> Save Details</label>
                         </div>
                     </div>
@@ -42,6 +77,5 @@
     <i class="icon feather icon-moon" id="theme-indicator"></i>
     <input type="checkbox" id="theme-switch" class="d-none" />
 </label>
-
 
 {% endblock content %}
