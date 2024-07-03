@@ -278,59 +278,64 @@ class TodoView_Add(LoginRequiredMixin, views.View):
             )
 
 
+
 class TodoView_Update(LoginRequiredMixin, views.View):
     def post(self, request, todo_id):
         user = request.user
         todo = get_object_or_404(Todo, id=todo_id, user=request.user)
         new_status = request.POST.get("status")
 
+        # Check if email_sent_todo_ids exists in the session
+        if 'email_sent_todo_ids' not in request.session:
+            request.session['email_sent_todo_ids'] = []
+
         if new_status:
             todo.status = int(new_status)
-            todo.update_time = timezone.now()  # Update the current time
+            todo.update_time = timezone.now()
             todo.save()
+
+            if todo.id not in request.session['email_sent_todo_ids']:
+                time_difference = todo.update_time - todo.start_time
+                hours, remainder = divmod(time_difference.total_seconds(), 3600)
+                minutes, _ = divmod(remainder, 60)
+                todo.time_taken = f"{int(hours)}h {int(minutes)}m"
+
+                if user.role == "3":
+                    admins = CustomUser.objects.filter(
+                        role="2", team=todo.team, is_active=True
+                    )
+                elif user.role in ["2", "1"]:
+                    admins = CustomUser.objects.filter(role="1", is_active=True)
+
+                admin_names = [admin.user_name for admin in admins]
+
+                if admins:
+                    subject = "Todo Item Updated"
+                    context = {
+                        "todo_title": todo.title,
+                        "todo_description": todo.description,
+                        "new_status": new_status,
+                        "Mailer_name": ", ".join(admin_names),
+                        "user": request.user,
+                        "time": todo.time_taken,
+                    }
+                    html_content = render_to_string("emails/todo_updated.html", context)
+                    text_content = strip_tags(html_content)
+                    from_email = settings.DEFAULT_FROM_EMAIL
+                    recipient_list = [admin.email for admin in admins]
+
+                    msg = EmailMultiAlternatives(
+                        subject, text_content, from_email, recipient_list
+                    )
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
+
+                    # Mark email as sent for this todo id in the session
+                    request.session['email_sent_todo_ids'].append(todo.id)
+
             messages.success(request, "Task Updated")
-            time_difference = todo.update_time - todo.start_time
-            hours, remainder = divmod(time_difference.total_seconds(), 3600)
-            minutes, _ = divmod(remainder, 60)
-            todo.time_taken = f"{int(hours)}h {int(minutes)}m"
-
-            # Determine recipients based on user role
-            if user.role == "3":
-                # Send email to all admins in the same team
-                admins = CustomUser.objects.filter(
-                    role="2", team=todo.team, is_active=True
-                )
-            elif user.role == "2" or user.role == "1":
-                # Send email to all admins with role '1' and are active
-                admins = CustomUser.objects.filter(role="1", is_active=True)
-
-            # Collect admin names for the email context
-            admin_names = [admin.user_name for admin in admins]
-
-            # Send email if admins exist
-            if admins:
-                subject = "Todo Item Updated"
-                context = {
-                    "todo_title": todo.title,
-                    "todo_description": todo.description,
-                    "new_status": new_status,
-                    "Mailer_name": ", ".join(admin_names),  # Join names with a comma
-                    "user": request.user,
-                    "time": todo.time_taken,
-                }
-                html_content = render_to_string("emails/todo_updated.html", context)
-                text_content = strip_tags(html_content)
-                from_email = settings.DEFAULT_FROM_EMAIL
-                recipient_list = [admin.email for admin in admins]
-
-                msg = EmailMultiAlternatives(
-                    subject, text_content, from_email, recipient_list
-                )
-                msg.attach_alternative(html_content, "text/html")
-                msg.send()
 
         return redirect("home")
-
 
 class TodoView_StartTime(LoginRequiredMixin, views.View):
     def post(self, request, todo_id):
