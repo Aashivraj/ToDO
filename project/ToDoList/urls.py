@@ -6,7 +6,7 @@ urlpatterns = [
     
     
     #Authentication-URLS
-    path('',LoginFormView.as_view(),name="login"),
+    path('',LoginView.as_view(),name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
     path('error/',ErrorView.as_view(),name="error"),
     path('change_password/',auth_views.PasswordChangeView.as_view(template_name='admin_templates/change_password.html',success_url='/'),name='change_password'),

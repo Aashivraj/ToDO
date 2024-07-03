@@ -13,7 +13,7 @@ from .models import *
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from .filters import *
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -439,7 +439,7 @@ class UserView_Add(LoginRequiredMixin, views.View):
         return render(request, "admin_templates/add_user.html", {"form": form})
 
 
-class LoginFormView(views.View):
+class LoginView(views.View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect("home")
@@ -472,10 +472,18 @@ class LoginFormView(views.View):
 
 
 class LogoutView(LoginRequiredMixin, views.View):
-    def get(self, request, *args, **kwargs):
-        logout(request)
-        return redirect("login")
 
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            logout(request)
+            messages.success(request, "Logout successful.")
+        else:
+            messages.error(request, "User not authenticated.")
+
+        # Redirect to the login page after logout (or any other desired URL)
+        return redirect("login")
+            
+          
 
 @method_decorator(user_passes_test(user_is_admin, login_url="/error/"), name="dispatch")
 class UserView_List(LoginRequiredMixin, views.View):

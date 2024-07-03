@@ -190,7 +190,9 @@
 
       .ul,
       .ul2,
-      .ul3 {
+      .ul3,
+      .ul4
+     {
         list-style: none;
         padding: 0;
         margin: 0;
@@ -199,7 +201,8 @@
 
       .li,
       .li2,
-      .li3 {
+      .li3,
+      .li4 {
         display: inline-block;
         margin-right: 10px;
         /* Adjust spacing between icons */
@@ -207,7 +210,8 @@
 
       .li a,
       .li2 a,
-      .li3 a {
+      .li3 a,
+      .li4 a {
         display: inline-block;
         width: 30px;
         /* Adjust width of each icon */
@@ -226,7 +230,8 @@
 
       .li a:hover,
       .li2 a:hover,
-      .li3 a:hover {
+      .li3 a:hover,
+      .li4 a:hover {
         color: #7774ff;
         /* Adjust hover color */
         background: #333;
@@ -249,7 +254,7 @@
             <div class="container">
               <div class="footer-cta pt-3 pb-3">
                 <div class="row">
-                  <div class="col-xl-4 col-md-4 mb-20">
+                  <div class="col-xl-6 col-md-6 mb-20">
                     <div class="single-cta">
                       <i class="fas fa-map-marker-alt"></i>
                       <div class="cta-text">
@@ -260,7 +265,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-xl-4 col-md-4 mb-20">
+                  <div class="col-xl-3 col-md-3 mb-20">
                     <div class="single-cta">
                       <i class="fas fa-phone"></i>
                       <div class="cta-text">
@@ -271,7 +276,7 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-xl-4 col-md-4 mb-20">
+                  <div class="col-xl-3 col-md-3 mb-20">
                     <div class="single-cta">
                       <i class="far fa-envelope-open"></i>
                       <div class="cta-text">
@@ -320,6 +325,13 @@
                           <li class="li3">
                             <a href="{{ system_settings.linkdein }}" target="_blank">
                               <i class="fab fa-linkedin linkedin-bg"></i>
+                            </a>
+                          </li>
+                        </ul>
+                        <ul class="ul4">
+                          <li class="li4">
+                            <a href="{{ system_settings.company_link }}" target="_blank">
+                              <i class="feather icon-globe"></i>
                             </a>
                           </li>
                         </ul>
