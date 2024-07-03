@@ -486,7 +486,7 @@ class LogoutView(LoginRequiredMixin, views.View):
             messages.error(request, "User not authenticated.")
 
         # Redirect to the login page after logout (or any other desired URL)
-        return redirect("login")
+        return redirect("/")
             
           
 
