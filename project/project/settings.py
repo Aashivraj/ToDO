@@ -158,17 +158,17 @@ LOGIN_URL = "/"
 
 
 # Email configuration for Gmail
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'Shahdevansh13122002@gmail.com'
-# EMAIL_HOST_PASSWORD = 'rayu ndtx icef ewft'
-# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = '21bt04d062@gsfcuniversity.ac.in'
+EMAIL_HOST_PASSWORD = 'znyy yyca ecyd wbjr'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
-EMAIL_HOST_USER = '7901fe60fdef79'
-EMAIL_HOST_PASSWORD = '39e9ed63af1c3a'
-EMAIL_PORT = '2525'
+# EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+# EMAIL_HOST_USER = '7901fe60fdef79'
+# EMAIL_HOST_PASSWORD = '39e9ed63af1c3a'
+# EMAIL_PORT = '2525'
 
 SESSION_COOKIE_AGE = 7200 
