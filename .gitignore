@@ -176,3 +176,4 @@ cython_debug/
 !**/migrations/__init__.py
 *.txt
 
+*/migrations/0001_initial.py

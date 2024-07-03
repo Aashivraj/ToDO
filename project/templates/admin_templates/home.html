@@ -174,6 +174,7 @@
     </form>{% endif %}
     </div>
  </div> {% endfor %} </div>
+ </section>
   <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
   <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
   <script>
@@ -236,49 +237,7 @@
         </form>{% endif %}
         </div>
      </div> {% endfor %} </div>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <div class="pcoded-content">
-     <div class="pcoded-inner-content">
-        <h1>Todo List</h1>&nbsp; {% for team, todos in team_todos.items %} <h2>{{ team }}</h2>
-        <table class="todoTable table  ">
-           <thead class="thead-dark ">
-              <tr>
-                 <th>No.</th>
-                 <th>Username</th>
-                 <th>Title</th>
-                 <th>Description</th>
-                 <th>Status</th>
-                 <th>Date Created</th>
-                 <th>Detail View</th>
-                 <th>Comments</th>
-                 <th>time start</th>
-              </tr>
-           </thead>
-           <tbody> {% for todo in todos %} <tr>
-                 <td>{{ forloop.counter }}</td>
-                 <td>{{ todo.user }}</td>
-                 <td>{{ todo.title }}</td>
-                 <td>
-                  {{ todo.description|slice:":50" }}
-                  {% if todo.description|length > 50 %}...
-                  {% endif %}
-                </td> 
-                <td> {% if todo.status == 0 %} <span class="badge badge-secondary">Pending</span> {% elif todo.status == 1 %} <span class="badge badge-success">Completed</span> {% endif %} </td>
-                <td>{{ todo.date_created|date:"d-M-Y" }}</td>
-                <td>
-                    <a href="{% url 'task_detail' user_id=todo.user.id task_id=todo.id %}"><i class="fa-solid fa-eye text-c-green"></i></a>
-                </td>
-                <td>   <a href="{% url 'note_history' todo.id %}">
-                  {{ todo.note|slice:":50" }}
-                  {% if todo.note|length > 50 %}...{% endif %}
-              </a></td>
-
-                <td>{{ todo.start_time }}</td>
-
-              </tr> {% endfor %} </tbody>
-        </table> {% endfor %}
-     </div>
-  </div>
+ 
 </section>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
@@ -315,4 +274,6 @@
      });
   });
 </script> {% endif %}
+{% include "includes/footer.html" %} 
+
 {% endblock %}

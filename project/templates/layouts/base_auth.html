@@ -62,7 +62,7 @@
           if (inactiveDuration > inactivityTimeout) {
               // Perform logout action via AJAX
               $.get('/logout/', function(response) {
-                  window.location.href = '/login/';  // Redirect to login page after logout
+                  window.location.href = '';  // Redirect to login page after logout
               });
           }
       }
