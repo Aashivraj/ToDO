@@ -110,6 +110,8 @@
                       <div class="w-100 p-5">
                         {% if company_logo_url %}
                           <img src="{{ company_logo_url }}" alt="Company Logo" height="50px" width="180px">
+                          <br>
+                          <br>
                         {% else %}
                         <img src="{% static 'default_logo.png' %}" alt="Company Logo" class="img-fluid rounded-circle"> <!-- Default logo if none is provided -->
                         {% endif %}
@@ -128,6 +130,8 @@
                       <div class="w-100 p-5">
                         {% if small_logo_url %}
                             <img src="{{ small_logo_url }}" alt="Small Logo" height="50px" width="180px">
+                            <br>
+                            <br>
                         {% else %}
                             <img src="{% static 'default_small_logo.png' %}" alt="Small Logo" class="img-fluid rounded-circle"> <!-- Default small logo if none is provided -->
                         {% endif %}
