@@ -63,11 +63,10 @@ def mark_notification_as_read(request, notification_id):
     return redirect(request.META.get("HTTP_REFERER", "home"))
 
 
-
-class ChangePasswordView(views.View, LoginRequiredMixin):
+class ChangePasswordView(LoginRequiredMixin, views.View):
     form_class = PasswordChangeForm
     template_name = "admin_templates/change_password.html"
-    success_url = reverse_lazy("password_change_done")
+    success_url = reverse_lazy('login')  # Ensure this is the name of your login URL
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(user=request.user)
@@ -76,16 +75,21 @@ class ChangePasswordView(views.View, LoginRequiredMixin):
     def post(self, request, *args, **kwargs):
         form = self.form_class(user=request.user, data=request.POST)
         if form.is_valid():
-            user = form.save()
-            update_session_auth_hash(
-                request, user
-            )  # Important to keep the user logged in
-            messages.success(request, "Your password has been changed successfully.")
-            return redirect(self.success_url)
+            form.save()
+            logout(request)  # Log the user out
+            request.session.flush()  # Clear the session
+
+            # Clear cookies
+            response = redirect(self.success_url)
+            response.delete_cookie('sessionid')  # Replace 'sessionid' with your session cookie name if different
+            response.delete_cookie('csrftoken')  # If you want to clear the CSRF token cookie as well
+
+            messages.success(request, "Your password has been changed successfully. Please log in again.")
+            print("Redirecting to login page")  # Debug statement
+            return response
         else:
             messages.error(request, "Please correct the errors below.")
             return render(request, self.template_name, {"form": form})
-
 
 @method_decorator(
     user_passes_test(user_is_teamlead, login_url="/error/"), name="dispatch"
