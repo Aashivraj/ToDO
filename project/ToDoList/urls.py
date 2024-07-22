@@ -34,6 +34,10 @@ urlpatterns = [
     path('todo/<int:todo_id>/notes/', NoteHistoryView.as_view(), name='note_history'),
     path('update_todo_status/<int:todo_id>/',TodoView_Update.as_view(), name='update_todo_status'),
     path('update_todo_start_time/<int:todo_id>/', TodoView_StartTime.as_view(), name='update_todo_start_time'),
+    path('projects/',ProjectsView.as_view(),name="projects"),
+    path('projects_list/',ProjectsView_List.as_view(),name="projects_list"),
+    path('project_version_form/',ProjectsVersionView.as_view(),name="project_version_form"),
+
     
     
     #Notifications-URLS

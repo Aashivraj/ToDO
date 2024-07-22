@@ -1,0 +1,83 @@
+{% extends "layouts/base_auth.html" %} 
+{% block content %} 
+{% include "includes/sidebar.html" %}
+{% include "includes/navigation.html" %}
+
+
+
+<section class="pcoded-main-container">
+    <div class="pcoded-wrapper">
+        <div class="pcoded-content">
+            <div class="pcoded-inner-content">
+                <!-- [ breadcrumb ] start -->
+                <div class="page-header">
+                    <div class="page-block">
+                        <div class="row align-items-center">
+                            <div class="col-md-12">
+                                <div class="page-header-title">
+                                    <h5 class="m-b-10"></h5>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- [ breadcrumb ] end -->
+                <div class="main-body">
+                    <div class="page-wrapper">
+                        <!-- [ Main Content ] start -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Add Projects</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <form method="post" novalidate> 
+                                                    {% csrf_token %}
+                                                    {{project_form.as_p}}
+                                                    <button class="btn btn-primary shadow-2">Submit</button>
+                                                   
+
+                                                   
+                                                </form>
+                                            </div>
+                                            <div class="col-md-6"></div>
+                                        </div>
+                                        <!-- [ Main Content ] end -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- [ Main Content ] end -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% include "includes/footer.html" %} 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Get the current date and time in UTC
+        var now = new Date();
+        
+        // Convert to Indian Standard Time (IST), which is UTC+5:30
+        var istOffset = 5.5 * 60 * 60 * 1000; // IST offset in milliseconds
+        var istDate = new Date(now.getTime() + istOffset);
+        
+        // Format the date to 'YYYY-MM-DDTHH:MM'
+        var date = istDate.toISOString().slice(0, 16);
+        
+        // Set the value of the input field
+        document.getElementById('id_date_created').value = date;
+
+        // Handle the submission of the Add Team form
+       
+    });
+</script>
+
+
+{% endblock content %}

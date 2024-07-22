@@ -852,3 +852,72 @@ class NotificationListView(LoginRequiredMixin, ListView):
             "-timestamp"
         )
 
+
+
+
+
+
+@method_decorator(user_passes_test(user_is_admin), name="dispatch")
+class ProjectsView(views.View):
+    def get(self, request, *args, **kwargs):
+        project_form = ProjectsForm()
+
+        return render(
+            request, "admin_templates/project_form.html", {"project_form": project_form}
+        )
+
+    def post(self, request, *args, **kwargs):
+        project_form = ProjectsForm(request.POST)
+
+        if project_form.is_valid():
+          
+
+            project_form.save()
+
+            return redirect("projects_list")
+        else:
+           
+            messages.error(request, "Please Fill the Form.")
+            return render(
+                request, "admin_templates/project_form.html", {"project_form": project_form}
+            )
+
+@method_decorator(user_passes_test(user_is_admin, login_url="/error/"), name="dispatch")
+class ProjectsView_List(LoginRequiredMixin, views.View):
+    def get(self, request, *args, **kwargs):
+        projects = Projects.objects.all()
+
+        # paginator
+
+        context = {
+            "projects": projects,
+        }
+
+        return render(request, "admin_templates/projectslist.html", context)
+
+
+
+@method_decorator(user_passes_test(user_is_admin), name="dispatch")
+class ProjectsVersionView(views.View):
+    def get(self, request, *args, **kwargs):
+        project_version_form = ProjectVersionsForm()
+
+        return render(
+            request, "admin_templates/project_version_form.html", {"project_version_form": project_version_form}
+        )
+
+    def post(self, request, *args, **kwargs):
+        project_version_form = ProjectVersionsForm(request.POST)
+
+        if project_version_form.is_valid():
+          
+
+            project_version_form.save()
+
+            return redirect("home")
+        else:
+           
+            messages.error(request, "Please Fill the Form.")
+            return render(
+                request, "admin_templates/project_version_form.html", {"project_version_form": project_version_form}
+            )

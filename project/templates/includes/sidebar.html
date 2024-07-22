@@ -43,7 +43,7 @@
         <li class="nav-item">
           <a href="{% url 'home' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-solid fa-house text-c-green"></i>
+              <i class="fa-solid fa-house"  style="color: rgb(226, 165, 34);"></i>
             </span>
             <span class="pcoded-mtext">Home</span>
           </a>
@@ -52,7 +52,7 @@
         <li class="nav-item">
           <a href="{% url 'profile' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-regular fa-user text-c-green"></i>
+              <i class="fa-regular fa-user"  style="color: rgb(226, 165, 34);"></i>
             </span>
             <span class="pcoded-mtext">User Profile</span>
           </a>
@@ -62,7 +62,7 @@
         <li class="nav-item">
           <a href="{% url 'teamtodo' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-regular fa-user text-c-green"></i>
+              <i class="fa-regular fa-user"  style="color: rgb(226, 165, 34);"></i>
             </span>
             <span class="pcoded-mtext">Team Todo List</span>
           </a>
@@ -72,7 +72,7 @@
         <li class="nav-item">
           <a href="{% url 'add_todo' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-solid fa-list-check text-c-green"></i>
+              <i class="fa-solid fa-list-check"  style="color: rgb(226, 165, 34);"></i>
             </span>
             <span class="pcoded-mtext">Add To-Do</span>
           </a>
@@ -81,7 +81,7 @@
         <li class="nav-item">
           <a href="{% url 'todolist' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-solid fa-table-list text-c-green"></i>
+              <i class="fa-solid fa-table-list " style="color: rgb(226, 165, 34);"></i>
             </span>
             <span class="pcoded-mtext">ToDo List</span>
           </a>
@@ -91,7 +91,7 @@
         <li class="nav-item">
           <a href="{% url 'add_user' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-solid fa-user-plus text-c-green"></i>
+              <i class="fa-solid fa-user-plus" " style="color: rgb(226, 165, 34);"></i>
             </span>
             <span class="pcoded-mtext">Add User</span>
           </a>
@@ -102,7 +102,7 @@
         <li class="nav-item">
           <a href="{% url 'userlist' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-solid fa-users text-c-green"></i>
+              <i class="fa-solid fa-users" style="color: rgb(226, 165, 34);"></i>
             </span>
             <span class="pcoded-mtext">User List</span>
           </a>
@@ -111,9 +111,44 @@
 
         {% if user.is_authenticated and user.role == "1" %}
         <li class="nav-item">
+          <a href="{% url 'projects_list' %}" class="nav-link">
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-diagram-project " style="color: rgb(226, 165, 34);"></i>
+            </span>
+            <span class="pcoded-mtext">Projects</span>
+          </a> 
+      
+        </li>
+        {% endif %}
+
+        {% if user.is_authenticated and user.role == "1" %}
+        <li class="nav-item">
+          <a href="{% url 'projects' %}" class="nav-link">
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-diagram-project"  style="color: rgb(226, 165, 34);"></i>
+            </span>
+            <span class="pcoded-mtext">Add Project</span>
+          </a>   
+      
+        </li>
+        {% endif %}
+
+        {% if user.is_authenticated and user.role == "1" %}
+        <li class="nav-item">
+          <a href="{% url 'project_version_form' %}" class="nav-link">
+            <span class="pcoded-micon">
+              <i class="fa-solid fa-users"  style="color: rgb(226, 165, 34);"></i>
+            </span>
+            <span class="pcoded-mtext">Add Project Version </span>
+          </a>
+        </li>
+        {% endif %}
+
+        {% if user.is_authenticated and user.role == "1" %}
+        <li class="nav-item">
           <a href="{% url 'team' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fa-solid fa-users text-c-green"></i>
+              <i class="fa-solid fa-users"  style="color: rgb(226, 165, 34);"></i>
             </span>
             <span class="pcoded-mtext">Add Team</span>
           </a>
@@ -124,7 +159,7 @@
         <li class="nav-item">
           <a href="{% url 'system_settings' %}" class="nav-link">
             <span class="pcoded-micon">
-              <i class="fas fa-cog text-c-green"></i> <!-- Adjust the icon class here -->
+              <i class="fas fa-cog"  style="color: rgb(226, 165, 34);"></i> <!-- Adjust the icon class here -->
             </span>
             <span class="pcoded-mtext">System Settings</span>
           </a>

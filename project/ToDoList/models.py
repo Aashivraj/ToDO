@@ -157,3 +157,42 @@ class SystemSettings(models.Model):
     linkdein = models.CharField(max_length=70)
     company_link = models.CharField(max_length=70)
     
+
+class Projects(models.Model):
+    id=models.AutoField(primary_key=True)
+    project_name=models.CharField(max_length=300)
+    project_id=models.CharField(max_length=50)
+    status=models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+ 
+    def __str__(self):
+        return self.project_name
+    
+
+class ProjectVersions(models.Model):
+    id=models.AutoField(primary_key=True)
+    project_id=models.ForeignKey(Projects, on_delete=models.CASCADE)
+    version_name=models.CharField(max_length=50)
+    estimated_hours=models.TimeField(blank=True, null=True)
+    given_hours=models.TimeField(blank=True, null=True)
+    start_date=models.DateField(blank=True, null=True)
+    end_date=models.DateField(blank=True, null=True)
+    status=models.CharField(max_length=50)
+  
+    def __str__(self):
+        return self.version_name
+    
+class WorkType(models.Model):
+    id=models.AutoField(primary_key=True)
+    worktype_name=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.worktype_name
+    
+class WorkStatus(models.Model):
+    id=models.AutoField(primary_key=True)
+    workstatus_name=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.workstatus_name
+    

@@ -332,3 +332,128 @@ class UserForm_Update(forms.ModelForm):
             elif user.role == "3":
 
                 self.fields["role"].choices = [("3", "Developer")]
+
+
+
+
+
+
+class ProjectsForm(forms.ModelForm):
+
+  
+    project_name = forms.CharField(
+        required=False,  # Remove HTML5 required
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Name",
+                "id": "project_name",
+            }
+        ),
+    )
+    project_id = forms.CharField(
+        required=False,  # Remove HTML5 required
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Project Id",
+                "id": "project_id",
+            }
+        ),
+    )
+    status = forms.CharField(
+        required=False,  # Remove HTML5 required
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Project Status",
+                "id": "status",
+            }
+        ),
+    )
+    
+
+    class Meta:
+        model = Projects
+        fields = ("project_name", "project_id", "status")
+
+
+
+
+
+class ProjectVersionsForm(forms.ModelForm):
+    project_id = forms.ModelChoiceField(
+        queryset=Projects.objects.all(),
+        required=False,
+        widget=forms.Select(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Project",
+                "id": "project_id",
+            }
+        ),
+    )
+    version_name = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Version Name",
+                "id": "version_name",
+            }
+        ),
+    )
+    estimated_hours = forms.TimeField(
+        required=False,
+        widget=forms.TimeInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Estimated Hours",
+                "id": "estimated_hours",
+            }
+        ),
+    )
+    given_hours = forms.TimeField(
+        required=False,
+        widget=forms.TimeInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Given Hours",
+                "id": "given_hours",
+            }
+        ),
+    )
+    start_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Start Date",
+                "id": "start_date",
+            }
+        ),
+    )
+    end_date = forms.DateField(
+        required=False,
+        widget=forms.DateInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "End Date",
+                "id": "end_date",
+            }
+        ),
+    )
+    status = forms.CharField(
+        required=False,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Status",
+                "id": "status",
+            }
+        ),
+    )
+
+    class Meta:
+        model = ProjectVersions
+        fields = ("project_id", "version_name", "estimated_hours", "given_hours", "start_date", "end_date", "status")

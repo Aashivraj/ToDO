@@ -1,0 +1,270 @@
+{% extends "layouts/base_auth.html" %}
+{% block content %}
+{% include "includes/sidebar.html" %}
+{% include "includes/navigation.html" %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+<style>
+  #id_user {
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+    width: 200px;
+  }
+
+  #id_team {
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+    width: 200px;
+  }
+
+  #datepicker {
+    border: 1px solid #ccc;
+    padding: 8px;
+    font-size: 14px;
+    width: 200px;
+  }
+
+  .todoTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 15px;
+    text-align: left;
+  }
+
+  .todoTable thead th {
+    background-color: #343a40;
+    color: white;
+    padding: 12px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .todoTable thead th.sorting:after,
+  .todoTable thead th.sorting_asc:after,
+  .todoTable thead th.sorting_desc:after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 5px solid transparent;
+  }
+
+  .todoTable thead th.sorting:after {
+    border-top-color: white;
+  }
+
+  .todoTable thead th.sorting_asc:after {
+    border-bottom-color: white;
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .todoTable thead th.sorting_desc:after {
+    border-top-color: white;
+  }
+
+  .todoTable tbody tr {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .todoTable tbody tr:last-of-type {
+    border-bottom: 2px solid #343a40;
+  }
+
+  .dataTables_wrapper .dataTables_paginate {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 2px;
+    border: 1px solid #343a40;
+    border-radius: 4px;
+    background-color: white;
+    color: #343a40;
+    cursor: pointer;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    background-color: #343a40;
+    color: white;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+    background-color: #343a40;
+    color: white;
+  }
+
+  .dataTables_wrapper .dataTables_paginate .paginate_button.previous,
+  .dataTables_wrapper .dataTables_paginate .paginate_button.next {
+    font-weight: bold;
+    margin: 0 5px;
+  }
+
+  .dataTables_wrapper .dataTables_filter {
+    float: right;
+    text-align: right;
+  }
+
+  .dataTables_wrapper .dataTables_filter label {
+    font-weight: bold;
+  }
+
+  .dataTables_wrapper .dataTables_filter input {
+    margin-left: 0.5em;
+    padding: 6px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+  }
+
+  body.dark .flatpickr-calendar {
+    background-color: #343a40;
+    color: white;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-day {
+    color: white;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-day:hover,
+  body.dark .flatpickr-calendar .flatpickr-day:focus {
+    background-color: #495057;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-day.today {
+    background-color: #495057;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-day.selected {
+    background-color: #007bff;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-months,
+  .flatpickr-calendar .flatpickr-weekdays {
+    background-color: #343a40;
+  }
+
+  body.dark .flatpickr-calendar .flatpickr-time input {
+    background-color: #343a40;
+    color: white;
+  }
+</style>
+
+<section class="pcoded-main-container">
+  <div class="pcoded-wrapper">
+    <div class="pcoded-content">
+      <div class="pcoded-inner-content">
+        <div class="main-body">
+          <div class="page-wrapper">
+            <div class="row">
+              <div class="col-xl-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h5>Projects List</h5>
+                    <i class="fa-solid fa-table"></i>
+                  </div>
+                  <div class="card-block table-border-style">
+                    <div class="table-responsive">
+                      <table class="userTable table">
+                        <thead>
+                          <tr>
+
+                            <th>id</th>
+                            <th>Name</th>
+                            <th>Project Id</th>
+                            <th>Status</th>
+                            <th>Created At</th>
+                      
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {% for i in projects %}
+                          <tr>
+                            <th scope="row">{{i.id}}</th>
+                            <td>{{i.project_name}}</td>
+                            <td>{{i.project_id}}</td>
+                            <td>{{i.status}}</td>
+                            <td>{{i.created_at}}</td>
+                           
+                            
+                           
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <label class="d-none">
+              <i class="icon feather icon-moon" id="theme-indicator"></i>
+              <input type="checkbox" id="theme-switch" class="d-none" />
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% include "includes/footer.html" %} 
+
+<label class="d-none">
+  <i class="icon feather icon-moon" id="theme-indicator"></i>
+  <input type="checkbox" id="theme-switch" class="d-none" />
+</label>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+  $(document).ready(function() {
+    $(".userTable").DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "info": true,
+      "autoWidth": true,
+      "responsive": true,
+      "order": [
+        [0, "asc"]
+      ],
+      "lengthMenu": [5, 10, 25, 50]
+    });
+  });
+
+  function confirmDelete(userId) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        document.getElementById('delete-form-' + userId).submit();
+      }
+    });
+  }
+</script>
+
+{% endblock content %}
+
+
+
+
+
+
+
